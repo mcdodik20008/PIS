@@ -1,9 +1,13 @@
 ﻿using LightInject;
+using PISWF.domain.registermc.context.repository;
+using PISWF.domain.registermc.model.mapper;
+using PISWF.domain.registermc.service;
 using PISWF.infrasrtucture;
 using PISWF.infrasrtucture.auth.context.repository;
 using PISWF.infrasrtucture.auth.controller;
 using PISWF.infrasrtucture.auth.model.mapper;
 using PISWF.infrasrtucture.auth.service;
+using PISWF.infrasrtucture.guard;
 using PISWF.infrasrtucture.logger.context;
 using PISWF.infrasrtucture.logger.controller;
 using PISWF.infrasrtucture.logger.service;
@@ -17,11 +21,23 @@ public class AppContainer : ServiceContainer
     {
         this.RegisterSingleton<AppDbContext>();
         this.RegisterSingleton<AppContainer>();
-
+        this.RegisterSingleton<Guard>();
+        this.RegisterSingleton<ErrorQueue>();
+        
         #region form
         this.RegisterSingleton<DGVFilter>();
         #endregion
 
+        #region registermc
+
+        this.RegisterSingleton<RegistermcService>();
+        this.RegisterSingleton<FileDocumentMapper>();
+        this.RegisterSingleton<FileDocumentRepository>();
+        this.RegisterSingleton<RegisterMcMapper>();
+        this.RegisterSingleton<RegisterMcRepository>();
+        
+        #endregion
+        
         #region auth
         this.RegisterSingleton<AuthController>();
         this.RegisterSingleton<UserMapper>();
