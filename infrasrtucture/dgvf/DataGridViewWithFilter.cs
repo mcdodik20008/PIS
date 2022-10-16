@@ -11,16 +11,10 @@ namespace pis.infrasrtucture.dgvf
         private readonly TextBox _textBoxCtrl = new();
         private readonly List<string> _filterValues = new();
         private readonly DateTimePicker _dateTimeCtrl = new();
-        private readonly CheckedListBox _checkCtrl = new();
-        private readonly Button _applyButtonCtrl = new();
         private readonly Button _clearFilterCtrl = new();
         private readonly ToolStripDropDown _popup = new();
-
-        private string _strFilter = "";
-        private const string ButtonCtrlText = "Apply";
+        
         private const string ClearFilterCtrlText = "Clear filters";
-        private const string CheckCtrlAllText = "<All>";
-        private const string SpaceText = "<Space>";
 
         // Текущий индекс ячейки
         private int ColumnIndex { get; set; }
@@ -54,7 +48,6 @@ namespace pis.infrasrtucture.dgvf
             ColumnIndex = e.ColumnIndex;
 
             _textBoxCtrl.Text = _filterValues[ColumnIndex];
-            _checkCtrl.Items.Clear();
 
             //textBoxCtrl.Text = textBoxCtrlText;
             _textBoxCtrl.Size = new Size(widthTool, 30);
@@ -66,21 +59,7 @@ namespace pis.infrasrtucture.dgvf
             _dateTimeCtrl.CustomFormat = "dd.MM.yyyy";
             _dateTimeCtrl.TextChanged -= DateTimeCtrl_TextChanged!;
             _dateTimeCtrl.TextChanged += DateTimeCtrl_TextChanged!;
-
-            _checkCtrl.ItemCheck -= CheckCtrl_ItemCheck!;
-            _checkCtrl.ItemCheck += CheckCtrl_ItemCheck!;
-            _checkCtrl.CheckOnClick = true;
-
-            GetChkFilter();
-
-            _checkCtrl.MaximumSize = new Size(widthTool, GetHeightTable() - 120);
-            _checkCtrl.Size = new Size(widthTool, (_checkCtrl.Items.Count + 1) * 18);
-
-            _applyButtonCtrl.Text = ButtonCtrlText;
-            _applyButtonCtrl.Size = new Size(widthTool, 30);
-            _applyButtonCtrl.Click -= ApplyButtonCtrl_Click!;
-            _applyButtonCtrl.Click += ApplyButtonCtrl_Click!;
-
+            
             _clearFilterCtrl.Text = ClearFilterCtrlText;
             _clearFilterCtrl.Size = new Size(widthTool, 30);
             _clearFilterCtrl.Click -= ClearFilterCtrl_Click!;
@@ -96,18 +75,6 @@ namespace pis.infrasrtucture.dgvf
             host1.Padding = Padding.Empty;
             host1.AutoSize = false;
             host1.Size = _textBoxCtrl.Size;
-
-            ToolStripControlHost host2 = new ToolStripControlHost(_checkCtrl);
-            host2.Margin = Padding.Empty;
-            host2.Padding = Padding.Empty;
-            host2.AutoSize = false;
-            host2.Size = _checkCtrl.Size;
-
-            ToolStripControlHost host3 = new ToolStripControlHost(_applyButtonCtrl);
-            host3.Margin = Padding.Empty;
-            host3.Padding = Padding.Empty;
-            host3.AutoSize = false;
-            host3.Size = _applyButtonCtrl.Size;
 
             ToolStripControlHost host4 = new ToolStripControlHost(_clearFilterCtrl);
             host4.Margin = Padding.Empty;
@@ -130,44 +97,30 @@ namespace pis.infrasrtucture.dgvf
                     _popup.Items.Add(host1);
                     break;
             }
-
-            _popup.Items.Add(host2);
-            _popup.Items.Add(host3);
+            
             _popup.Items.Add(host4);
 
             _popup.Show(this, e.ButtonRectangle.X, e.ButtonRectangle.Bottom);
-            host2.Focus();
-        }
-
-        // Выбор всех
-        private void CheckCtrl_ItemCheck(object sender, ItemCheckEventArgs e)
-        {
-            if (e.Index == 0)
-            {
-                if (e.NewValue == CheckState.Checked)
-                {
-                    for (int i = 1; i < _checkCtrl.Items.Count; i++)
-                        _checkCtrl.SetItemChecked(i, true);
-                }
-                else
-                {
-                    for (int i = 1; i < _checkCtrl.Items.Count; i++)
-                        _checkCtrl.SetItemChecked(i, false);
-                }
-            }
         }
 
         // Очистить фильтры
         private void ClearFilterCtrl_Click(object sender, EventArgs e)
         {
             _filter.Clear();
-            _strFilter = "";
+            _filterValues[ColumnIndex] = "";
+            _textBoxCtrl.Text = "";
             ApllyFilter();
             _popup.Close();
+            updateTableWithFilter();
         }
 
         // Событие при изменении текста в TextBox
         private void textBoxCtrl_TextChanged(object sender, EventArgs e)
+        {
+            updateTableWithFilter();
+        }
+
+        private void updateTableWithFilter()
         {
             var table = DataSource as DataTable;
             table!.DefaultView.RowFilter = CreateFilter();
@@ -184,7 +137,8 @@ namespace pis.infrasrtucture.dgvf
                 {
                     var strVal = Columns[index].ValueType.ToString() switch
                     {
-                        "System.String" => $"convert([{Columns[index].Name}], '{Columns[index].ValueType}') LIKE '%{value}%'",
+                        "System.String" =>
+                            $"convert([{Columns[index].Name}], '{Columns[index].ValueType}') LIKE '%{value}%'",
                         _ => throw new ArgumentException("Тип столбца не может быть филтрован")
                     };
                     builder.Append(strVal);
@@ -199,44 +153,11 @@ namespace pis.infrasrtucture.dgvf
             return builder.ToString();
         }
 
+        // TODO: переписать
         private void DateTimeCtrl_TextChanged(object sender, EventArgs e)
         {
             (DataSource as DataTable).DefaultView.RowFilter = string.Format(
                 "convert([" + Columns[ColumnIndex].Name + "], 'System.String') LIKE '%{0}%'", _dateTimeCtrl.Text);
-        }
-
-        // Событие кнопки применить
-        private void ApplyButtonCtrl_Click(object sender, EventArgs e)
-        {
-            _strFilter = "";
-            SaveChkFilter();
-            ApllyFilter();
-            _popup.Close();
-        }
-
-        // Получаем данные из выбранной колонки 
-        private List<string> GetDataColumns(int e)
-        {
-            List<string> valueCellList = new List<string>();
-            string value;
-
-            // Посик данных в столбце, исключая повторения
-            foreach (DataGridViewRow row in Rows)
-            {
-                value = row.Cells[e].Value.ToString();
-                if (value == "") value = SpaceText;
-
-                if (!valueCellList.Contains(value))
-                    valueCellList.Add(value);
-            }
-
-            return valueCellList;
-        }
-
-        // Получаем высоту таблицы
-        private int GetHeightTable()
-        {
-            return Height;
         }
 
         // Получаем ширину выбранной колонки
@@ -244,101 +165,13 @@ namespace pis.infrasrtucture.dgvf
         {
             return Columns[e].Width;
         }
-
-        // Запомнить чекбоксы фильтра
-        private void SaveChkFilter()
-        {
-            string col = Columns[ColumnIndex].Name;
-            string itemChk;
-            bool statChk;
-
-            _filter.RemoveAll(x => x.ColumnName == col);
-
-            for (int i = 1; i < _checkCtrl.Items.Count; i++)
-            {
-                itemChk = _checkCtrl.Items[i].ToString();
-                statChk = _checkCtrl.GetItemChecked(i);
-                _filter.Add(new FilterStatus() { ColumnName = col, ValueString = itemChk, Check = statChk });
-            }
-        }
-
-        // Загрузить чекбоксы
-        private void GetChkFilter()
-        {
-            List<FilterStatus> checkList = new List<FilterStatus>();
-            List<FilterStatus> checkListSort = new List<FilterStatus>();
-
-            // Посик сохранённых данных
-            foreach (FilterStatus val in _filter)
-            {
-                if (Columns[ColumnIndex].Name == val.ColumnName)
-                {
-                    if (val.ValueString == "") val.ValueString = SpaceText;
-                    checkList.Add(new FilterStatus()
-                        { ColumnName = "", ValueString = val.ValueString, Check = val.Check });
-                }
-            }
-
-            // Поиск данных в таблице
-            foreach (string valueCell in GetDataColumns(ColumnIndex))
-            {
-                int index = checkList.FindIndex(item => item.ValueString == valueCell);
-                if (index == -1)
-                {
-                    checkList.Add(new FilterStatus { ValueString = valueCell, Check = true });
-                }
-            }
-
-            _checkCtrl.Items.Add(CheckCtrlAllText, CheckState.Indeterminate);
-            // Сортировка
-            switch (Columns[ColumnIndex].ValueType.ToString())
-            {
-                case "System.Int32":
-                    checkListSort = checkList.OrderBy(x => Int32.Parse(x.ValueString)).ToList();
-                    foreach (FilterStatus val in checkListSort)
-                    {
-                        if (val.Check == true)
-                            _checkCtrl.Items.Add(val.ValueString, CheckState.Checked);
-                        else
-                            _checkCtrl.Items.Add(val.ValueString, CheckState.Unchecked);
-                    }
-
-                    break;
-                case "System.DateTime":
-                    checkListSort = checkList.OrderBy(x => DateTime.Parse(x.ValueString)).ToList();
-                    foreach (FilterStatus val in checkListSort)
-                    {
-                        if (val.Check == true)
-                            _checkCtrl.Items.Add(DateTime.Parse(val.ValueString).ToString("dd.MM.yyyy"),
-                                CheckState.Checked);
-                        else
-                            _checkCtrl.Items.Add(DateTime.Parse(val.ValueString).ToString("dd.MM.yyyy"),
-                                CheckState.Unchecked);
-                    }
-
-                    break;
-                default:
-                    checkListSort = checkList.OrderBy(x => x.ValueString.ToString()).ToList();
-                    foreach (FilterStatus val in checkListSort)
-                    {
-                        if (val.Check == true)
-                            _checkCtrl.Items.Add(val.ValueString, CheckState.Checked);
-                        else
-                            _checkCtrl.Items.Add(val.ValueString, CheckState.Unchecked);
-                    }
-
-                    break;
-            }
-        }
+        
 
         // Применить фильтр
         private void ApllyFilter()
         {
             foreach (FilterStatus val in _filter)
             {
-                if (val.ValueString == SpaceText)
-                    val.ValueString = "";
-
                 if (val.Check == false)
                 {
                     // Исключение если bool              
@@ -347,15 +180,9 @@ namespace pis.infrasrtucture.dgvf
                         valueFilter = "1";
                     if (valueFilter == "False")
                         valueFilter = "0";
-
-                    if (_strFilter.Length == 0)
-                        _strFilter = _strFilter + ("[" + val.ColumnName + "] <> " + valueFilter);
-                    else
-                        _strFilter = _strFilter + (" AND [" + val.ColumnName + "] <> " + valueFilter);
+                    
                 }
             }
-
-            (DataSource as DataTable).DefaultView.RowFilter = _strFilter;
         }
 
         public void FillDataGrid<T>(IEnumerable<T> sourse)
