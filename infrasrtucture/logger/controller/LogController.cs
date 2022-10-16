@@ -1,0 +1,37 @@
+using System.Text.Json;
+using PISWF.infrasrtucture.auth.controller;
+using PISWF.infrasrtucture.logger.model;
+using PISWF.infrasrtucture.logger.service;
+using PISWF.infrasrtucture.page;
+
+namespace PISWF.infrasrtucture.logger.controller;
+
+public class LogController
+{
+    private LogService LogService { get; set; }
+    
+    private Lazy<AuthController> AuthController { get; set; }
+
+    public LogController(LogService logService,  Lazy<AuthController> authController)
+    {
+        LogService = logService;
+        AuthController = authController;
+    }
+    
+    public List<Log> Read(Page page)
+    {
+        return LogService.Read(page);
+    }
+    
+    public Log AddRecord<T>(string methodName, T jsonEntity)
+    {
+        var log = new Log()
+        {
+            MethodName = methodName, 
+            JsonEntity = JsonSerializer.Serialize(jsonEntity), 
+            Author = AuthController.Value.AutorizedUser,
+            LogDate = DateTime.Now
+        };
+        return LogService.AddRecord(log);
+    }
+}
