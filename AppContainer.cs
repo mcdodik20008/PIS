@@ -17,8 +17,7 @@ public class AppContainer : ServiceContainer
     {
         this.RegisterSingleton<AppDbContext>();
         this.RegisterSingleton<AppContainer>();
-        this.RegisterSingleton<SourceFabric>();
-        
+
         #region form
         this.RegisterSingleton<DGVFilter>();
         #endregion

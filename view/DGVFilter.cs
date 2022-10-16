@@ -10,25 +10,22 @@ public class DGVFilter : Form
 {
     private AuthController AuthController { get; }
 
-    private SourceFabric SourceFabric { get; }
-
     private Page page = new(0, 25);
 
-    public DGVFilter(AuthController authController, SourceFabric sourceFabric)
+    public DGVFilter(AuthController authController)
     {
         AuthController = authController;
-        SourceFabric = sourceFabric;
         InitializeItems();
         AddControls();
-        
-        DG.DataSource = sourceFabric.GetDataTable(authController.ReadUser(page));
+
+        DG.FillDataGrid(AuthController.ReadUser(page));
     }
 
     //Каждый метод обарачиваем в трукачте и при неудачи выкидываем пользователю масаге боксом или чем, то что не будет бесить.
     private void createUser(object e, object sender)
     {
         AuthController.AddUser(new UserBasic(nameBox.Text, passwordBox.Text));
-        DG.DataSource = SourceFabric.GetDataTable(AuthController.ReadUser(page));
+        DG.FillDataGrid(AuthController.ReadUser(page));
     }
 
     private void InitializeItems()
@@ -42,7 +39,7 @@ public class DGVFilter : Form
         DG.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom;
         DG.AllowUserToAddRows = false;
     }
-    
+
     private void AddControls()
     {
         Controls.Add(DG);

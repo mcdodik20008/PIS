@@ -16,7 +16,7 @@ public static class Program
         var logController = container.GetInstance<LogController>();
         Application.EnableVisualStyles();
         Application.SetCompatibleTextRenderingDefault(false);
-        Application.Run(container.GetInstance<DGVFilter>());
+         Application.Run(container.GetInstance<DGVFilter>());
         /*var cont = container.GetInstance<AuthController>();
         cont.AddUser(new UserBasic("guest", "1234"));
         Console.Write(container.GetInstance<AppDbContext>());*/
