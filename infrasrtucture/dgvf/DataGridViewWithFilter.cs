@@ -1,18 +1,20 @@
 ﻿using System.Data;
 using System.Reflection;
+using System.Text;
 using Microsoft.EntityFrameworkCore.Migrations.Operations;
 
 namespace DGVWF
 {
     public class DataGridViewWithFilter : DataGridView
     {
-        List<FilterStatus> Filter = new List<FilterStatus>();
-        TextBox textBoxCtrl = new TextBox();
-        DateTimePicker DateTimeCtrl = new DateTimePicker();
-        CheckedListBox CheckCtrl = new CheckedListBox();
-        Button ApplyButtonCtrl = new Button();
-        Button ClearFilterCtrl = new Button();
-        ToolStripDropDown popup = new ToolStripDropDown();
+        List<FilterStatus> Filter = new();
+        TextBox textBoxCtrl = new();
+        List<string> filterValues = new();
+        DateTimePicker DateTimeCtrl = new();
+        CheckedListBox CheckCtrl = new();
+        Button ApplyButtonCtrl = new();
+        Button ClearFilterCtrl = new();
+        ToolStripDropDown popup = new();
 
         string StrFilter = "";
         string ButtonCtrlText = "Apply";
@@ -28,6 +30,7 @@ namespace DGVWF
             var header = new DataGridFilterHeader();
             header.FilterButtonClicked += new EventHandler<ColumnFilterClickedEventArg>(header_FilterButtonClicked);
             e.Column.HeaderCell = header;
+            filterValues.Add("");
             base.OnColumnAdded(e);
         }
 
@@ -50,7 +53,7 @@ namespace DGVWF
 
             columnIndex = e.ColumnIndex;
 
-            textBoxCtrl.Clear();
+            textBoxCtrl.Text = filterValues[columnIndex];
             CheckCtrl.Items.Clear();
 
             //textBoxCtrl.Text = textBoxCtrlText;
@@ -163,12 +166,37 @@ namespace DGVWF
             popup.Close();
         }
 
-        // Событие при изменении текста в TextBox
+        //TODO: Событие при изменении текста в TextBox
         void textBoxCtrl_TextChanged(object sender, EventArgs e)
         {
-            //if (textBoxCtrl.Text != textBoxCtrlText)       
-            (DataSource as DataTable).DefaultView.RowFilter = string.Format(
-                "convert([" + Columns[columnIndex].Name + "], 'System.String') LIKE '%{0}%'", textBoxCtrl.Text);
+            var table = DataSource as DataTable;
+            table.DefaultView.RowFilter = getFilter();
+        }
+
+        private string getFilter()
+        {
+            var builder = new StringBuilder();
+            var index = 0;
+            filterValues[columnIndex] = textBoxCtrl.Text;
+            foreach (var value in filterValues)
+            {
+                if (value != null && value.Length > 0)
+                {
+                    var strVal = Columns[index].ValueType.ToString() switch
+                    {
+                        "System.String" => $"convert([{Columns[index].Name}], '{Columns[index].ValueType}') LIKE '%{value}%'",
+                        _ => throw new ArgumentException("Тип столбца не может быть филтрован")
+                    };
+                    builder.Append(strVal);
+                    builder.Append(" AND ");
+                }
+                index++;
+            }
+            if (builder.Length > 4)
+            {
+                builder.Remove(builder.Length - 5, 4);
+            }
+            return builder.ToString();
         }
 
         void DateTimeCtrl_TextChanged(object sender, EventArgs e)
