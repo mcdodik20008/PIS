@@ -1,11 +1,11 @@
 ﻿namespace DGVWF
 {
-    class FilterStatus
+    internal class FilterStatus
     {
-        public string columnName { get; set; }
+        public string ColumnName { get; set; }
         
-        public string valueString { get; set; }
+        public string ValueString { get; set; }
         
-        public bool check { get; set; }
+        public bool Check { get; set; }
     }
 }

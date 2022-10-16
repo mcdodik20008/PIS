@@ -4,11 +4,11 @@ namespace DGVWF
 {
     public class DataGridFilterHeader : DataGridViewColumnHeaderCell
     {
-        ComboBoxState currentState = ComboBoxState.Normal;
-        
-        Point cellLocation;
-        
-        Rectangle buttonRect;
+        private ComboBoxState _currentState = ComboBoxState.Normal;
+
+        private Point _cellLocation;
+
+        private Rectangle _buttonRect;
 
         public event EventHandler<ColumnFilterClickedEventArg> FilterButtonClicked;
 
@@ -43,30 +43,30 @@ namespace DGVWF
                        cellStyle, advancedBorderStyle, paintParts);
 
             int width = 20; // 20 px
-            buttonRect = new Rectangle(cellBounds.X + cellBounds.Width - width, cellBounds.Y, width, cellBounds.Height);
-            cellLocation = cellBounds.Location;
-            ComboBoxRenderer.DrawDropDownButton(graphics, buttonRect, currentState);
+            _buttonRect = new Rectangle(cellBounds.X + cellBounds.Width - width, cellBounds.Y, width, cellBounds.Height);
+            _cellLocation = cellBounds.Location;
+            ComboBoxRenderer.DrawDropDownButton(graphics, _buttonRect, _currentState);
         }
         protected override void OnMouseDown(DataGridViewCellMouseEventArgs e)
         {
             if (IsMouseOverButton(e.Location))
-                currentState = ComboBoxState.Pressed;
+                _currentState = ComboBoxState.Pressed;
             base.OnMouseDown(e);
         }
         protected override void OnMouseUp(DataGridViewCellMouseEventArgs e)
         {
             if (IsMouseOverButton(e.Location))
             {
-                currentState = ComboBoxState.Normal;
+                _currentState = ComboBoxState.Normal;
                 OnFilterButtonClicked();
             }
             base.OnMouseUp(e);
         }
         private bool IsMouseOverButton(Point e)
         {
-            Point p = new Point(e.X + cellLocation.X, e.Y + cellLocation.Y);
-            if (p.X >= buttonRect.X && p.X <= buttonRect.X + buttonRect.Width &&
-                p.Y >= buttonRect.Y && p.Y <= buttonRect.Y + buttonRect.Height)
+            Point p = new Point(e.X + _cellLocation.X, e.Y + _cellLocation.Y);
+            if (p.X >= _buttonRect.X && p.X <= _buttonRect.X + _buttonRect.Width &&
+                p.Y >= _buttonRect.Y && p.Y <= _buttonRect.Y + _buttonRect.Height)
             {
                 return true;
             }
@@ -76,7 +76,7 @@ namespace DGVWF
         {
             if (FilterButtonClicked != null)
             {
-                FilterButtonClicked(this, new ColumnFilterClickedEventArg(ColumnIndex, buttonRect));
+                FilterButtonClicked(this, new ColumnFilterClickedEventArg(ColumnIndex, _buttonRect));
             }
         }
     }
