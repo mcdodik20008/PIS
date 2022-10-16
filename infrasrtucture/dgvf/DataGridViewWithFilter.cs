@@ -16,7 +16,7 @@ namespace pis.infrasrtucture.dgvf
         
         private const string ClearFilterCtrlText = "Clear filters";
 
-        // Текущий индекс ячейки
+        // Индекс ячейки в котором открыто окно
         private int ColumnIndex { get; set; }
 
         protected override void OnColumnAdded(DataGridViewColumnEventArgs e)
@@ -28,6 +28,7 @@ namespace pis.infrasrtucture.dgvf
             base.OnColumnAdded(e);
         }
 
+        // TODO: Выпилить?
         // Скролл после сортировки
         public override void Sort(DataGridViewColumn dataGridViewColumn,
             System.ComponentModel.ListSortDirection direction)
@@ -48,8 +49,6 @@ namespace pis.infrasrtucture.dgvf
             ColumnIndex = e.ColumnIndex;
 
             _textBoxCtrl.Text = _filterValues[ColumnIndex];
-
-            //textBoxCtrl.Text = textBoxCtrlText;
             _textBoxCtrl.Size = new Size(widthTool, 30);
             _textBoxCtrl.TextChanged -= textBoxCtrl_TextChanged!;
             _textBoxCtrl.TextChanged += textBoxCtrl_TextChanged!;
@@ -109,7 +108,6 @@ namespace pis.infrasrtucture.dgvf
             _filter.Clear();
             _filterValues[ColumnIndex] = "";
             _textBoxCtrl.Text = "";
-            ApllyFilter();
             _popup.Close();
             updateTableWithFilter();
         }
@@ -126,6 +124,7 @@ namespace pis.infrasrtucture.dgvf
             table!.DefaultView.RowFilter = CreateFilter();
         }
 
+        // Создание фильтра по нескольким столбцам
         private string CreateFilter()
         {
             var builder = new StringBuilder();
@@ -137,8 +136,8 @@ namespace pis.infrasrtucture.dgvf
                 {
                     var strVal = Columns[index].ValueType.ToString() switch
                     {
-                        "System.String" =>
-                            $"convert([{Columns[index].Name}], '{Columns[index].ValueType}') LIKE '%{value}%'",
+                        // TODO: Добавить больше типов столбцов
+                        "System.String" => $"convert([{Columns[index].Name}], '{Columns[index].ValueType}') LIKE '%{value}%'",
                         _ => throw new ArgumentException("Тип столбца не может быть филтрован")
                     };
                     builder.Append(strVal);
@@ -161,29 +160,7 @@ namespace pis.infrasrtucture.dgvf
         }
 
         // Получаем ширину выбранной колонки
-        private int GetWhithColumn(int e)
-        {
-            return Columns[e].Width;
-        }
-        
-
-        // Применить фильтр
-        private void ApllyFilter()
-        {
-            foreach (FilterStatus val in _filter)
-            {
-                if (val.Check == false)
-                {
-                    // Исключение если bool              
-                    string valueFilter = "'" + val.ValueString + "' ";
-                    if (valueFilter == "True")
-                        valueFilter = "1";
-                    if (valueFilter == "False")
-                        valueFilter = "0";
-                    
-                }
-            }
-        }
+        private int GetWhithColumn(int e) => Columns[e].Width;
 
         public void FillDataGrid<T>(IEnumerable<T> sourse)
         {
@@ -196,7 +173,6 @@ namespace pis.infrasrtucture.dgvf
                 var values = GetEntityValues(entity, propertys);
                 dt.Rows.Add(values.ToArray());
             }
-
             DataSource = dt;
         }
 
