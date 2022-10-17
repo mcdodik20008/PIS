@@ -1,4 +1,5 @@
-﻿using PISWF.infrasrtucture.auth.context.repository;
+﻿using Microsoft.EntityFrameworkCore.Infrastructure;
+using PISWF.infrasrtucture.auth.context.repository;
 using PISWF.infrasrtucture.auth.model.entity;
 using PISWF.infrasrtucture.auth.model.mapper;
 using PISWF.infrasrtucture.auth.model.view;
@@ -29,10 +30,24 @@ public class UserService
     
     public User Authorization(UserBasic userShort)
     {
-        var hash = userShort.Password;
-        var predicate = new Func<User, bool>(x => x.Login!.Equals(userShort.Login) && x.Password.Equals(hash));
-        var user = UserRepository.Entity.Where(predicate).FirstOrDefault();
-        return user ?? throw new UnauthorizedAccessException("Ошибка в логине или пароле");
+       using var transaction = UserRepository.DataBase.BeginTransaction();
+       {
+           try
+           {
+               var hash = userShort.Password;
+               var predicate = new Func<User, bool>(x => x.Login!.Equals(userShort.Login) && x.Password.Equals(hash));
+               var user = UserRepository.Entity.Where(predicate).FirstOrDefault();
+               transaction.Commit();
+               return user ?? throw new UnauthorizedAccessException("Ошибка в логине или пароле");
+               
+           }
+           catch(UnauthorizedAccessException)
+           {
+               return null;
+               // Пополняем очередь ошибок
+           }
+       }
+    
     }
 
     public List<UserBasic> Read(Page page)

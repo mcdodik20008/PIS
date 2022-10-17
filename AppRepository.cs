@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using AutoMapper.Internal;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace PISWF;
 
@@ -9,6 +10,8 @@ public abstract class AppRepository<T> where T : class
     public Func<int> SaveChanges { get; }
     
     public DbSet<T>? Entity { get; }
+    
+    public DatabaseFacade DataBase { get; }
     
     public AppRepository(AppDbContext appDbContext)
     {
@@ -20,6 +23,7 @@ public abstract class AppRepository<T> where T : class
             .FirstOrDefault()
             ?.GetValue(appDbContext) 
             as DbSet<T>;
+        DataBase = appDbContext.Database;
         SaveChanges = appDbContext.SaveChanges;
     }
     

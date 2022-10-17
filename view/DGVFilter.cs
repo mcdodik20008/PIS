@@ -18,7 +18,6 @@ public class DGVFilter : Form
         AuthController = authController;
         InitializeItems();
         AddControls();
-
         DG.FillDataGrid(AuthController.ReadUser(page));
     }
 

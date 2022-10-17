@@ -1,9 +1,11 @@
-﻿using System.Data;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Data;
 
 namespace PISWF.infrasrtucture.auth.model.view;
 
 public class UserBasic
 {
+    [StringLength(15, MinimumLength = 3, ErrorMessage = "Длинна догина должна быть от 3 до 15 символов")]
     public string? Login { get; }
 
     public string? FirstName { get; set; }
@@ -12,8 +14,10 @@ public class UserBasic
     
     public string? LastName { get; set; }
     
+    [EmailAddress]
     public string? Email { get; set; }
     
+    [Phone]
     public string? Phone { get; set; }
 
     private string password;
