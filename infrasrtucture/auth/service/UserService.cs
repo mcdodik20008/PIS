@@ -1,8 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore.Infrastructure;
-using PISWF.infrasrtucture.auth.context.repository;
+﻿using PISWF.infrasrtucture.auth.context.repository;
 using PISWF.infrasrtucture.auth.model.entity;
 using PISWF.infrasrtucture.auth.model.mapper;
 using PISWF.infrasrtucture.auth.model.view;
+using PISWF.infrasrtucture.guard;
 using PISWF.infrasrtucture.page;
 
 namespace PISWF.infrasrtucture.auth.service;
@@ -15,11 +15,14 @@ public class UserService
 
     private UserMapper UserMapper { get; }
     
-    public UserService(UserRepository userRepository, RoleRepository roleRepository, UserMapper userMapper)
+    private ErrorQueue ErrorQueue { get; }
+    
+    public UserService(UserRepository userRepository, RoleRepository roleRepository, UserMapper userMapper, ErrorQueue errorQueue)
     {
         UserRepository = userRepository;
         RoleRepository = roleRepository;
         UserMapper = userMapper;
+        ErrorQueue = errorQueue;
     }
     
     public User Authorization(string login, string password)
@@ -41,10 +44,10 @@ public class UserService
                return user ?? throw new UnauthorizedAccessException("Ошибка в логине или пароле");
                
            }
-           catch(UnauthorizedAccessException)
+           catch(UnauthorizedAccessException exep)
            {
+               ErrorQueue.Enqueue(exep);
                return null;
-               // Пополняем очередь ошибок
            }
        }
     

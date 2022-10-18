@@ -1,21 +1,32 @@
-﻿using DGVWF;
-using pis.infrasrtucture.dgvf;
-using PISWF.infrasrtucture;
+﻿using pis.infrasrtucture.dgvf;
 using PISWF.infrasrtucture.auth.controller;
 using PISWF.infrasrtucture.auth.model.view;
+using PISWF.infrasrtucture.guard;
 using PISWF.infrasrtucture.page;
+using Timer = System.Windows.Forms.Timer;
 
 namespace PISWF.view;
 
 public class DGVFilter : Form
 {
     private AuthController AuthController { get; }
+    
+    private ErrorQueue ErrorQueue { get; }
 
     private Page page = new(0, 25);
 
-    public DGVFilter(AuthController authController)
+    private int timerTick = 0;
+    
+    private Timer timer = new();
+    
+    public DGVFilter(AuthController authController, ErrorQueue errorQueue)
     {
         AuthController = authController;
+        ErrorQueue = errorQueue;
+        DoubleBuffered = true;
+        timer.Interval = 20;
+        timer.Tick += TimerTick;
+        timer.Start();
         InitializeItems();
         AddControls();
         DG.FillDataGrid(AuthController.ReadUser(page));
@@ -26,6 +37,14 @@ public class DGVFilter : Form
     {
         AuthController.AddUser(new UserBasic(nameBox.Text, passwordBox.Text));
         DG.FillDataGrid(AuthController.ReadUser(page));
+    }
+    
+    private void TimerTick(object sender, EventArgs e)
+    {
+        if (ErrorQueue.Size > 0)
+            
+        Invalidate();
+        timerTick++;
     }
 
     private void InitializeItems()

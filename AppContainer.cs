@@ -2,7 +2,6 @@
 using PISWF.domain.registermc.context.repository;
 using PISWF.domain.registermc.model.mapper;
 using PISWF.domain.registermc.service;
-using PISWF.infrasrtucture;
 using PISWF.infrasrtucture.auth.context.repository;
 using PISWF.infrasrtucture.auth.controller;
 using PISWF.infrasrtucture.auth.model.mapper;

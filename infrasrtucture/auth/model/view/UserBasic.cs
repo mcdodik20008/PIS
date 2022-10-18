@@ -5,7 +5,7 @@ namespace PISWF.infrasrtucture.auth.model.view;
 
 public class UserBasic
 {
-    [StringLength(15, MinimumLength = 3, ErrorMessage = "Длинна догина должна быть от 3 до 15 символов")]
+    [StringLength(15, MinimumLength = 3, ErrorMessage = "Длинна логина должна быть от 3 до 15 символов")]
     public string? Login { get; }
 
     public string? FirstName { get; set; }
@@ -19,7 +19,8 @@ public class UserBasic
     
     [Phone]
     public string? Phone { get; set; }
-
+    
+    [StringLength(20, MinimumLength = 3, ErrorMessage = "Длинна пароля должна быть от 3 до 20 символов")]
     private string password;
     public int Password
     {
