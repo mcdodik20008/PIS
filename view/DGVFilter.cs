@@ -15,18 +15,11 @@ public class DGVFilter : Form
 
     private Page page = new(0, 25);
 
-    private int timerTick = 0;
-    
-    private Timer timer = new();
-    
     public DGVFilter(AuthController authController, ErrorQueue errorQueue)
     {
         AuthController = authController;
         ErrorQueue = errorQueue;
         DoubleBuffered = true;
-        timer.Interval = 20;
-        timer.Tick += TimerTick;
-        timer.Start();
         InitializeItems();
         AddControls();
         DG.FillDataGrid(AuthController.ReadUser(page));
@@ -35,16 +28,9 @@ public class DGVFilter : Form
     //Каждый метод обарачиваем в трукачте и при неудачи выкидываем пользователю масаге боксом или чем, то что не будет бесить.
     private void createUser(object e, object sender)
     {
-        AuthController.AddUser(new UserBasic(nameBox.Text, passwordBox.Text));
-        DG.FillDataGrid(AuthController.ReadUser(page));
-    }
-    
-    private void TimerTick(object sender, EventArgs e)
-    {
-        if (ErrorQueue.Size > 0)
-            
-        Invalidate();
-        timerTick++;
+        new Thread(() => new AliveOneSecond()).Start();
+        /* AuthController.AddUser(new UserBasic(nameBox.Text, passwordBox.Text));
+         DG.FillDataGrid(AuthController.ReadUser(page));*/
     }
 
     private void InitializeItems()
@@ -69,10 +55,10 @@ public class DGVFilter : Form
 
     #region компоненты для формы
 
-    private DataGridViewWithFilter DG = new DataGridViewWithFilter();
-    private TextBox nameBox = new TextBox();
-    private TextBox passwordBox = new TextBox();
-    private Button CreateUserButton = new Button();
+    private DataGridViewWithFilter DG = new();
+    private TextBox nameBox = new();
+    private TextBox passwordBox = new();
+    private Button CreateUserButton = new();
 
     #endregion
 }
