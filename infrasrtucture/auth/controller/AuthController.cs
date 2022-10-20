@@ -30,23 +30,23 @@ public class AuthController
         return AutorizedUser;
     }
 
-    public List<UserBasic> ReadUser(Page page)
+    public List<UserAuth> Read(Page page)
     {
         return UserService.Read(page);
     }
     
-    public User AddUser(UserBasic userShort)
+    public User Add(UserBasic userShort)
     {
         LogController.AddRecord("Добавление пользователя", userShort);
         return UserService.Add(userShort);
     }
 
-    public User UpdateUser(User user)
+    public User Update(User user)
     {
         return UserService.Update(user);
     }
 
-    public User DeleteUser(UserBasic userShort)
+    public User Delete(UserBasic userShort)
     {
         return UserService.Delete(userShort);
     }

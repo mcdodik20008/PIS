@@ -53,10 +53,10 @@ public class UserService
     
     }
 
-    public List<UserBasic> Read(Page page)
+    public List<UserAuth> Read(Page page)
     {
         var entity = UserRepository.Entity.Skip(page.Number * page.Size).Take(page.Size);
-        return UserMapper.Map<List<UserBasic>>(entity);
+        return UserMapper.Map<List<UserAuth>>(entity);
     }
 
     public User Add(UserBasic userShort)
