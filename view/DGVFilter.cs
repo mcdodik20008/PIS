@@ -1,9 +1,7 @@
 ﻿using pis.infrasrtucture.dgvf;
 using PISWF.infrasrtucture.auth.controller;
-using PISWF.infrasrtucture.auth.model.view;
 using PISWF.infrasrtucture.guard;
 using PISWF.infrasrtucture.page;
-using Timer = System.Windows.Forms.Timer;
 
 namespace PISWF.view;
 
@@ -22,7 +20,7 @@ public class DGVFilter : Form
         DoubleBuffered = true;
         InitializeItems();
         AddControls();
-        DG.FillDataGrid(AuthController.ReadUser(page));
+        DG.FillDataGrid(AuthController.Read(page));
     }
 
     //Каждый метод обарачиваем в трукачте и при неудачи выкидываем пользователю масаге боксом или чем, то что не будет бесить.

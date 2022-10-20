@@ -1,6 +1,5 @@
 ﻿using System.Data;
 using System.Reflection;
-using System.Text;
 using DGVWF;
 
 namespace pis.infrasrtucture.dgvf
@@ -8,23 +7,22 @@ namespace pis.infrasrtucture.dgvf
     public class DataGridViewWithFilter : DataGridView
     {
         private readonly List<FilterStatus> _filter = new();
+        private readonly List<FilterColumn> _filterColumns = new();
         private readonly TextBox _textBoxCtrl = new();
-        private readonly List<string> _filterValues = new();
         private readonly DateTimePicker _dateTimeCtrl = new();
         private readonly Button _clearFilterCtrl = new();
         private readonly ToolStripDropDown _popup = new();
-        
+        private readonly CheckedListBox CheckCtrl = new();
         private const string ClearFilterCtrlText = "Clear filters";
 
         // Индекс ячейки в котором открыто окно
-        private int ColumnIndex { get; set; }
+        private int _columnIndex;
 
         protected override void OnColumnAdded(DataGridViewColumnEventArgs e)
         {
             var header = new DataGridFilterHeader();
             header.FilterButtonClicked += header_FilterButtonClicked!;
             e.Column.HeaderCell = header;
-            _filterValues.Add("");
             base.OnColumnAdded(e);
         }
 
@@ -46,9 +44,9 @@ namespace pis.infrasrtucture.dgvf
             int widthTool = GetWhithColumn(e.ColumnIndex) + 50;
             if (widthTool < 130) widthTool = 130;
 
-            ColumnIndex = e.ColumnIndex;
+            _columnIndex = e.ColumnIndex;
 
-            _textBoxCtrl.Text = _filterValues[ColumnIndex];
+            _textBoxCtrl.Text = _filterColumns[_columnIndex].value;
             _textBoxCtrl.Size = new Size(widthTool, 30);
             _textBoxCtrl.TextChanged -= textBoxCtrl_TextChanged!;
             _textBoxCtrl.TextChanged += textBoxCtrl_TextChanged!;
@@ -74,6 +72,12 @@ namespace pis.infrasrtucture.dgvf
             host1.Padding = Padding.Empty;
             host1.AutoSize = false;
             host1.Size = _textBoxCtrl.Size;
+            
+            ToolStripControlHost host2 = new ToolStripControlHost(CheckCtrl);
+            host2.Margin = Padding.Empty;
+            host2.Padding = Padding.Empty;
+            host2.AutoSize = false;
+            host2.Size = CheckCtrl.Size;
 
             ToolStripControlHost host4 = new ToolStripControlHost(_clearFilterCtrl);
             host4.Margin = Padding.Empty;
@@ -87,7 +91,7 @@ namespace pis.infrasrtucture.dgvf
             host5.AutoSize = false;
             host5.Size = _dateTimeCtrl.Size;
 
-            switch (Columns[ColumnIndex].ValueType.ToString())
+            switch (Columns[_columnIndex].ValueType.ToString())
             {
                 case "System.DateTime":
                     _popup.Items.Add(host5);
@@ -106,7 +110,7 @@ namespace pis.infrasrtucture.dgvf
         private void ClearFilterCtrl_Click(object sender, EventArgs e)
         {
             _filter.Clear();
-            _filterValues[ColumnIndex] = "";
+            _filterColumns[_columnIndex].value = "";
             _textBoxCtrl.Text = "";
             _popup.Close();
             updateTableWithFilter();
@@ -121,42 +125,16 @@ namespace pis.infrasrtucture.dgvf
         private void updateTableWithFilter()
         {
             var table = DataSource as DataTable;
-            table!.DefaultView.RowFilter = CreateFilter();
-        }
+            _filterColumns[_columnIndex].value = _textBoxCtrl.Text;
+            table!.DefaultView.RowFilter = _filterColumns.AsString(); 
 
-        // Создание фильтра по нескольким столбцам
-        private string CreateFilter()
-        {
-            var builder = new StringBuilder();
-            var index = 0;
-            _filterValues[ColumnIndex] = _textBoxCtrl.Text;
-            foreach (var value in _filterValues)
-            {
-                if (value != null && value.Length > 0)
-                {
-                    var strVal = Columns[index].ValueType.ToString() switch
-                    {
-                        // TODO: Добавить больше типов столбцов
-                        "System.String" => $"convert([{Columns[index].Name}], '{Columns[index].ValueType}') LIKE '%{value}%'",
-                        _ => throw new ArgumentException("Тип столбца не может быть филтрован")
-                    };
-                    builder.Append(strVal);
-                    builder.Append(" AND ");
-                }
-                index++;
-            }
-            if (builder.Length > 4)
-            {
-                builder.Remove(builder.Length - 5, 4);
-            }
-            return builder.ToString();
         }
 
         // TODO: переписать
         private void DateTimeCtrl_TextChanged(object sender, EventArgs e)
         {
             (DataSource as DataTable).DefaultView.RowFilter = string.Format(
-                "convert([" + Columns[ColumnIndex].Name + "], 'System.String') LIKE '%{0}%'", _dateTimeCtrl.Text);
+                "convert([" + Columns[_columnIndex].Name + "], 'System.String') LIKE '%{0}%'", _dateTimeCtrl.Text);
         }
 
         // Получаем ширину выбранной колонки
@@ -165,9 +143,13 @@ namespace pis.infrasrtucture.dgvf
         public void FillDataGrid<T>(IEnumerable<T> sourse)
         {
             var dt = new DataTable();
+            Columns.Clear();
             var propertys = typeof(T).GetProperties();
             foreach (var prop in propertys)
+            {
                 dt.Columns.Add(prop.Name, prop.PropertyType);
+               _filterColumns.Add(new FilterColumn(prop.Name, prop.PropertyType, ""));
+            }
             foreach (var entity in sourse)
             {
                 var values = GetEntityValues(entity, propertys);

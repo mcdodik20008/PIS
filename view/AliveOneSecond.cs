@@ -1,7 +1,4 @@
-﻿using System.Diagnostics;
-using Timer = System.Threading.Timer;
-
-namespace PISWF.view;
+﻿namespace PISWF.view;
 
 public class AliveOneSecond : Form
 {
