@@ -6,7 +6,7 @@ using PISWF.infrasrtucture.page;
 
 namespace PISWF.domain.registermc.service;
 
-// TODO: Не факт, что тут все правильно
+// TODO: Не забыть только апдатать, сохранение на отдельную кнопку
 
 public class RegistermcService
 {
@@ -44,9 +44,7 @@ public class RegistermcService
     
     public RegisterMCLong Read(long id)
     {
-        return RegisterMcMapper.Map<RegisterMCLong>(
-            RegisterMcRepository.Entity.Find(id)
-        );
+        return RegisterMcMapper.Map<RegisterMCLong>(RegisterMcRepository.Entity.Find(id));
     }
 
     public RegisterMCShort Create(RegisterMCShort view)
@@ -70,5 +68,15 @@ public class RegistermcService
         var entity = RegisterMcMapper.Map<RegisterMC>(view);
         RegisterMcRepository.Entity.Remove(entity);
         return view;
+    }
+
+    public void AddFile()
+    {
+        
+    }
+
+    public void DeleteFile()
+    {
+        
     }
 }

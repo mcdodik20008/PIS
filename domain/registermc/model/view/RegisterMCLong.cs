@@ -14,7 +14,7 @@ public class RegisterMCLong
 
     public MunicipalityShort Municipality { get; set; }
     
-    public DateTime Year { get; set; }
+    public int Year { get; set; }
 
     public Double Price { get; set; }
  

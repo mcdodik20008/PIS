@@ -126,15 +126,16 @@ namespace pis.infrasrtucture.dgvf
         {
             var table = DataSource as DataTable;
             _filterColumns[_columnIndex].value = _textBoxCtrl.Text;
-            table!.DefaultView.RowFilter = _filterColumns.AsString(); 
+           // table!.DefaultView.RowFilter = _filterColumns.AsString(); 
 
         }
 
         // TODO: переписать
         private void DateTimeCtrl_TextChanged(object sender, EventArgs e)
         {
-            (DataSource as DataTable).DefaultView.RowFilter = string.Format(
+            var filter = string.Format(
                 "convert([" + Columns[_columnIndex].Name + "], 'System.String') LIKE '%{0}%'", _dateTimeCtrl.Text);
+            _filterColumns[_columnIndex].value = filter;
         }
 
         // Получаем ширину выбранной колонки

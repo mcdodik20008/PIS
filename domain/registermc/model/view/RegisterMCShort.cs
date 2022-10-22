@@ -10,7 +10,7 @@ public class RegisterMCShort
 
     public DateTime ValidDate { get; set; }
     
-    public DateTime Year { get; set; }
+    public int Year { get; set; }
 
     public Double Price { get; set; }
 }
