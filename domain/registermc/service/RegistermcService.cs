@@ -35,10 +35,12 @@ public class RegistermcService
         return RegisterMcMapper.Map<List<RegisterMCLong>>(RegisterMcRepository.Entity);
     }
     
-    public List<RegisterMCShort> Read(Page page)
+    public List<RegisterMCShort> Read(Page page, Func<RegisterMC, bool> filter)
     {
-        return RegisterMcMapper.Map<List<RegisterMCShort>>(
-            RegisterMcRepository.Entity.Skip(page.Size*page.Number).Take(page.Size)
+        return RegisterMcMapper.Map<List<RegisterMCShort>>(RegisterMcRepository.Entity
+                .Where(x => filter(x))
+                .Skip(page.Size*page.Number)
+                .Take(page.Size)
             );
     }
     

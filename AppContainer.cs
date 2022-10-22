@@ -7,6 +7,7 @@ using PISWF.infrasrtucture.auth.context.repository;
 using PISWF.infrasrtucture.auth.controller;
 using PISWF.infrasrtucture.auth.model.mapper;
 using PISWF.infrasrtucture.auth.service;
+using PISWF.infrasrtucture.filter;
 using PISWF.infrasrtucture.logger.context;
 using PISWF.infrasrtucture.logger.controller;
 using PISWF.infrasrtucture.logger.service;
@@ -16,8 +17,11 @@ namespace PISWF;
 
 public class AppContainer : ServiceContainer
 {
+    private DateTime date;
     public AppContainer()
     {
+        date = DateTime.Now;
+        
         this.RegisterSingleton<AppDbContext>();
         this.RegisterSingleton<AppContainer>();
 
@@ -26,14 +30,12 @@ public class AppContainer : ServiceContainer
         #endregion
 
         #region registermc
-
         this.RegisterSingleton<RegistermcController>();
         this.RegisterSingleton<RegistermcService>();
         this.RegisterSingleton<FileDocumentMapper>();
         this.RegisterSingleton<FileDocumentRepository>();
         this.RegisterSingleton<RegisterMcMapper>();
         this.RegisterSingleton<RegisterMcRepository>();
-        
         #endregion
         
         #region auth
@@ -50,6 +52,11 @@ public class AppContainer : ServiceContainer
         this.RegisterSingleton<LogRepository>();
         this.RegisterSingleton<LogServiceAsync>();
         this.RegisterSingleton<LogController>();
+        #endregion
+
+        #region filters
+        this.RegisterSingleton<FilterFactory>();
+        this.RegisterSingleton<RegisterFilter>();
         #endregion
     }
 }

@@ -1,4 +1,5 @@
 using LightInject;
+using PISWF.infrasrtucture.filter;
 using PISWF.infrasrtucture.logger.controller;
 using PISWF.view;
 
@@ -10,7 +11,7 @@ public static class Program
     // Залить на базу - dotnet ef database update
     // НАстройка контейнера
     // docker run --name pis -p 5432:5432 -e POSTGRES_PASSWORD=1234 -d postgres
-    // Чтоб не писать кучу тракачт можно попытаться ошибки складывать в какое-то место и потом отображать их пользователю
+    
     public static void Main(string[] args)
     {
         var container = new AppContainer();

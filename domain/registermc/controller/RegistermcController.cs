@@ -1,11 +1,10 @@
-﻿using PISWF.domain.registermc.model.view;
+﻿using PISWF.domain.registermc.model.entity;
+using PISWF.domain.registermc.model.view;
 using PISWF.domain.registermc.service;
 using PISWF.infrasrtucture.auth.controller;
 using PISWF.infrasrtucture.page;
 
 namespace PISWF.domain.registermc.controller;
-
-// TODO: Семен, это сделай ты
 
 public class RegistermcController
 {
@@ -18,17 +17,17 @@ public class RegistermcController
         _authController = authController;
         _registermcService = registermcService;
     }
-    
-    public List<RegisterMCShort> Read(Page page)
+
+    public List<RegisterMCShort> Read(Page page, Func<RegisterMC, bool> filter)
     {
-        return _registermcService.Read(page);
+        return _registermcService.Read(page, filter);
     }
 
     public RegisterMCLong Read(long id)
     {
         return _registermcService.Read(id);
     }
-    
+
     public RegisterMCShort Create(RegisterMCShort view)
     {
         return _registermcService.Create(view);
@@ -43,14 +42,12 @@ public class RegistermcController
     {
         return _registermcService.Delete(view);
     }
-    
+
     public void AddFile()
     {
-        
     }
 
     public void DeleteFile()
     {
-        
     }
 }
