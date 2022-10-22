@@ -7,19 +7,19 @@ namespace pis.infrasrtucture.dgvf;
 
 public class DataGridViewWithFilter<TFilter> : DataGridView where TFilter : FilterModel
 {
-    private TFilter _filter;
-    private readonly List<FilterStatus> _filterStatus = new();
+    private int _columnIndex;
+    private readonly TFilter _filter;
     private readonly List<FilterColumn> _filterColumns = new();
+
+    #region formelements
+
     private readonly TextBox _textBoxCtrl = new();
     private readonly DateTimePicker _dateTimeCtrl = new();
-    private readonly Button _clearFilterCtrl = new();
+    private readonly Button _saveFilterCtrl = new();
     private readonly ToolStripDropDown _popup = new();
-    private readonly CheckedListBox CheckCtrl = new();
+    private readonly ComboBox _comboBox = new();
 
-    private const string ClearFilterCtrlText = "Clear filters";
-
-    // Индекс ячейки в котором открыто окно
-    private int _columnIndex;
+    #endregion
 
     public DataGridViewWithFilter(FilterFactory factory)
     {
@@ -28,131 +28,89 @@ public class DataGridViewWithFilter<TFilter> : DataGridView where TFilter : Filt
 
     public Func<TObject, bool> GetFilter<TObject>()
     {
-        var res = (_filter as FilterModel<TObject>)!.FilterExpression;
+        var filter = _filter as FilterModel<TObject>;
+        filter = FillFilter(filter, _filterColumns);
+        var res = filter.FilterExpression;
         return res;
     }
 
-    protected override void OnColumnAdded(DataGridViewColumnEventArgs e)
+    // TODO: Закончить заполнение
+    private FilterModel<T> FillFilter<T>(FilterModel<T> filter, List<FilterColumn> filterColumns)
     {
-        var header = new DataGridFilterHeader();
-        header.FilterButtonClicked += header_FilterButtonClicked!;
-        e.Column.HeaderCell = header;
-        base.OnColumnAdded(e);
+        var type = filter.GetType();
+        foreach (var field in type.GetFields())
+            if (field.GetType().ToString().Equals("System.String32"))
+            {
+                var xx = filterColumns.Where(x => x.Name.Equals(field.Name)).FirstOrDefault();
+            }
+        return null;
     }
 
-    // TODO: Выпилить?
-    // Скролл после сортировки
-    public override void Sort(DataGridViewColumn dataGridViewColumn,
-        System.ComponentModel.ListSortDirection direction)
+    public void ReloadFilter<TObject>()
     {
-        int scrl = HorizontalScrollBar.Value;
-        int scrlOffset = HorizontalScrollingOffset;
-        base.Sort(dataGridViewColumn, direction);
-        HorizontalScrollBar.Value = scrl;
-        HorizontalScrollingOffset = scrlOffset;
+        (_filter as FilterModel<TObject>)?.Reset();
     }
 
-    // Событие кнопки фильтрации
-    private void header_FilterButtonClicked(object sender, ColumnFilterClickedEventArg e)
+    private void Header_FilterButtonClicked(object sender, ColumnFilterClickedEventArg e)
     {
-        int widthTool = GetWhithColumn(e.ColumnIndex) + 50;
-        if (widthTool < 130) widthTool = 130;
-
         _columnIndex = e.ColumnIndex;
-
-        _textBoxCtrl.Text = _filterColumns[_columnIndex].value;
-        _textBoxCtrl.Size = new Size(widthTool, 30);
-        _textBoxCtrl.TextChanged -= textBoxCtrl_TextChanged!;
-        _textBoxCtrl.TextChanged += textBoxCtrl_TextChanged!;
-
-        _dateTimeCtrl.Size = new Size(widthTool, 30);
-        _dateTimeCtrl.Format = DateTimePickerFormat.Custom;
-        _dateTimeCtrl.CustomFormat = "dd.MM.yyyy";
-        _dateTimeCtrl.TextChanged -= DateTimeCtrl_TextChanged!;
-        _dateTimeCtrl.TextChanged += DateTimeCtrl_TextChanged!;
-
-        _clearFilterCtrl.Text = ClearFilterCtrlText;
-        _clearFilterCtrl.Size = new Size(widthTool, 30);
-        _clearFilterCtrl.Click -= ClearFilterCtrl_Click!;
-        _clearFilterCtrl.Click += ClearFilterCtrl_Click!;
-
+        InitializeCtrls(_columnIndex);
+        var valueTextBox = GetControlHost(_textBoxCtrl);
+        var actionBox = GetControlHost(_comboBox);
+        var saveButton = GetControlHost(_saveFilterCtrl);
+        var dateTimePicker = GetControlHost(_dateTimeCtrl);
         _popup.Items.Clear();
         _popup.AutoSize = true;
         _popup.Margin = Padding.Empty;
         _popup.Padding = Padding.Empty;
-
-        ToolStripControlHost host1 = new ToolStripControlHost(_textBoxCtrl);
-        host1.Margin = Padding.Empty;
-        host1.Padding = Padding.Empty;
-        host1.AutoSize = false;
-        host1.Size = _textBoxCtrl.Size;
-
-        ToolStripControlHost host2 = new ToolStripControlHost(CheckCtrl);
-        host2.Margin = Padding.Empty;
-        host2.Padding = Padding.Empty;
-        host2.AutoSize = false;
-        host2.Size = CheckCtrl.Size;
-
-        ToolStripControlHost host4 = new ToolStripControlHost(_clearFilterCtrl);
-        host4.Margin = Padding.Empty;
-        host4.Padding = Padding.Empty;
-        host4.AutoSize = false;
-        host4.Size = _clearFilterCtrl.Size;
-
-        ToolStripControlHost host5 = new ToolStripControlHost(_dateTimeCtrl);
-        host5.Margin = Padding.Empty;
-        host5.Padding = Padding.Empty;
-        host5.AutoSize = false;
-        host5.Size = _dateTimeCtrl.Size;
-
         switch (Columns[_columnIndex].ValueType.ToString())
         {
             case "System.DateTime":
-                _popup.Items.Add(host5);
+                FillCombobox(_comboBox, typeof(DateTime).ToString());
+                _popup.Items.Add(dateTimePicker);
+                _popup.Items.Add(actionBox);
+                break;
+            case "System.Int64":
+            case "System.Int34":
+            case "System.Double":
+                _popup.Items.Add(valueTextBox);
+                _popup.Items.Add(actionBox);
                 break;
             default:
-                _popup.Items.Add(host1);
+                _popup.Items.Add(valueTextBox);
                 break;
         }
-
-        _popup.Items.Add(host4);
-
+        _popup.Items.Add(saveButton);
         _popup.Show(this, e.ButtonRectangle.X, e.ButtonRectangle.Bottom);
     }
 
-    // Очистить фильтры
-    private void ClearFilterCtrl_Click(object sender, EventArgs e)
+    private void InitializeCtrls(int colIndex)
     {
-        _filterStatus.Clear();
-        _filterColumns[_columnIndex].value = "";
-        _textBoxCtrl.Text = "";
+        var widthTool = Columns[colIndex].Width + 50;
+        if (widthTool < 130) widthTool = 130;
+
+        _comboBox.Text = _filterColumns[_columnIndex].ValueComboBox;
+        _comboBox.Size = new Size(widthTool, 30);
+
+        _textBoxCtrl.Text = _filterColumns[_columnIndex].Value;
+        _textBoxCtrl.Size = new Size(widthTool, 30);
+
+        _dateTimeCtrl.Size = new Size(widthTool, 30);
+        _dateTimeCtrl.Format = DateTimePickerFormat.Custom;
+        _dateTimeCtrl.CustomFormat = "dd.MM.yyyy";
+
+        _saveFilterCtrl.Text = "Save filter";
+        _saveFilterCtrl.Size = new Size(widthTool, 30);
+        _saveFilterCtrl.Click -= SaveFilter_Click!;
+        _saveFilterCtrl.Click += SaveFilter_Click!;
+    }
+
+    private void SaveFilter_Click(object sender, EventArgs e)
+    {
+        _filterColumns[_columnIndex].Value = _textBoxCtrl.Text;
+        _filterColumns[_columnIndex].ValueComboBox = _comboBox.Text;
         _popup.Close();
-        updateTableWithFilter();
     }
-
-    // Событие при изменении текста в TextBox
-    private void textBoxCtrl_TextChanged(object sender, EventArgs e)
-    {
-        updateTableWithFilter();
-    }
-
-    private void updateTableWithFilter()
-    {
-        var table = DataSource as DataTable;
-        _filterColumns[_columnIndex].value = _textBoxCtrl.Text;
-        // table!.DefaultView.RowFilter = _filterColumns.AsString(); 
-    }
-
-    // TODO: переписать
-    private void DateTimeCtrl_TextChanged(object sender, EventArgs e)
-    {
-        var filter = string.Format(
-            "convert([" + Columns[_columnIndex].Name + "], 'System.String') LIKE '%{0}%'", _dateTimeCtrl.Text);
-        _filterColumns[_columnIndex].value = filter;
-    }
-
-    // Получаем ширину выбранной колонки
-    private int GetWhithColumn(int e) => Columns[e].Width;
 
     public void FillDataGrid<T>(IEnumerable<T> sourse)
     {
@@ -162,7 +120,7 @@ public class DataGridViewWithFilter<TFilter> : DataGridView where TFilter : Filt
         foreach (var prop in propertys)
         {
             dt.Columns.Add(prop.Name, prop.PropertyType);
-            _filterColumns.Add(new FilterColumn(prop.Name, prop.PropertyType, ""));
+            _filterColumns.Add(new FilterColumn(prop.Name, prop.PropertyType, "", ""));
         }
 
         foreach (var entity in sourse)
@@ -181,5 +139,34 @@ public class DataGridViewWithFilter<TFilter> : DataGridView where TFilter : Filt
         foreach (var prop in propertys)
             values[index++] = prop.GetValue(entity);
         return values;
+    }
+
+    private ToolStripControlHost GetControlHost(Control control)
+    {
+        var host = new ToolStripControlHost(control);
+        host.Margin = Padding.Empty;
+        host.Padding = Padding.Empty;
+        host.AutoSize = false;
+        host.Size = _dateTimeCtrl.Size;
+        return host;
+    }
+
+    private void FillCombobox(ComboBox comboBox, string columnType)
+    {
+        var values = columnType switch
+        {
+            "System.DateTime" => new[] { "До", "После" }
+        };
+        _comboBox.Text = _filterColumns[_columnIndex].ValueComboBox;
+        comboBox.Items.Clear();
+        comboBox.Items.AddRange(values);
+    }
+
+    protected override void OnColumnAdded(DataGridViewColumnEventArgs e)
+    {
+        var header = new DataGridFilterHeader();
+        header.FilterButtonClicked += Header_FilterButtonClicked!;
+        e.Column.HeaderCell = header;
+        base.OnColumnAdded(e);
     }
 }

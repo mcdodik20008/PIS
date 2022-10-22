@@ -7,7 +7,7 @@ public static class FiltersExtention
     public static string AsString(this List<FilterColumn> filters)
     {
         var builder = new StringBuilder();
-        foreach (var filter in filters.Where(x => !(x == null || x.value.Equals(""))))
+        foreach (var filter in filters.Where(x => !(x == null || x.Value.Equals(""))))
         {
             builder.Append(filter.ToString());
             builder.Append(" AND ");

@@ -23,6 +23,11 @@ public class RegistermcController
         return _registermcService.Read(page, filter);
     }
 
+    public List<RegisterMCShort> Read(Page page)
+    {
+        return _registermcService.Read(page);
+    }
+    
     public RegisterMCLong Read(long id)
     {
         return _registermcService.Read(id);

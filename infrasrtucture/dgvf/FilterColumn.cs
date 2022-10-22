@@ -2,17 +2,20 @@
 
 public class FilterColumn
 {
-    public String Name { get; }
+    public string Name { get; }
     
     public Type ValueType { get; }
     
-    public string value { get; set; }
+    public string Value { get; set; }
     
-    public FilterColumn(string name, Type valueType, string value)
+    public string ValueComboBox { get; set; }
+    
+    public FilterColumn(string name, Type valueType, string value, string valueComboBox)
     {
         Name = name;
         ValueType = valueType;
-        this.value = value;
+        Value = value;
+        ValueComboBox = valueComboBox;
     }
     public FilterColumn() { }
 
@@ -20,8 +23,8 @@ public class FilterColumn
     {
         return ValueType.ToString() switch
         {
-            "System.Int32" => $"convert([{Name}], '{ValueType}') LIKE '%{value}%'",
-            "System.String" => $"convert([{Name}], '{ValueType}') LIKE '%{value}%'",
+            "System.Int32" => $"convert([{Name}], '{ValueType}') LIKE '%{Value}%'",
+            "System.String" => $"convert([{Name}], '{ValueType}') LIKE '%{Value}%'",
             _ => throw new ArgumentException("Тип столбца не может быть филтрован")
         };
     }

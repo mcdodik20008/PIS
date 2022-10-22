@@ -37,13 +37,21 @@ public class RegistermcService
     
     public List<RegisterMCShort> Read(Page page, Func<RegisterMC, bool> filter)
     {
-        var func = new Func<RegisterMC, bool>((x) => true);
         // Не может сгенерить sql???
         return RegisterMcMapper.Map<List<RegisterMCShort>>(RegisterMcRepository.Entity
-                .Where(x => func(x))
+                .Where(filter)
                 .Skip(page.Size*page.Number)
                 .Take(page.Size)
             );
+    }
+    
+    public List<RegisterMCShort> Read(Page page)
+    {
+        // Не может сгенерить sql???
+        return RegisterMcMapper.Map<List<RegisterMCShort>>(RegisterMcRepository.Entity
+            .Skip(page.Size*page.Number)
+            .Take(page.Size)
+        );
     }
     
     public RegisterMCLong Read(long id)

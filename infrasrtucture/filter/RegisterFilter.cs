@@ -12,7 +12,6 @@ public class RegisterFilter : FilterModel<RegisterMC>
 
     public Double? Price;
 
-
     public RegisterFilter()
     {
         ValidDate = DateTime.Now;
@@ -22,13 +21,8 @@ public class RegisterFilter : FilterModel<RegisterMC>
     {
         get
         {
-            return p => GetFilter(p);
+            return p => p.Number == Number;
         }
-    }
-
-    private bool GetFilter(RegisterMC registerMc1)
-    {
-        return true;
     }
 
     public override void Reset()
