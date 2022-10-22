@@ -28,7 +28,8 @@ public class DataGridViewWithFilter<TFilter> : DataGridView where TFilter : Filt
 
     public Func<TObject, bool> GetFilter<TObject>()
     {
-        return (_filter as FilterModel<TObject>)!.FilterExpression;
+        var res = (_filter as FilterModel<TObject>)!.FilterExpression;
+        return res;
     }
 
     protected override void OnColumnAdded(DataGridViewColumnEventArgs e)

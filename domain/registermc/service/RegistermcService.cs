@@ -37,8 +37,10 @@ public class RegistermcService
     
     public List<RegisterMCShort> Read(Page page, Func<RegisterMC, bool> filter)
     {
+        var func = new Func<RegisterMC, bool>((x) => true);
+        // Не может сгенерить sql???
         return RegisterMcMapper.Map<List<RegisterMCShort>>(RegisterMcRepository.Entity
-                .Where(x => filter(x))
+                .Where(x => func(x))
                 .Skip(page.Size*page.Number)
                 .Take(page.Size)
             );
