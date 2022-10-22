@@ -21,8 +21,7 @@ public class AppContainer : ServiceContainer
         this.RegisterSingleton<AppDbContext>();
         this.RegisterSingleton<AppContainer>();
         this.RegisterSingleton<Guard>();
-        this.RegisterSingleton<ErrorQueue>();
-        
+
         #region form
         this.RegisterSingleton<DGVFilter>();
         #endregion

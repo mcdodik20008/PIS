@@ -8,15 +8,12 @@ namespace PISWF.view;
 public class DGVFilter : Form
 {
     private AuthController AuthController { get; }
-    
-    private ErrorQueue ErrorQueue { get; }
 
     private Page page = new(0, 25);
 
-    public DGVFilter(AuthController authController, ErrorQueue errorQueue)
+    public DGVFilter(AuthController authController)
     {
         AuthController = authController;
-        ErrorQueue = errorQueue;
         DoubleBuffered = true;
         InitializeItems();
         AddControls();

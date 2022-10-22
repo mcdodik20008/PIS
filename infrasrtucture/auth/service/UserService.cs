@@ -14,43 +14,30 @@ public class UserService
     private RoleRepository RoleRepository { get; }
 
     private UserMapper UserMapper { get; }
-    
-    private ErrorQueue ErrorQueue { get; }
-    
-    public UserService(UserRepository userRepository, RoleRepository roleRepository, UserMapper userMapper, ErrorQueue errorQueue)
+
+    public UserService(UserRepository userRepository, RoleRepository roleRepository, UserMapper userMapper)
     {
         UserRepository = userRepository;
         RoleRepository = roleRepository;
         UserMapper = userMapper;
-        ErrorQueue = errorQueue;
     }
-    
+
     public User Authorization(string login, string password)
     {
         var userShort = new UserBasic(login, password);
         return Authorization(userShort);
     }
-    
+
     public User Authorization(UserBasic userShort)
     {
-       using var transaction = UserRepository.DataBase.BeginTransaction();
-       {
-           try
-           {
-               var hash = userShort.Password;
-               var predicate = new Func<User, bool>(x => x.Login!.Equals(userShort.Login) && x.Password.Equals(hash));
-               var user = UserRepository.Entity.Where(predicate).FirstOrDefault();
-               transaction.Commit();
-               return user ?? throw new UnauthorizedAccessException("Ошибка в логине или пароле");
-               
-           }
-           catch(UnauthorizedAccessException exep)
-           {
-               ErrorQueue.Enqueue(exep);
-               return null;
-           }
-       }
-    
+        using var transaction = UserRepository.DataBase.BeginTransaction();
+        {
+            var hash = userShort.Password;
+            var predicate = new Func<User, bool>(x => x.Login!.Equals(userShort.Login) && x.Password.Equals(hash));
+            var user = UserRepository.Entity.Where(predicate).FirstOrDefault();
+            transaction.Commit();
+            return user ?? throw new UnauthorizedAccessException("Ошибка в логине или пароле");
+        }
     }
 
     public List<UserAuth> Read(Page page)
@@ -66,14 +53,14 @@ public class UserService
         UserRepository.SaveChanges();
         return user;
     }
-    
+
     public User Update(User user)
     {
         UserRepository.Entity.Update(user);
         UserRepository.SaveChanges();
         return user;
     }
-    
+
     public User Delete(UserBasic userS)
     {
         var user = UserMapper.Map<User>(userS);
