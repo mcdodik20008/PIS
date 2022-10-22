@@ -1,5 +1,4 @@
 using LightInject;
-using PISWF.infrasrtucture.guard;
 using PISWF.infrasrtucture.logger.controller;
 using PISWF.view;
 
@@ -15,10 +14,6 @@ public static class Program
     public static void Main(string[] args)
     {
         var container = new AppContainer();
-        var guard = container.GetInstance<Guard>();
-        string? bull = null;
-        guard.ThtowIfNull(bull);
-        var logController = container.GetInstance<LogController>();
         Application.EnableVisualStyles();
         Application.SetCompatibleTextRenderingDefault(false);
         Application.Run(container.GetInstance<DGVFilter>());
