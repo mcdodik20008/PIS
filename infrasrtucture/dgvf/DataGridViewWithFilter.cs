@@ -39,11 +39,21 @@ public class DataGridViewWithFilter<TFilter> : DataGridView where TFilter : Filt
     {
         var type = filter.GetType();
         foreach (var field in type.GetFields())
-            if (field.GetType().ToString().Equals("System.String32"))
+        {
+            var xx = filterColumns.Where(x => x.Name.Equals(field.Name)).FirstOrDefault();
+            if (xx != null)
             {
-                var xx = filterColumns.Where(x => x.Name.Equals(field.Name)).FirstOrDefault();
+                if (field.ToString().Contains("Int") && !xx.Value.Equals(""))
+                    field.SetValue(filter, new FilterField<int>(int.Parse(xx.Value), _comboBox.Text) );
+                if (field.ToString().Contains("Double") && !xx.Value.Equals(""))
+                    field.SetValue(filter, new FilterField<Double>(Double.Parse(xx.Value), _comboBox.Text) );
+                if (field.ToString().Contains("String") && !xx.Value.Equals(""))
+                    field.SetValue(filter, new FilterField<string>(xx.Value, _comboBox.Text));
+                if (field.ToString().Contains("Date") && !xx.Value.Equals(""))
+                    field.SetValue(filter, new FilterField<DateTime>(DateTime.Parse(xx.Value), _comboBox.Text));
             }
-        return null;
+        }
+        return filter;
     }
 
     public void ReloadFilter<TObject>()
@@ -63,18 +73,19 @@ public class DataGridViewWithFilter<TFilter> : DataGridView where TFilter : Filt
         _popup.AutoSize = true;
         _popup.Margin = Padding.Empty;
         _popup.Padding = Padding.Empty;
-        switch (Columns[_columnIndex].ValueType.ToString())
+        var colType = Columns[_columnIndex].ValueType.ToString();
+        FillCombobox(_comboBox, colType);
+        switch (colType)
         {
             case "System.DateTime":
-                FillCombobox(_comboBox, typeof(DateTime).ToString());
-                _popup.Items.Add(dateTimePicker);
                 _popup.Items.Add(actionBox);
+                _popup.Items.Add(dateTimePicker);
                 break;
             case "System.Int64":
-            case "System.Int34":
+            case "System.Int32":
             case "System.Double":
-                _popup.Items.Add(valueTextBox);
                 _popup.Items.Add(actionBox);
+                _popup.Items.Add(valueTextBox);
                 break;
             default:
                 _popup.Items.Add(valueTextBox);
@@ -155,7 +166,10 @@ public class DataGridViewWithFilter<TFilter> : DataGridView where TFilter : Filt
     {
         var values = columnType switch
         {
-            "System.DateTime" => new[] { "До", "После" }
+            "System.DateTime" => new[] { "До", "После" },
+            "System.Int32" => new[] { "Меньше", "Больше", "Равно" },
+            "System.Int64" => new[] { "Меньше", "Больше", "Равно" },
+            "System.Double" => new[] { "Меньше", "Больше", "Равно" }
         };
         _comboBox.Text = _filterColumns[_columnIndex].ValueComboBox;
         comboBox.Items.Clear();

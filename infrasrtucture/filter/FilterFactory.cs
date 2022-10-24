@@ -2,7 +2,7 @@
 
 namespace PISWF.infrasrtucture.filter;
 
-public class FilterFactory : IFilterFactory
+public class FilterFactory
 {
     private List<object> Collection { get; }
 

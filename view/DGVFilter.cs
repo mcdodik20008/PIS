@@ -22,8 +22,8 @@ public class DgvFilter : Form
     
     private void FillWithFilter(object e, object sender)
     { 
-        // _dg.DataSource = null;
-        // _dg.FillDataGrid(_registermcController.Read(_page, _dg.GetFilter<RegisterMC>()));
+         _dg.DataSource = null;
+         _dg.FillDataGrid(_registermcController.Read(_page, _dg.GetFilter<RegisterMC>()));
     }
 
     private void ReloadFilter()
