@@ -1,47 +1,43 @@
-﻿using PISWF.domain.registermc.model.entity;
+﻿using LinqKit;
+using PISWF.domain.registermc.model.entity;
 
 namespace PISWF.infrasrtucture.filter;
 
 public class RegisterFilter : FilterModel<RegisterMC>
 {
-    public FilterField<int> Number;
+    public FilterField<int> NumberField = new(0, "");
 
-    public FilterField<DateTime> ValidDate;
+    public FilterField<DateTime> ValidDateField= new(DateTime.Now, "");
 
-    public FilterField<int> Year;
+    public FilterField<int> YearField= new(0, "");
 
-    public FilterField<Double> Price;
+    public FilterField<double> PriceField= new(0, "");
 
     public RegisterFilter()
     {
-        ValidDate = new FilterField<DateTime>(DateTime.Now, "");
+        ValidDateField = new FilterField<DateTime>(DateTime.Now, "");
     }
 
+    [Obsolete("Obsolete")]
     public override Func<RegisterMC, bool> FilterExpression
     {
         get
         {
-            // TODO: Доразобраться с филтром
-            return p =>
-            {
-               /* var numberFlag = Number.action switch
-                {
-                    "Меньше" => p.Number < Number.value,
-                    "Больше" => p.Number > Number.value,
-                    "Равное" => p.Number == Number.value,
-                    _ => throw new ArgumentException("Не опознанный тип филтрации")
-                };
-                return numberFlag;*/
-               return true;
-            };
+            var predicate = PredicateBuilder.True<RegisterMC>()
+                .And(NumberField.GetPredicate<RegisterMC>("Number"))
+                .And(ValidDateField.GetPredicate<RegisterMC>("ValidDate"))
+                .And(YearField.GetPredicate<RegisterMC>("Year"))
+                .And(PriceField.GetPredicate<RegisterMC>("Price"))
+                .Compile();
+            return predicate;
         }
     }
 
     public override void Reset()
     {
-        Number = null;
-        ValidDate = null;
-        Year = null;
-        Price = null;
+        NumberField = new FilterField<int>(0, "");
+        ValidDateField = new FilterField<DateTime>(DateTime.Now, "");
+        YearField = new FilterField<int>(0, "");
+        PriceField = new FilterField<double>(0, "");
     }
 }

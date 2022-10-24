@@ -21,6 +21,7 @@ public class DataGridViewWithFilter<TFilter> : DataGridView where TFilter : Filt
 
     #endregion
 
+    // TODO: yне работает фильтрация по дате
     public DataGridViewWithFilter(FilterFactory factory)
     {
         _filter = factory.Find<TFilter>();
@@ -40,19 +41,21 @@ public class DataGridViewWithFilter<TFilter> : DataGridView where TFilter : Filt
         var type = filter.GetType();
         foreach (var field in type.GetFields())
         {
-            var xx = filterColumns.Where(x => x.Name.Equals(field.Name)).FirstOrDefault();
-            if (xx != null)
+            var xx = filterColumns.FirstOrDefault(x => field.Name.Contains(x.Name));
+            if (xx != null && !xx.Value.Equals(""))
             {
-                if (field.ToString().Contains("Int") && !xx.Value.Equals(""))
-                    field.SetValue(filter, new FilterField<int>(int.Parse(xx.Value), _comboBox.Text) );
-                if (field.ToString().Contains("Double") && !xx.Value.Equals(""))
-                    field.SetValue(filter, new FilterField<Double>(Double.Parse(xx.Value), _comboBox.Text) );
-                if (field.ToString().Contains("String") && !xx.Value.Equals(""))
-                    field.SetValue(filter, new FilterField<string>(xx.Value, _comboBox.Text));
-                if (field.ToString().Contains("Date") && !xx.Value.Equals(""))
-                    field.SetValue(filter, new FilterField<DateTime>(DateTime.Parse(xx.Value), _comboBox.Text));
+                var value = field.GetValue(filter);
+                if (value is FilterField<int>)
+                    field.SetValue(filter, new FilterField<int>(int.Parse(xx.Value), xx.ValueComboBox));
+                if (value is FilterField<double>)
+                    field.SetValue(filter, new FilterField<double>(double.Parse(xx.Value),  xx.ValueComboBox));
+                if (value is FilterField<string>)
+                    field.SetValue(filter, new FilterField<string>(xx.Value,  xx.ValueComboBox));
+                if (value is FilterField<DateTime>)
+                    field.SetValue(filter, new FilterField<DateTime>(DateTime.Parse(xx.Value),  xx.ValueComboBox));
             }
         }
+
         return filter;
     }
 
@@ -91,6 +94,7 @@ public class DataGridViewWithFilter<TFilter> : DataGridView where TFilter : Filt
                 _popup.Items.Add(valueTextBox);
                 break;
         }
+
         _popup.Items.Add(saveButton);
         _popup.Show(this, e.ButtonRectangle.X, e.ButtonRectangle.Bottom);
     }
@@ -167,9 +171,8 @@ public class DataGridViewWithFilter<TFilter> : DataGridView where TFilter : Filt
         var values = columnType switch
         {
             "System.DateTime" => new[] { "До", "После" },
-            "System.Int32" => new[] { "Меньше", "Больше", "Равно" },
-            "System.Int64" => new[] { "Меньше", "Больше", "Равно" },
-            "System.Double" => new[] { "Меньше", "Больше", "Равно" }
+            "System.Int32" or "System.Int64" or "System.Double"
+                => new[] { "Меньше", "Больше", "Равно" }
         };
         _comboBox.Text = _filterColumns[_columnIndex].ValueComboBox;
         comboBox.Items.Clear();
