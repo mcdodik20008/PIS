@@ -1,0 +1,1049 @@
+{
+	"_type": "Project",
+	"_id": "AAAAAAFF+h6SjaM2Hec=",
+	"name": "Untitled",
+	"ownedElements": [
+		{
+			"_type": "UMLModel",
+			"_id": "AAAAAAFF+qBWK6M3Z8Y=",
+			"_parent": {
+				"$ref": "AAAAAAFF+h6SjaM2Hec="
+			},
+			"name": "Model",
+			"ownedElements": [
+				{
+					"_type": "UMLClassDiagram",
+					"_id": "AAAAAAFF+qBtyKM79qY=",
+					"_parent": {
+						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
+					},
+					"name": "Main",
+					"defaultDiagram": true
+				},
+				{
+					"_type": "UMLPackage",
+					"_id": "AAAAAAGECZR92etNOP0=",
+					"_parent": {
+						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
+					},
+					"name": "domain",
+					"ownedElements": [
+						{
+							"_type": "UMLPackage",
+							"_id": "AAAAAAGECZS22O1QLy4=",
+							"_parent": {
+								"$ref": "AAAAAAGECZR92etNOP0="
+							},
+							"name": "model",
+							"ownedElements": [
+								{
+									"_type": "UMLPackage",
+									"_id": "AAAAAAGECZT7VO2pmv4=",
+									"_parent": {
+										"$ref": "AAAAAAGECZS22O1QLy4="
+									},
+									"name": "entity",
+									"ownedElements": [
+										{
+											"_type": "UMLClass",
+											"_id": "AAAAAAGECYkIZKLCRQ4=",
+											"_parent": {
+												"$ref": "AAAAAAGECZT7VO2pmv4="
+											},
+											"name": "FileDocument",
+											"attributes": [
+												{
+													"_type": "UMLAttribute",
+													"_id": "AAAAAAGECYktyaLs9lY=",
+													"_parent": {
+														"$ref": "AAAAAAGECYkIZKLCRQ4="
+													},
+													"name": "Id",
+													"type": "long"
+												},
+												{
+													"_type": "UMLAttribute",
+													"_id": "AAAAAAGECYlEZ6LzAvc=",
+													"_parent": {
+														"$ref": "AAAAAAGECYkIZKLCRQ4="
+													},
+													"name": "Name",
+													"type": "string"
+												},
+												{
+													"_type": "UMLAttribute",
+													"_id": "AAAAAAGECYlJ5aL6FSI=",
+													"_parent": {
+														"$ref": "AAAAAAGECYkIZKLCRQ4="
+													},
+													"name": "FilePath",
+													"type": "string"
+												},
+												{
+													"_type": "UMLAttribute",
+													"_id": "AAAAAAGECYlL/aMB98Q=",
+													"_parent": {
+														"$ref": "AAAAAAGECYkIZKLCRQ4="
+													},
+													"name": "FileType",
+													"type": "string"
+												}
+											]
+										},
+										{
+											"_type": "UMLClass",
+											"_id": "AAAAAAGECYx1iKQlLi8=",
+											"_parent": {
+												"$ref": "AAAAAAGECZT7VO2pmv4="
+											},
+											"name": "RegisterMC",
+											"attributes": [
+												{
+													"_type": "UMLAttribute",
+													"_id": "AAAAAAGECYywwKT4KHk=",
+													"_parent": {
+														"$ref": "AAAAAAGECYx1iKQlLi8="
+													},
+													"name": "Id",
+													"type": "long"
+												},
+												{
+													"_type": "UMLAttribute",
+													"_id": "AAAAAAGECY0SzqVQY/A=",
+													"_parent": {
+														"$ref": "AAAAAAGECYx1iKQlLi8="
+													},
+													"name": "Number",
+													"type": "int"
+												},
+												{
+													"_type": "UMLAttribute",
+													"_id": "AAAAAAGECY0VgqVvvjg=",
+													"_parent": {
+														"$ref": "AAAAAAGECYx1iKQlLi8="
+													},
+													"name": "ValidDate",
+													"type": "DateTIme"
+												},
+												{
+													"_type": "UMLAttribute",
+													"_id": "AAAAAAGECY0Xz6WOcIk=",
+													"_parent": {
+														"$ref": "AAAAAAGECYx1iKQlLi8="
+													},
+													"name": "Year",
+													"type": "int"
+												},
+												{
+													"_type": "UMLAttribute",
+													"_id": "AAAAAAGECY0Z9aWtx5M=",
+													"_parent": {
+														"$ref": "AAAAAAGECYx1iKQlLi8="
+													},
+													"name": "Price",
+													"type": "Double"
+												},
+												{
+													"_type": "UMLAttribute",
+													"_id": "AAAAAAGECY0cJ6XMOJY=",
+													"_parent": {
+														"$ref": "AAAAAAGECYx1iKQlLi8="
+													},
+													"name": "SubventionShare",
+													"type": "Double"
+												},
+												{
+													"_type": "UMLAttribute",
+													"_id": "AAAAAAGECY0eHaXr9EA=",
+													"_parent": {
+														"$ref": "AAAAAAGECYx1iKQlLi8="
+													},
+													"name": "AmountMoney",
+													"type": "Double"
+												},
+												{
+													"_type": "UMLAttribute",
+													"_id": "AAAAAAGECY0gHqYKIuw=",
+													"_parent": {
+														"$ref": "AAAAAAGECYx1iKQlLi8="
+													},
+													"name": "ShareFundsSubvention",
+													"type": "Double"
+												}
+											]
+										}
+									]
+								},
+								{
+									"_type": "UMLPackage",
+									"_id": "AAAAAAGECZWeUPEgzAo=",
+									"_parent": {
+										"$ref": "AAAAAAGECZS22O1QLy4="
+									},
+									"name": "mapper",
+									"ownedElements": [
+										{
+											"_type": "UMLClass",
+											"_id": "AAAAAAGECZK1KMR1c00=",
+											"_parent": {
+												"$ref": "AAAAAAGECZWeUPEgzAo="
+											},
+											"name": "RegisterMcMapper",
+											"operations": [
+												{
+													"_type": "UMLOperation",
+													"_id": "AAAAAAGECZK1KMR32iA=",
+													"_parent": {
+														"$ref": "AAAAAAGECZK1KMR1c00="
+													},
+													"name": "RegisterMcMapper",
+													"stereotype": "consructor"
+												}
+											]
+										},
+										{
+											"_type": "UMLClass",
+											"_id": "AAAAAAGECZHSl7mpuhQ=",
+											"_parent": {
+												"$ref": "AAAAAAGECZWeUPEgzAo="
+											},
+											"name": "FileDocumentMapper",
+											"operations": [
+												{
+													"_type": "UMLOperation",
+													"_id": "AAAAAAGECZIROr0tZzQ=",
+													"_parent": {
+														"$ref": "AAAAAAGECZHSl7mpuhQ="
+													},
+													"name": "FileDocumentMapper",
+													"stereotype": "consructor"
+												}
+											]
+										}
+									]
+								},
+								{
+									"_type": "UMLPackage",
+									"_id": "AAAAAAGECZXglPHOWOU=",
+									"_parent": {
+										"$ref": "AAAAAAGECZS22O1QLy4="
+									},
+									"name": "view",
+									"ownedElements": [
+										{
+											"_type": "UMLClass",
+											"_id": "AAAAAAGECZa6h/QuV7k=",
+											"_parent": {
+												"$ref": "AAAAAAGECZXglPHOWOU="
+											},
+											"name": "FileDocumentLoing",
+											"attributes": [
+												{
+													"_type": "UMLAttribute",
+													"_id": "AAAAAAGECZa6h/QyHSc=",
+													"_parent": {
+														"$ref": "AAAAAAGECZa6h/QuV7k="
+													},
+													"name": "Id",
+													"type": "long"
+												},
+												{
+													"_type": "UMLAttribute",
+													"_id": "AAAAAAGECZa6iPQzdyg=",
+													"_parent": {
+														"$ref": "AAAAAAGECZa6h/QuV7k="
+													},
+													"name": "Name",
+													"type": "string"
+												},
+												{
+													"_type": "UMLAttribute",
+													"_id": "AAAAAAGECZa6iPQ0h4k=",
+													"_parent": {
+														"$ref": "AAAAAAGECZa6h/QuV7k="
+													},
+													"name": "FilePath",
+													"type": "string"
+												},
+												{
+													"_type": "UMLAttribute",
+													"_id": "AAAAAAGECZa6iPQ1wtA=",
+													"_parent": {
+														"$ref": "AAAAAAGECZa6h/QuV7k="
+													},
+													"name": "FileType",
+													"type": "string"
+												}
+											]
+										},
+										{
+											"_type": "UMLClass",
+											"_id": "AAAAAAGECZbA5vSafpU=",
+											"_parent": {
+												"$ref": "AAAAAAGECZXglPHOWOU="
+											},
+											"name": "RegisterMCLong",
+											"attributes": [
+												{
+													"_type": "UMLAttribute",
+													"_id": "AAAAAAGECZbA5/Sn7Xc=",
+													"_parent": {
+														"$ref": "AAAAAAGECZbA5vSafpU="
+													},
+													"name": "Id",
+													"type": "long"
+												},
+												{
+													"_type": "UMLAttribute",
+													"_id": "AAAAAAGECZbA5/SoKYU=",
+													"_parent": {
+														"$ref": "AAAAAAGECZbA5vSafpU="
+													},
+													"name": "Number",
+													"type": "int"
+												},
+												{
+													"_type": "UMLAttribute",
+													"_id": "AAAAAAGECZbA5/SpiCY=",
+													"_parent": {
+														"$ref": "AAAAAAGECZbA5vSafpU="
+													},
+													"name": "ValidDate",
+													"type": "DateTIme"
+												},
+												{
+													"_type": "UMLAttribute",
+													"_id": "AAAAAAGECZbA5/SqjkI=",
+													"_parent": {
+														"$ref": "AAAAAAGECZbA5vSafpU="
+													},
+													"name": "Year",
+													"type": "int"
+												},
+												{
+													"_type": "UMLAttribute",
+													"_id": "AAAAAAGECZbA5/SrhfE=",
+													"_parent": {
+														"$ref": "AAAAAAGECZbA5vSafpU="
+													},
+													"name": "Price",
+													"type": "Double"
+												},
+												{
+													"_type": "UMLAttribute",
+													"_id": "AAAAAAGECZbA5/SslTo=",
+													"_parent": {
+														"$ref": "AAAAAAGECZbA5vSafpU="
+													},
+													"name": "SubventionShare",
+													"type": "Double"
+												},
+												{
+													"_type": "UMLAttribute",
+													"_id": "AAAAAAGECZbA5/StDFg=",
+													"_parent": {
+														"$ref": "AAAAAAGECZbA5vSafpU="
+													},
+													"name": "AmountMoney",
+													"type": "Double"
+												},
+												{
+													"_type": "UMLAttribute",
+													"_id": "AAAAAAGECZbA5/SuiSY=",
+													"_parent": {
+														"$ref": "AAAAAAGECZbA5vSafpU="
+													},
+													"name": "ShareFundsSubvention",
+													"type": "Double"
+												}
+											]
+										},
+										{
+											"_type": "UMLClass",
+											"_id": "AAAAAAGECZbF1fT7Hgo=",
+											"_parent": {
+												"$ref": "AAAAAAGECZXglPHOWOU="
+											},
+											"name": "FileDocumentShort",
+											"attributes": [
+												{
+													"_type": "UMLAttribute",
+													"_id": "AAAAAAGECZbF1fT/JWw=",
+													"_parent": {
+														"$ref": "AAAAAAGECZbF1fT7Hgo="
+													},
+													"name": "Id",
+													"type": "long"
+												},
+												{
+													"_type": "UMLAttribute",
+													"_id": "AAAAAAGECZbF1fUAqbY=",
+													"_parent": {
+														"$ref": "AAAAAAGECZbF1fT7Hgo="
+													},
+													"name": "Name",
+													"type": "string"
+												}
+											]
+										},
+										{
+											"_type": "UMLClass",
+											"_id": "AAAAAAGECZbLyfVP2Jk=",
+											"_parent": {
+												"$ref": "AAAAAAGECZXglPHOWOU="
+											},
+											"name": "RegisterMCShort",
+											"attributes": [
+												{
+													"_type": "UMLAttribute",
+													"_id": "AAAAAAGECZbLyvVcb3Q=",
+													"_parent": {
+														"$ref": "AAAAAAGECZbLyfVP2Jk="
+													},
+													"name": "Id",
+													"type": "long"
+												},
+												{
+													"_type": "UMLAttribute",
+													"_id": "AAAAAAGECZbLyvVdNNM=",
+													"_parent": {
+														"$ref": "AAAAAAGECZbLyfVP2Jk="
+													},
+													"name": "Number",
+													"type": "int"
+												},
+												{
+													"_type": "UMLAttribute",
+													"_id": "AAAAAAGECZbLyvVeXIo=",
+													"_parent": {
+														"$ref": "AAAAAAGECZbLyfVP2Jk="
+													},
+													"name": "ValidDate",
+													"type": "DateTIme"
+												},
+												{
+													"_type": "UMLAttribute",
+													"_id": "AAAAAAGECZbLyvVfGok=",
+													"_parent": {
+														"$ref": "AAAAAAGECZbLyfVP2Jk="
+													},
+													"name": "Year",
+													"type": "int"
+												},
+												{
+													"_type": "UMLAttribute",
+													"_id": "AAAAAAGECZbLyvVgX4k=",
+													"_parent": {
+														"$ref": "AAAAAAGECZbLyfVP2Jk="
+													},
+													"name": "Price",
+													"type": "Double"
+												}
+											]
+										}
+									]
+								}
+							]
+						},
+						{
+							"_type": "UMLPackage",
+							"_id": "AAAAAAGECarFiI5BdpM=",
+							"_parent": {
+								"$ref": "AAAAAAGECZR92etNOP0="
+							},
+							"name": "context",
+							"ownedElements": [
+								{
+									"_type": "UMLPackage",
+									"_id": "AAAAAAGECa1gjY5ZK74=",
+									"_parent": {
+										"$ref": "AAAAAAGECarFiI5BdpM="
+									},
+									"name": "repository",
+									"ownedElements": [
+										{
+											"_type": "UMLClass",
+											"_id": "AAAAAAGECayz2Y5LiW0=",
+											"_parent": {
+												"$ref": "AAAAAAGECa1gjY5ZK74="
+											},
+											"name": "FileDocumentRepository"
+										},
+										{
+											"_type": "UMLClass",
+											"_id": "AAAAAAGECazzNY5QPe0=",
+											"_parent": {
+												"$ref": "AAAAAAGECa1gjY5ZK74="
+											},
+											"name": "RegisterMcRepository"
+										}
+									]
+								}
+							]
+						},
+						{
+							"_type": "UMLPackage",
+							"_id": "AAAAAAGECa3/VY5nZcM=",
+							"_parent": {
+								"$ref": "AAAAAAGECZR92etNOP0="
+							},
+							"name": "controller",
+							"ownedElements": [
+								{
+									"_type": "UMLClass",
+									"_id": "AAAAAAGECa4xRY5rP5Q=",
+									"_parent": {
+										"$ref": "AAAAAAGECa3/VY5nZcM="
+									},
+									"name": "RegistermcController"
+								}
+							]
+						},
+						{
+							"_type": "UMLPackage",
+							"_id": "AAAAAAGECa5zW45vLCY=",
+							"_parent": {
+								"$ref": "AAAAAAGECZR92etNOP0="
+							},
+							"name": "service",
+							"ownedElements": [
+								{
+									"_type": "UMLClass",
+									"_id": "AAAAAAGECa688I55NjQ=",
+									"_parent": {
+										"$ref": "AAAAAAGECa5zW45vLCY="
+									},
+									"name": "RegistermcService"
+								}
+							]
+						}
+					]
+				},
+				{
+					"_type": "UMLPackage",
+					"_id": "AAAAAAGECZYq1/L2E7Y=",
+					"_parent": {
+						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
+					},
+					"name": "library",
+					"ownedElements": [
+						{
+							"_type": "UMLClass",
+							"_id": "AAAAAAGECYvzNaOQd6s=",
+							"_parent": {
+								"$ref": "AAAAAAGECZYq1/L2E7Y="
+							},
+							"name": "List",
+							"templateParameters": [
+								{
+									"_type": "UMLTemplateParameter",
+									"_id": "AAAAAAGECYwd0KO8N3s=",
+									"_parent": {
+										"$ref": "AAAAAAGECYvzNaOQd6s="
+									},
+									"name": "T",
+									"parameterType": "",
+									"defaultValue": ""
+								}
+							]
+						},
+						{
+							"_type": "UMLClass",
+							"_id": "AAAAAAGECZG/07jXRGc=",
+							"_parent": {
+								"$ref": "AAAAAAGECZYq1/L2E7Y="
+							},
+							"name": "Mapper"
+						}
+					]
+				},
+				{
+					"_type": "UMLClass",
+					"_id": "AAAAAAGECZzKa0Bcmdk=",
+					"_parent": {
+						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
+					},
+					"name": "AppRepository",
+					"templateParameters": [
+						{
+							"_type": "UMLTemplateParameter",
+							"_id": "AAAAAAGECZ0rnEWwKZU=",
+							"_parent": {
+								"$ref": "AAAAAAGECZzKa0Bcmdk="
+							},
+							"name": "T",
+							"parameterType": "",
+							"defaultValue": ""
+						}
+					],
+					"attributes": [
+						{
+							"_type": "UMLAttribute",
+							"_id": "AAAAAAGECZ5+k36CNPs=",
+							"_parent": {
+								"$ref": "AAAAAAGECZzKa0Bcmdk="
+							},
+							"name": "SaveChanges",
+							"type": "Func<int>",
+							"isReadOnly": true
+						},
+						{
+							"_type": "UMLAttribute",
+							"_id": "AAAAAAGECZ9G0YFzATc=",
+							"_parent": {
+								"$ref": "AAAAAAGECZzKa0Bcmdk="
+							},
+							"name": "Entity",
+							"type": "DbSet<T>",
+							"isReadOnly": true
+						}
+					]
+				},
+				{
+					"_type": "UMLClass",
+					"_id": "AAAAAAGECZ29UW/sOXM=",
+					"_parent": {
+						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
+					},
+					"name": "RegisterMcRepository"
+				},
+				{
+					"_type": "UMLPackage",
+					"_id": "AAAAAAGECa8vR459LeE=",
+					"_parent": {
+						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
+					},
+					"name": "auth",
+					"ownedElements": [
+						{
+							"_type": "UMLPackage",
+							"_id": "AAAAAAGECa9zLo6FQeQ=",
+							"_parent": {
+								"$ref": "AAAAAAGECa8vR459LeE="
+							},
+							"name": "context",
+							"ownedElements": [
+								{
+									"_type": "UMLPackage",
+									"_id": "AAAAAAGECa+U7I6Jlfk=",
+									"_parent": {
+										"$ref": "AAAAAAGECa9zLo6FQeQ="
+									},
+									"name": "repos",
+									"ownedElements": [
+										{
+											"_type": "UMLClass",
+											"_id": "AAAAAAGECa/JCo6NFDU=",
+											"_parent": {
+												"$ref": "AAAAAAGECa+U7I6Jlfk="
+											},
+											"name": "RoleRepository"
+										},
+										{
+											"_type": "UMLClass",
+											"_id": "AAAAAAGECa/4jI6RDUw=",
+											"_parent": {
+												"$ref": "AAAAAAGECa+U7I6Jlfk="
+											},
+											"name": "UserRepository"
+										}
+									]
+								}
+							]
+						},
+						{
+							"_type": "UMLPackage",
+							"_id": "AAAAAAGECbBbfY6ZluI=",
+							"_parent": {
+								"$ref": "AAAAAAGECa8vR459LeE="
+							},
+							"name": "controller",
+							"ownedElements": [
+								{
+									"_type": "UMLClass",
+									"_id": "AAAAAAGECbCJ946dfAQ=",
+									"_parent": {
+										"$ref": "AAAAAAGECbBbfY6ZluI="
+									},
+									"name": "AuthController"
+								}
+							]
+						},
+						{
+							"_type": "UMLPackage",
+							"_id": "AAAAAAGECbC6gY6hPQ8=",
+							"_parent": {
+								"$ref": "AAAAAAGECa8vR459LeE="
+							},
+							"name": "model",
+							"ownedElements": [
+								{
+									"_type": "UMLPackage",
+									"_id": "AAAAAAGECbEaFo6tVVI=",
+									"_parent": {
+										"$ref": "AAAAAAGECbC6gY6hPQ8="
+									},
+									"name": "entity",
+									"ownedElements": [
+										{
+											"_type": "UMLClass",
+											"_id": "AAAAAAGECbHTio7JRnY=",
+											"_parent": {
+												"$ref": "AAAAAAGECbEaFo6tVVI="
+											},
+											"name": "Role"
+										},
+										{
+											"_type": "UMLClass",
+											"_id": "AAAAAAGECbHkZo7Owkw=",
+											"_parent": {
+												"$ref": "AAAAAAGECbEaFo6tVVI="
+											},
+											"name": "User"
+										}
+									]
+								},
+								{
+									"_type": "UMLPackage",
+									"_id": "AAAAAAGECbF33Y69B78=",
+									"_parent": {
+										"$ref": "AAAAAAGECbC6gY6hPQ8="
+									},
+									"name": "mapper",
+									"ownedElements": [
+										{
+											"_type": "UMLClass",
+											"_id": "AAAAAAGECbIUOY7W4g4=",
+											"_parent": {
+												"$ref": "AAAAAAGECbF33Y69B78="
+											},
+											"name": "UserMapper"
+										}
+									]
+								},
+								{
+									"_type": "UMLPackage",
+									"_id": "AAAAAAGECbGRIY7BNqs=",
+									"_parent": {
+										"$ref": "AAAAAAGECbC6gY6hPQ8="
+									},
+									"name": "view",
+									"ownedElements": [
+										{
+											"_type": "UMLClass",
+											"_id": "AAAAAAGECbInYI7b8cA=",
+											"_parent": {
+												"$ref": "AAAAAAGECbGRIY7BNqs="
+											},
+											"name": "UserAuth"
+										},
+										{
+											"_type": "UMLClass",
+											"_id": "AAAAAAGECbI1No7fTYE=",
+											"_parent": {
+												"$ref": "AAAAAAGECbGRIY7BNqs="
+											},
+											"name": "UserBasic"
+										},
+										{
+											"_type": "UMLClass",
+											"_id": "AAAAAAGECbI4fY7j48s=",
+											"_parent": {
+												"$ref": "AAAAAAGECbGRIY7BNqs="
+											},
+											"name": "UserRich"
+										}
+									]
+								}
+							]
+						},
+						{
+							"_type": "UMLPackage",
+							"_id": "AAAAAAGECbDTwo6l6uA=",
+							"_parent": {
+								"$ref": "AAAAAAGECa8vR459LeE="
+							},
+							"name": "service",
+							"ownedElements": [
+								{
+									"_type": "UMLClass",
+									"_id": "AAAAAAGECbEG8Y6pONc=",
+									"_parent": {
+										"$ref": "AAAAAAGECbDTwo6l6uA="
+									},
+									"name": "UserService"
+								}
+							]
+						}
+					]
+				},
+				{
+					"_type": "UMLPackage",
+					"_id": "AAAAAAGECbLuH47po4I=",
+					"_parent": {
+						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
+					},
+					"name": "muni-org",
+					"ownedElements": [
+						{
+							"_type": "UMLPackage",
+							"_id": "AAAAAAGECbMO2I7umbc=",
+							"_parent": {
+								"$ref": "AAAAAAGECbLuH47po4I="
+							},
+							"name": "context",
+							"ownedElements": [
+								{
+									"_type": "UMLPackage",
+									"_id": "AAAAAAGECbNuPY8CkcA=",
+									"_parent": {
+										"$ref": "AAAAAAGECbMO2I7umbc="
+									},
+									"name": "repository",
+									"ownedElements": [
+										{
+											"_type": "UMLClass",
+											"_id": "AAAAAAGECbP1V48V7qQ=",
+											"_parent": {
+												"$ref": "AAAAAAGECbNuPY8CkcA="
+											},
+											"name": "MunicipalityRepository"
+										},
+										{
+											"_type": "UMLClass",
+											"_id": "AAAAAAGECbQgoY8asKQ=",
+											"_parent": {
+												"$ref": "AAAAAAGECbNuPY8CkcA="
+											},
+											"name": "OrganizationRepository"
+										}
+									]
+								}
+							]
+						},
+						{
+							"_type": "UMLPackage",
+							"_id": "AAAAAAGECbMmsY7zICE=",
+							"_parent": {
+								"$ref": "AAAAAAGECbLuH47po4I="
+							},
+							"name": "controller",
+							"ownedElements": [
+								{
+									"_type": "UMLClass",
+									"_id": "AAAAAAGECbRuEY8fYzg=",
+									"_parent": {
+										"$ref": "AAAAAAGECbMmsY7zICE="
+									},
+									"name": "MunicipalityController"
+								},
+								{
+									"_type": "UMLClass",
+									"_id": "AAAAAAGECbTFT48ls6c=",
+									"_parent": {
+										"$ref": "AAAAAAGECbMmsY7zICE="
+									},
+									"name": "OrganizationController"
+								}
+							]
+						},
+						{
+							"_type": "UMLPackage",
+							"_id": "AAAAAAGECbM5no7476I=",
+							"_parent": {
+								"$ref": "AAAAAAGECbLuH47po4I="
+							},
+							"name": "model",
+							"ownedElements": [
+								{
+									"_type": "UMLPackage",
+									"_id": "AAAAAAGECbOY+I8HZ+8=",
+									"_parent": {
+										"$ref": "AAAAAAGECbM5no7476I="
+									},
+									"name": "entity",
+									"ownedElements": [
+										{
+											"_type": "UMLClass",
+											"_id": "AAAAAAGECZEP07CVKPA=",
+											"_parent": {
+												"$ref": "AAAAAAGECbOY+I8HZ+8="
+											},
+											"name": "Municipality",
+											"attributes": [
+												{
+													"_type": "UMLAttribute",
+													"_id": "AAAAAAGECZEP07CWhiI=",
+													"_parent": {
+														"$ref": "AAAAAAGECZEP07CVKPA="
+													},
+													"name": "Id",
+													"type": "long"
+												},
+												{
+													"_type": "UMLAttribute",
+													"_id": "AAAAAAGECZEP07CXryU=",
+													"_parent": {
+														"$ref": "AAAAAAGECZEP07CVKPA="
+													},
+													"name": "Name",
+													"type": "string"
+												}
+											]
+										},
+										{
+											"_type": "UMLClass",
+											"_id": "AAAAAAGECYp0b6MR9yo=",
+											"_parent": {
+												"$ref": "AAAAAAGECbOY+I8HZ+8="
+											},
+											"name": "Organizations",
+											"attributes": [
+												{
+													"_type": "UMLAttribute",
+													"_id": "AAAAAAGECYtc8KM78j0=",
+													"_parent": {
+														"$ref": "AAAAAAGECYp0b6MR9yo="
+													},
+													"name": "Id",
+													"type": "long"
+												},
+												{
+													"_type": "UMLAttribute",
+													"_id": "AAAAAAGECYtojqNCgAU=",
+													"_parent": {
+														"$ref": "AAAAAAGECYp0b6MR9yo="
+													},
+													"name": "Name",
+													"type": "string"
+												}
+											]
+										}
+									]
+								},
+								{
+									"_type": "UMLPackage",
+									"_id": "AAAAAAGECbOo8Y8MwNQ=",
+									"_parent": {
+										"$ref": "AAAAAAGECbM5no7476I="
+									},
+									"name": "mapper",
+									"ownedElements": [
+										{
+											"_type": "UMLClass",
+											"_id": "AAAAAAGECbUd1o8rYiA=",
+											"_parent": {
+												"$ref": "AAAAAAGECbOo8Y8MwNQ="
+											},
+											"name": "OrganizationMapper"
+										},
+										{
+											"_type": "UMLClass",
+											"_id": "AAAAAAGECbVHSI8wzg4=",
+											"_parent": {
+												"$ref": "AAAAAAGECbOo8Y8MwNQ="
+											},
+											"name": "MunicipalityMapper"
+										}
+									]
+								},
+								{
+									"_type": "UMLPackage",
+									"_id": "AAAAAAGECbO2mo8R4/4=",
+									"_parent": {
+										"$ref": "AAAAAAGECbM5no7476I="
+									},
+									"name": "view",
+									"ownedElements": [
+										{
+											"_type": "UMLClass",
+											"_id": "AAAAAAGECZfhd/gord8=",
+											"_parent": {
+												"$ref": "AAAAAAGECbO2mo8R4/4="
+											},
+											"name": "OrganizationsShort",
+											"attributes": [
+												{
+													"_type": "UMLAttribute",
+													"_id": "AAAAAAGECZfhd/gp0w0=",
+													"_parent": {
+														"$ref": "AAAAAAGECZfhd/gord8="
+													},
+													"name": "Id",
+													"type": "long"
+												},
+												{
+													"_type": "UMLAttribute",
+													"_id": "AAAAAAGECZfhd/gqIa8=",
+													"_parent": {
+														"$ref": "AAAAAAGECZfhd/gord8="
+													},
+													"name": "Name",
+													"type": "string"
+												}
+											]
+										},
+										{
+											"_type": "UMLClass",
+											"_id": "AAAAAAGECZggX/jRCQs=",
+											"_parent": {
+												"$ref": "AAAAAAGECbO2mo8R4/4="
+											},
+											"name": "MunicipalityShort",
+											"attributes": [
+												{
+													"_type": "UMLAttribute",
+													"_id": "AAAAAAGECZggX/jSQGg=",
+													"_parent": {
+														"$ref": "AAAAAAGECZggX/jRCQs="
+													},
+													"name": "Id",
+													"type": "long"
+												},
+												{
+													"_type": "UMLAttribute",
+													"_id": "AAAAAAGECZggX/jTfjw=",
+													"_parent": {
+														"$ref": "AAAAAAGECZggX/jRCQs="
+													},
+													"name": "Name",
+													"type": "string"
+												}
+											]
+										}
+									]
+								}
+							]
+						},
+						{
+							"_type": "UMLPackage",
+							"_id": "AAAAAAGECbNNiI79x4s=",
+							"_parent": {
+								"$ref": "AAAAAAGECbLuH47po4I="
+							},
+							"name": "service",
+							"ownedElements": [
+								{
+									"_type": "UMLClass",
+									"_id": "AAAAAAGECbXdy482b80=",
+									"_parent": {
+										"$ref": "AAAAAAGECbNNiI79x4s="
+									},
+									"name": "MunicipalityService"
+								},
+								{
+									"_type": "UMLClass",
+									"_id": "AAAAAAGECbYNno875qg=",
+									"_parent": {
+										"$ref": "AAAAAAGECbNNiI79x4s="
+									},
+									"name": "OrganizationService"
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}
