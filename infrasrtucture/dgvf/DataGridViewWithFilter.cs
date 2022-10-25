@@ -21,8 +21,7 @@ public class DataGridViewWithFilter<TFilter> : DataGridView where TFilter : Filt
     private readonly ComboBox _comboBox = new();
 
     #endregion
-
-    // TODO: yне работает фильтрация по дате
+    
     public DataGridViewWithFilter(FilterFactory factory, FilterMapper filterMapper)
     {
         _filter = factory.Find<TFilter>();
@@ -36,17 +35,14 @@ public class DataGridViewWithFilter<TFilter> : DataGridView where TFilter : Filt
         var res = filter.FilterExpression;
         return res;
     }
-
-    // TODO: Закончить заполнение
+    
     private FilterModel<T> FillFilter<T>(FilterModel<T> filter, List<FilterColumn> filterColumns)
     {
         var fields = filter.GetType().GetFields();
         MethodInfo updateFilterFieldMethod = null;
         foreach (var field in fields)
         {
-            updateFilterFieldMethod = updateFilterFieldMethod == null
-                ? field.GetValue(filter).GetType().GetMethod("UpdateFilter")
-                : updateFilterFieldMethod;
+            updateFilterFieldMethod = field.GetValue(filter).GetType().GetMethod("UpdateFilter");
             var filedValue = field.GetValue(filter);
             var filterColumn = filterColumns.FirstOrDefault(x => field.Name.Contains(x.Name));
             if (filterColumn != null && !filterColumn.Value.Equals(""))
@@ -113,13 +109,21 @@ public class DataGridViewWithFilter<TFilter> : DataGridView where TFilter : Filt
         _dateTimeCtrl.Size = new Size(widthTool, 30);
         _dateTimeCtrl.Format = DateTimePickerFormat.Custom;
         _dateTimeCtrl.CustomFormat = "dd.MM.yyyy";
-
+        _dateTimeCtrl.TextChanged -= DatePicker_TextChanged!;
+        _dateTimeCtrl.TextChanged += DatePicker_TextChanged!;
+            
         _saveFilterCtrl.Text = "Save filter";
         _saveFilterCtrl.Size = new Size(widthTool, 30);
         _saveFilterCtrl.Click -= SaveFilter_Click!;
         _saveFilterCtrl.Click += SaveFilter_Click!;
     }
 
+    private void DatePicker_TextChanged(object sender, EventArgs e)
+    {
+        _textBoxCtrl.Text = _dateTimeCtrl.Text;
+        SaveFilter_Click(sender, e);
+    }
+    
     private void SaveFilter_Click(object sender, EventArgs e)
     {
         _filterColumns[_columnIndex].Value = _textBoxCtrl.Text;
