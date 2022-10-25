@@ -57,6 +57,8 @@ public class AppContainer : ServiceContainer
         #region filters
         this.RegisterSingleton<FilterFactory>();
         this.RegisterSingleton<RegisterFilter>();
+        this.RegisterSingleton<FilterMapper>();
+
         #endregion
     }
 }

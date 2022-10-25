@@ -9,6 +9,7 @@ public class DataGridViewWithFilter<TFilter> : DataGridView where TFilter : Filt
 {
     private int _columnIndex;
     private readonly TFilter _filter;
+    private readonly FilterMapper _filterMapper;
     private readonly List<FilterColumn> _filterColumns = new();
 
     #region formelements
@@ -22,9 +23,10 @@ public class DataGridViewWithFilter<TFilter> : DataGridView where TFilter : Filt
     #endregion
 
     // TODO: yне работает фильтрация по дате
-    public DataGridViewWithFilter(FilterFactory factory)
+    public DataGridViewWithFilter(FilterFactory factory, FilterMapper filterMapper)
     {
         _filter = factory.Find<TFilter>();
+        _filterMapper = filterMapper;
     }
 
     public Func<TObject, bool> GetFilter<TObject>()
@@ -38,27 +40,25 @@ public class DataGridViewWithFilter<TFilter> : DataGridView where TFilter : Filt
     // TODO: Закончить заполнение
     private FilterModel<T> FillFilter<T>(FilterModel<T> filter, List<FilterColumn> filterColumns)
     {
-        var type = filter.GetType();
-        foreach (var field in type.GetFields())
+        var fields = filter.GetType().GetFields();
+        MethodInfo updateFilterFieldMethod = null;
+        foreach (var field in fields)
         {
-            var xx = filterColumns.FirstOrDefault(x => field.Name.Contains(x.Name));
-            if (xx != null && !xx.Value.Equals(""))
+            updateFilterFieldMethod = updateFilterFieldMethod == null
+                ? field.GetValue(filter).GetType().GetMethod("UpdateFilter")
+                : updateFilterFieldMethod;
+            var filedValue = field.GetValue(filter);
+            var filterColumn = filterColumns.FirstOrDefault(x => field.Name.Contains(x.Name));
+            if (filterColumn != null && !filterColumn.Value.Equals(""))
             {
-                var value = field.GetValue(filter);
-                if (value is FilterField<int>)
-                    field.SetValue(filter, new FilterField<int>(int.Parse(xx.Value), xx.ValueComboBox));
-                if (value is FilterField<double>)
-                    field.SetValue(filter, new FilterField<double>(double.Parse(xx.Value),  xx.ValueComboBox));
-                if (value is FilterField<string>)
-                    field.SetValue(filter, new FilterField<string>(xx.Value,  xx.ValueComboBox));
-                if (value is FilterField<DateTime>)
-                    field.SetValue(filter, new FilterField<DateTime>(DateTime.Parse(xx.Value),  xx.ValueComboBox));
+                updateFilterFieldMethod.Invoke(filedValue,
+                    new object[] { _filterMapper, _textBoxCtrl.Text, _comboBox.Text });
             }
         }
 
         return filter;
     }
-
+    
     public void ReloadFilter<TObject>()
     {
         (_filter as FilterModel<TObject>)?.Reset();

@@ -5,18 +5,13 @@ namespace PISWF.infrasrtucture.filter;
 
 public class RegisterFilter : FilterModel<RegisterMC>
 {
-    public FilterField<int> NumberField = new(0, "");
+    public FilterField<int> NumberField = new(0, Comparators.None);
 
-    public FilterField<DateTime> ValidDateField= new(DateTime.Now, "");
+    public FilterField<DateTime> ValidDateField = new(DateTime.Now, Comparators.None);
 
-    public FilterField<int> YearField= new(0, "");
+    public FilterField<int> YearField= new(0, Comparators.None);
 
-    public FilterField<double> PriceField= new(0, "");
-
-    public RegisterFilter()
-    {
-        ValidDateField = new FilterField<DateTime>(DateTime.Now, "");
-    }
+    public FilterField<double> PriceField= new(0, Comparators.None);
 
     [Obsolete("Obsolete")]
     public override Func<RegisterMC, bool> FilterExpression
@@ -35,9 +30,9 @@ public class RegisterFilter : FilterModel<RegisterMC>
 
     public override void Reset()
     {
-        NumberField = new FilterField<int>(0, "");
-        ValidDateField = new FilterField<DateTime>(DateTime.Now, "");
-        YearField = new FilterField<int>(0, "");
-        PriceField = new FilterField<double>(0, "");
+        NumberField = new FilterField<int>(0, Comparators.None);
+        ValidDateField = new FilterField<DateTime>(DateTime.Now, Comparators.None);
+        YearField = new FilterField<int>(0, Comparators.None);
+        PriceField = new FilterField<double>(0, Comparators.None);
     }
 }

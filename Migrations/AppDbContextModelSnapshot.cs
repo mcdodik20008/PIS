@@ -17,7 +17,7 @@ namespace PISWF.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.9")
+                .HasAnnotation("ProductVersion", "6.0.10")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -190,16 +190,13 @@ namespace PISWF.Migrations
                         .HasColumnName("json_entity");
 
                     b.Property<DateTime>("LogDate")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("Date")
+                        .HasColumnName("log_date");
 
                     b.Property<string>("MethodName")
                         .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("method_name");
-
-                    b.Property<DateTime>("ValidDate")
-                        .HasColumnType("Date")
-                        .HasColumnName("log_date");
 
                     b.HasKey("Id");
 

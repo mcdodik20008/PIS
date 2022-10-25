@@ -12,10 +12,10 @@ public class DgvFilter : Form
 
     private Page _page = new(0, 25);
     
-    public DgvFilter(RegistermcController registermcController, FilterFactory factory)
+    public DgvFilter(RegistermcController registermcController, FilterFactory factory, FilterMapper filterMapper)
     {
         _registermcController = registermcController;        
-        _dg = new(factory);
+        _dg = new(factory, filterMapper);
         InitializeItems();
         AddControls();
     }
