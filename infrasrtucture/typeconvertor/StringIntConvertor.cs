@@ -6,6 +6,6 @@ public class StringIntConvertor : ITypeConverter<string, int>
 {
     public int Convert(string source, int destination, ResolutionContext context)
     {
-        return int.Parse(source);
+        return int.TryParse(source, out var xx) ? xx : 0;
     }
 }

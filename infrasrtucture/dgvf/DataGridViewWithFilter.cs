@@ -17,11 +17,12 @@ public class DataGridViewWithFilter<TFilter> : DataGridView where TFilter : Filt
     private readonly TextBox _textBoxCtrl = new();
     private readonly DateTimePicker _dateTimeCtrl = new();
     private readonly Button _saveFilterCtrl = new();
+    private readonly Button _clearButtonCtrl = new();
     private readonly ToolStripDropDown _popup = new();
     private readonly ComboBox _comboBox = new();
 
     #endregion
-    
+
     public DataGridViewWithFilter(FilterFactory factory, FilterMapper filterMapper)
     {
         _filter = factory.Find<TFilter>();
@@ -35,7 +36,7 @@ public class DataGridViewWithFilter<TFilter> : DataGridView where TFilter : Filt
         var res = filter.FilterExpression;
         return res;
     }
-    
+
     private FilterModel<T> FillFilter<T>(FilterModel<T> filter, List<FilterColumn> filterColumns)
     {
         var fields = filter.GetType().GetFields();
@@ -45,16 +46,18 @@ public class DataGridViewWithFilter<TFilter> : DataGridView where TFilter : Filt
             updateFilterFieldMethod = field.GetValue(filter).GetType().GetMethod("UpdateFilter");
             var filedValue = field.GetValue(filter);
             var filterColumn = filterColumns.FirstOrDefault(x => field.Name.Contains(x.Name));
-            if (filterColumn != null && !filterColumn.Value.Equals(""))
+            if (filterColumn != null)
             {
-                updateFilterFieldMethod.Invoke(filedValue,
-                    new object[] { _filterMapper, _textBoxCtrl.Text, _comboBox.Text });
+                var parameters = filterColumn.Value.Equals("")
+                    ? new object[] { _filterMapper, "", "" }
+                    : new object[] { _filterMapper, _textBoxCtrl.Text, _comboBox.Text };
+                updateFilterFieldMethod.Invoke(filedValue, parameters);
             }
         }
 
         return filter;
     }
-    
+
     public void ReloadFilter<TObject>()
     {
         (_filter as FilterModel<TObject>)?.Reset();
@@ -67,6 +70,7 @@ public class DataGridViewWithFilter<TFilter> : DataGridView where TFilter : Filt
         var valueTextBox = GetControlHost(_textBoxCtrl);
         var actionBox = GetControlHost(_comboBox);
         var saveButton = GetControlHost(_saveFilterCtrl);
+        var clearButton = GetControlHost(_clearButtonCtrl);
         var dateTimePicker = GetControlHost(_dateTimeCtrl);
         _popup.Items.Clear();
         _popup.AutoSize = true;
@@ -92,6 +96,7 @@ public class DataGridViewWithFilter<TFilter> : DataGridView where TFilter : Filt
         }
 
         _popup.Items.Add(saveButton);
+        _popup.Items.Add(clearButton);
         _popup.Show(this, e.ButtonRectangle.X, e.ButtonRectangle.Bottom);
     }
 
@@ -111,11 +116,23 @@ public class DataGridViewWithFilter<TFilter> : DataGridView where TFilter : Filt
         _dateTimeCtrl.CustomFormat = "dd.MM.yyyy";
         _dateTimeCtrl.TextChanged -= DatePicker_TextChanged!;
         _dateTimeCtrl.TextChanged += DatePicker_TextChanged!;
-            
+
         _saveFilterCtrl.Text = "Save filter";
         _saveFilterCtrl.Size = new Size(widthTool, 30);
         _saveFilterCtrl.Click -= SaveFilter_Click!;
         _saveFilterCtrl.Click += SaveFilter_Click!;
+
+        _clearButtonCtrl.Text = "Clear filter";
+        _clearButtonCtrl.Size = new Size(widthTool, 30);
+        _clearButtonCtrl.Click -= ClearFilter_Click!;
+        _clearButtonCtrl.Click += ClearFilter_Click!;
+    }
+
+    private void ClearFilter_Click(object? sender, EventArgs e)
+    {
+        _textBoxCtrl.Text = "";
+        _comboBox.Text = "";
+        SaveFilter_Click(sender, e);
     }
 
     private void DatePicker_TextChanged(object sender, EventArgs e)
@@ -123,7 +140,7 @@ public class DataGridViewWithFilter<TFilter> : DataGridView where TFilter : Filt
         _textBoxCtrl.Text = _dateTimeCtrl.Text;
         SaveFilter_Click(sender, e);
     }
-    
+
     private void SaveFilter_Click(object sender, EventArgs e)
     {
         _filterColumns[_columnIndex].Value = _textBoxCtrl.Text;
@@ -136,10 +153,14 @@ public class DataGridViewWithFilter<TFilter> : DataGridView where TFilter : Filt
         var dt = new DataTable();
         Columns.Clear();
         var propertys = typeof(T).GetProperties();
+
         foreach (var prop in propertys)
         {
             dt.Columns.Add(prop.Name, prop.PropertyType);
-            _filterColumns.Add(new FilterColumn(prop.Name, prop.PropertyType, "", ""));
+            if (_filterColumns.Count < propertys.Length)
+            {
+                _filterColumns.Add(new FilterColumn(prop.Name, prop.PropertyType, "", ""));
+            }
         }
 
         foreach (var entity in sourse)

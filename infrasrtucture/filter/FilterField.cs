@@ -23,17 +23,18 @@ public class FilterField<T> where T : IComparable
         return this;
     }
 
-    public Expression<Func<Tent, bool>> GetPredicate<Tent>(string propName)
+    public Expression<Func<TEnt, bool>> GetPredicate<TEnt>(string propName)
     {
-        var predicate = PredicateBuilder.True<Tent>();
-        var type = typeof(Tent).GetProperty(propName);
+        var predicate = PredicateBuilder.True<TEnt>();
+        var type = typeof(TEnt).GetProperty(propName);
         if (Comparators.None != action)
         {
             predicate = action switch
             {
                 Comparators.Equals => predicate.And(l => type.GetValue(l).Equals(value)),
                 Comparators.Less => predicate.And(l => value.CompareTo(type.GetValue(l) as IComparable) == 1),
-                Comparators.More => predicate.And(l => value.CompareTo(type.GetValue(l) as IComparable) == -1)
+                Comparators.More => predicate.And(l => value.CompareTo(type.GetValue(l) as IComparable) == -1),
+                Comparators.Like => predicate.And(l => value.ToString().Contains(l.ToString()!))
             };
         }
 

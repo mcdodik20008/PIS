@@ -26,11 +26,6 @@ public class DgvFilter : Form
          _dg.FillDataGrid(_registermcController.Read(_page, _dg.GetFilter<RegisterMC>()));
     }
 
-    private void ReloadFilter()
-    {
-        _dg.ReloadFilter<RegisterMC>();
-    }
-
     private void InitializeItems()
     {
         Size = new Size(900, 900);

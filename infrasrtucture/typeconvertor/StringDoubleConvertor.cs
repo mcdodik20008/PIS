@@ -6,6 +6,6 @@ public class StringDoubleConvertor : ITypeConverter<string, double>
 {
     public double Convert(string source, double destination, ResolutionContext context)
     {
-        return double.Parse(source);
+        return double.TryParse(source, out var xx) ? xx : 0;
     }
 }
