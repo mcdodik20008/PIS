@@ -46,21 +46,13 @@ public class DataGridViewWithFilter<TFilter> : DataGridView where TFilter : Filt
             updateFilterFieldMethod = field.GetValue(filter).GetType().GetMethod("UpdateFilter");
             var filedValue = field.GetValue(filter);
             var filterColumn = filterColumns.FirstOrDefault(x => field.Name.Contains(x.Name));
-            if (filterColumn != null)
-            {
-                var parameters = filterColumn.Value.Equals("")
-                    ? new object[] { _filterMapper, "", "" }
-                    : new object[] { _filterMapper, _textBoxCtrl.Text, _comboBox.Text };
-                updateFilterFieldMethod.Invoke(filedValue, parameters);
-            }
+            var parameters = filterColumn.Value.Equals("")
+                ? new object[] { _filterMapper, "", "" }
+                : new object[] { _filterMapper, filterColumn.Value, filterColumn.ValueComboBox };
+            updateFilterFieldMethod.Invoke(filedValue, parameters);
         }
 
         return filter;
-    }
-
-    public void ReloadFilter<TObject>()
-    {
-        (_filter as FilterModel<TObject>)?.Reset();
     }
 
     private void Header_FilterButtonClicked(object sender, ColumnFilterClickedEventArg e)
