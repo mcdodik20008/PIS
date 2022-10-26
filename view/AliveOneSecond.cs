@@ -2,8 +2,9 @@
 
 public class AliveOneSecond : Form
 {
-    double ms = 40000;
+    double ms = 40000000;
     ProgressBar pb = new();
+    
     public AliveOneSecond()
     {
         // TODO: Как разместить форму слева снизу?

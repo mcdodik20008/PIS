@@ -41,11 +41,11 @@ public class DataGridViewWithFilter<TFilter> : DataGridView where TFilter : Filt
     private FilterModel<T> FillFilter<T>(FilterModel<T> filter, List<FilterColumn> filterColumns)
     {
         var fields = filter.GetType().GetFields();
-        MethodInfo updateFilterFieldMethod = null;
         foreach (var field in fields)
         {
-            updateFilterFieldMethod = field.GetValue(filter).GetType().GetMethod("UpdateFilter");
             var filedValue = field.GetValue(filter);
+            MethodInfo updateFilterFieldMethod = filedValue.GetType().GetMethod("UpdateFilter");
+            // TODO: мб переделать
             var filterColumn = filterColumns.FirstOrDefault(x => field.Name.Contains(x.Name));
             var parameters = filterColumn.Value.Equals("")
                 ? new object[] { _filterMapper, "", "" }
@@ -69,6 +69,7 @@ public class DataGridViewWithFilter<TFilter> : DataGridView where TFilter : Filt
         _popup.AutoSize = true;
         _popup.Margin = Padding.Empty;
         _popup.Padding = Padding.Empty;
+        // TODO: Говно
         var colType = Columns[_columnIndex].ValueType.ToString();
         FillCombobox(_comboBox, colType);
         switch (colType)
@@ -128,6 +129,7 @@ public class DataGridViewWithFilter<TFilter> : DataGridView where TFilter : Filt
         SaveFilter_Click(sender, e);
     }
 
+    // TODO: мб пепределать
     private void DatePicker_TextChanged(object sender, EventArgs e)
     {
         _textBoxCtrl.Text = _dateTimeCtrl.Text;

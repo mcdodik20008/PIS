@@ -62,6 +62,7 @@ namespace DGVWF
             }
             base.OnMouseUp(e);
         }
+        
         private bool IsMouseOverButton(Point e)
         {
             Point p = new Point(e.X + _cellLocation.X, e.Y + _cellLocation.Y);

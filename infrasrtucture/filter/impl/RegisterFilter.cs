@@ -19,7 +19,7 @@ public class RegisterFilter : FilterModel<RegisterMC>
     {
         get
         {
-            var predicate = PredicateBuilder.True<RegisterMC>()
+           var predicate = PredicateBuilder.True<RegisterMC>()
                 .And(NumberField.GetPredicate<RegisterMC>("Number"))
                 .And(ValidDateField.GetPredicate<RegisterMC>("ValidDate"))
                 .And(YearField.GetPredicate<RegisterMC>("Year"))
