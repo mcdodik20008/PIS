@@ -21,9 +21,4 @@ public class FileDocumentMapper : Mapper
     public FileDocumentMapper(IConfigurationProvider configurationProvider) : base(configurationProvider)
     {
     }
-
-    public override string ToString()
-    {
-        return "Маппер";
-    }
 }
