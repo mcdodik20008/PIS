@@ -35,16 +35,6 @@ public class RegistermcService
         return RegisterMcMapper.Map<List<RegisterMCLong>>(RegisterMcRepository.Entity);
     }
     
-    public List<RegisterMCShort> Read(Page page, Func<RegisterMC, bool> filter)
-    {
-        // Не может сгенерить sql???
-        return RegisterMcMapper.Map<List<RegisterMCShort>>(RegisterMcRepository.Entity
-                .Where(filter)
-                .Skip(page.Size*page.Number)
-                .Take(page.Size)
-            );
-    }
-    
     public List<RegisterMCShort> Read(Page page)
     {
         // Не может сгенерить sql???
@@ -52,6 +42,15 @@ public class RegistermcService
             .Skip(page.Size*page.Number)
             .Take(page.Size)
         );
+    }
+
+    public List<RegisterMCShort> Read(Page page, Func<RegisterMC, bool> filter)
+    {
+        return RegisterMcMapper.Map<List<RegisterMCShort>>(RegisterMcRepository.Entity
+                .Where(filter)
+                .Skip(page.Size*page.Number)
+                .Take(page.Size)
+            );
     }
     
     public RegisterMCLong Read(long id)
@@ -80,15 +79,5 @@ public class RegistermcService
         var entity = RegisterMcMapper.Map<RegisterMC>(view);
         RegisterMcRepository.Entity.Remove(entity);
         return view;
-    }
-
-    public void AddFile()
-    {
-        
-    }
-
-    public void DeleteFile()
-    {
-        
     }
 }

@@ -5,6 +5,7 @@ using PISWF.infrasrtucture.muni_org.model.view;
 
 namespace PISWF.infrasrtucture.muni_org.service;
 
+// TODO: Посмотреть в пз сохранение отдельно или нет
 public class OrganizationService
 {
     private OrganizationRepository Repository { get; }

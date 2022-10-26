@@ -10,9 +10,7 @@ public abstract class AppRepository<T> where T : class
     public Func<int> SaveChanges { get; }
     
     public DbSet<T>? Entity { get; }
-    
-    public DatabaseFacade DataBase { get; }
-    
+
     public AppRepository(AppDbContext appDbContext)
     {
         var predicate = new Func<PropertyInfo, bool>(x => x.GetMemberType().Equals(typeof(DbSet<T>)));
@@ -23,7 +21,6 @@ public abstract class AppRepository<T> where T : class
             .FirstOrDefault()
             ?.GetValue(appDbContext) 
             as DbSet<T>;
-        DataBase = appDbContext.Database;
         SaveChanges = appDbContext.SaveChanges;
     }
     

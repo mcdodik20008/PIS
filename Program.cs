@@ -1,4 +1,5 @@
 using LightInject;
+using pis.infrasrtucture.filter.impl;
 using PISWF.infrasrtucture.filter;
 using PISWF.infrasrtucture.logger.controller;
 using PISWF.view;
@@ -15,8 +16,8 @@ public static class Program
     public static void Main(string[] args)
     {
         var container = new AppContainer();
-        Application.EnableVisualStyles();
-        Application.SetCompatibleTextRenderingDefault(false);
-        Application.Run(container.GetInstance<DgvFilter>());
+          Application.EnableVisualStyles();
+          Application.SetCompatibleTextRenderingDefault(false);
+          Application.Run(container.GetInstance<DgvFilter>());
     }
 }

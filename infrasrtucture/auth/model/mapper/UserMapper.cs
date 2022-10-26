@@ -19,9 +19,4 @@ public class UserMapper : Mapper
     ) { }
 
     public UserMapper(IConfigurationProvider configurationProvider) : base(configurationProvider) { }
-
-    public override string ToString()
-    {
-        return "Маппер предназначен для авторизации";
-    }
 }

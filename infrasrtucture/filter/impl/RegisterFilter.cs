@@ -1,7 +1,8 @@
 ﻿using LinqKit;
 using PISWF.domain.registermc.model.entity;
+using PISWF.infrasrtucture.filter;
 
-namespace PISWF.infrasrtucture.filter;
+namespace pis.infrasrtucture.filter.impl;
 
 public class RegisterFilter : FilterModel<RegisterMC>
 {
@@ -9,9 +10,9 @@ public class RegisterFilter : FilterModel<RegisterMC>
 
     public FilterField<DateTime> ValidDateField = new(DateTime.Now, Comparators.None);
 
-    public FilterField<int> YearField= new(0, Comparators.None);
+    public FilterField<int> YearField = new(0, Comparators.None);
 
-    public FilterField<double> PriceField= new(0, Comparators.None);
+    public FilterField<double> PriceField = new(0, Comparators.None);
 
     [Obsolete("Obsolete")]
     public override Func<RegisterMC, bool> FilterExpression

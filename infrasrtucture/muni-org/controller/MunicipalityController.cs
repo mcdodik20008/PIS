@@ -6,38 +6,38 @@ namespace PISWF.infrasrtucture.muni_org.controller;
 
 public class MunicipalityController
 {
-    private MunicipalityService OrganizationService { get; }
+    private MunicipalityService MunicipalityService { get; }
     
     private AuthController AuthController { get; }
 
-    public MunicipalityController(MunicipalityService organizationService, AuthController authController)
+    public MunicipalityController(MunicipalityService municipalityService, AuthController authController)
     {
-        OrganizationService = organizationService;
+        MunicipalityService = municipalityService;
         AuthController = authController;
     }
 
     public List<MunicipalityShort> Read()
     {
-        return OrganizationService.GetAll();
+        return MunicipalityService.GetAll();
     }
     
     public MunicipalityShort Read(long id)
     {
-        return OrganizationService.GetById(id);
+        return MunicipalityService.GetById(id);
     }
     
     public MunicipalityShort Add(MunicipalityShort municipalityShort)
     {
-        return OrganizationService.Add(municipalityShort);
+        return MunicipalityService.Add(municipalityShort);
     }
     
     public MunicipalityShort Update(MunicipalityShort municipalityShort)
     {
-        return OrganizationService.Update(municipalityShort);
+        return MunicipalityService.Update(municipalityShort);
     }
     
     public MunicipalityShort Delete(MunicipalityShort municipalityShort)
     {
-        return OrganizationService.Delete(municipalityShort);
+        return MunicipalityService.Delete(municipalityShort);
     }
 }

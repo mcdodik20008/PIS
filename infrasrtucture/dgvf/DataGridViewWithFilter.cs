@@ -1,6 +1,7 @@
 ﻿using System.Data;
 using System.Reflection;
 using DGVWF;
+using pis.infrasrtucture.filter.impl;
 using PISWF.infrasrtucture.filter;
 
 namespace pis.infrasrtucture.dgvf;
@@ -23,7 +24,7 @@ public class DataGridViewWithFilter<TFilter> : DataGridView where TFilter : Filt
 
     #endregion
 
-    public DataGridViewWithFilter(FilterFactory factory, FilterMapper filterMapper)
+    public DataGridViewWithFilter(IFilterFactory factory, FilterMapper filterMapper)
     {
         _filter = factory.Find<TFilter>();
         _filterMapper = filterMapper;

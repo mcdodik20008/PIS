@@ -6,20 +6,20 @@ namespace PISWF.infrasrtucture.filter;
 
 public class FilterField<T> where T : IComparable
 {
-    public T value;
+    public T Value;
 
-    public Comparators action;
+    public Comparators Action;
 
     public FilterField(T value, Comparators action)
     {
-        this.value = value;
-        this.action = action;
+        Value = value;
+        Action = action;
     }
 
     public FilterField<T> UpdateFilter(Mapper mapper, string value, string action)
     {
-        this.action = mapper.Map<Comparators>(action);
-        this.value = mapper.Map<T>(value);
+        Action = mapper.Map<Comparators>(action);
+        Value = mapper.Map<T>(value);
         return this;
     }
 
@@ -27,14 +27,14 @@ public class FilterField<T> where T : IComparable
     {
         var predicate = PredicateBuilder.True<TEnt>();
         var type = typeof(TEnt).GetProperty(propName);
-        if (Comparators.None != action)
+        if (Comparators.None != Action)
         {
-            predicate = action switch
+            predicate = Action switch
             {
-                Comparators.Equals => predicate.And(l => type.GetValue(l).Equals(value)),
-                Comparators.Less => predicate.And(l => value.CompareTo(type.GetValue(l) as IComparable) == 1),
-                Comparators.More => predicate.And(l => value.CompareTo(type.GetValue(l) as IComparable) == -1),
-                Comparators.Like => predicate.And(l => value.ToString().Contains(l.ToString()!))
+                Comparators.Equals => predicate.And(l => type.GetValue(l).Equals(Value)),
+                Comparators.Less => predicate.And(l => Value.CompareTo(type.GetValue(l) as IComparable) == 1),
+                Comparators.More => predicate.And(l => Value.CompareTo(type.GetValue(l) as IComparable) == -1),
+                Comparators.Like => predicate.And(l => Value.ToString().Contains(l.ToString()!))
             };
         }
 

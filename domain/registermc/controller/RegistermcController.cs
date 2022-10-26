@@ -47,12 +47,4 @@ public class RegistermcController
     {
         return _registermcService.Delete(view);
     }
-
-    public void AddFile()
-    {
-    }
-
-    public void DeleteFile()
-    {
-    }
 }

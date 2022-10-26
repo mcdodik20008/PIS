@@ -29,14 +29,10 @@ public class UserService
 
     public User Authorization(UserBasic userShort)
     {
-        using var transaction = UserRepository.DataBase.BeginTransaction();
-        {
-            var hash = userShort.Password;
-            var predicate = new Func<User, bool>(x => x.Login!.Equals(userShort.Login) && x.Password.Equals(hash));
-            var user = UserRepository.Entity.Where(predicate).FirstOrDefault();
-            transaction.Commit();
-            return user ?? throw new UnauthorizedAccessException("Ошибка в логине или пароле");
-        }
+        var hash = userShort.Password;
+        var predicate = new Func<User, bool>(x => x.Login!.Equals(userShort.Login) && x.Password.Equals(hash));
+        var user = UserRepository.Entity.Where(predicate).FirstOrDefault();
+        return user ?? throw new UnauthorizedAccessException("Ошибка в логине или пароле");
     }
 
     public List<UserAuth> Read(Page page)
@@ -60,9 +56,9 @@ public class UserService
         return user;
     }
 
-    public User Delete(UserBasic userS)
+    public User Delete(UserBasic userShort)
     {
-        var user = UserMapper.Map<User>(userS);
+        var user = UserMapper.Map<User>(userShort);
         UserRepository.Entity.Remove(user);
         UserRepository.SaveChanges();
         return user;

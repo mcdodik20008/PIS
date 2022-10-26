@@ -1,4 +1,5 @@
 ﻿using LightInject;
+using pis.infrasrtucture.filter.impl;
 using PISWF.domain.registermc.context.repository;
 using PISWF.domain.registermc.controller;
 using PISWF.domain.registermc.model.mapper;
@@ -17,11 +18,8 @@ namespace PISWF;
 
 public class AppContainer : ServiceContainer
 {
-    private DateTime date;
     public AppContainer()
     {
-        date = DateTime.Now;
-        
         this.RegisterSingleton<AppDbContext>();
         this.RegisterSingleton<AppContainer>();
 
@@ -50,15 +48,14 @@ public class AppContainer : ServiceContainer
         #region log
         this.RegisterSingleton<LogService>();
         this.RegisterSingleton<LogRepository>();
-        this.RegisterSingleton<LogServiceAsync>();
         this.RegisterSingleton<LogController>();
         #endregion
 
         #region filters
+        this.RegisterSingleton<IFilterFactory, FilterFactory>();
         this.RegisterSingleton<FilterFactory>();
         this.RegisterSingleton<RegisterFilter>();
         this.RegisterSingleton<FilterMapper>();
-
         #endregion
     }
 }
