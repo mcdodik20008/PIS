@@ -2,7 +2,7 @@
 
 public class AliveOneSecond : Form
 {
-    double ms = 40000000;
+    double ms = 4000000;
     ProgressBar pb = new();
     
     public AliveOneSecond()
@@ -25,7 +25,7 @@ public class AliveOneSecond : Form
         double i = 0;
         while (ms > i)
         {
-            i += 1;
+            i += 0.1;
             pb.Value = (int)i;
         }
         Close();

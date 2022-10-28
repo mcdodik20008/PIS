@@ -6,15 +6,18 @@ namespace pis.infrasrtucture.filter.impl;
 
 public class RegisterFilter : FilterModel<RegisterMC>
 {
-    public FilterField<int> NumberField = new(0, Comparators.None);
+    [FieldFilterName("Number")]
+    public FilterField<int> NumberField { get; set; } = new(0, Comparators.None);
 
-    public FilterField<DateTime> ValidDateField = new(DateTime.Now, Comparators.None);
+    [FieldFilterName("ValidDate")]
+    public FilterField<DateTime> ValidDateField { get; set; } = new(DateTime.Now, Comparators.None);
 
-    public FilterField<int> YearField = new(0, Comparators.None);
+    [FieldFilterName("Year")]
+    public FilterField<int> YearField { get; set; } = new(0, Comparators.None);
 
-    public FilterField<double> PriceField = new(0, Comparators.None);
-
-    [Obsolete("Obsolete")]
+    [FieldFilterName("Price")]
+    public FilterField<double> PriceField { get; set; } = new(0, Comparators.None);
+    
     public override Func<RegisterMC, bool> FilterExpression
     {
         get

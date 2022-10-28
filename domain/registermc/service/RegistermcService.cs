@@ -37,7 +37,6 @@ public class RegistermcService
     
     public List<RegisterMCShort> Read(Page page)
     {
-        // Не может сгенерить sql???
         return RegisterMcMapper.Map<List<RegisterMCShort>>(RegisterMcRepository.Entity
             .Skip(page.Size*page.Number)
             .Take(page.Size)

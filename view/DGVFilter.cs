@@ -12,21 +12,19 @@ public class DgvFilter : Form
     private RegistermcController _registermcController;
 
     private Page _page = new(0, 25);
-    
+
     public DgvFilter(RegistermcController registermcController, FilterFactory factory, FilterMapper filterMapper)
     {
-        _registermcController = registermcController;        
+        _registermcController = registermcController;
         _dg = new(factory, filterMapper);
         InitializeItems();
         AddControls();
     }
-    
+
     private void FillWithFilter(object e, object sender)
     {
-
-        new Thread(() => new AliveOneSecond()).Start();
-            /*_dg.DataSource = null;
-            _dg.FillDataGrid(_registermcController.Read(_page, _dg.GetFilter<RegisterMC>()));*/
+        _dg.DataSource = null;
+        _dg.FillDataGrid(_registermcController.Read(_page, _dg.GetFilter<RegisterMC>()));
     }
 
     private void InitializeItems()

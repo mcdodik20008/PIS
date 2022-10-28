@@ -40,17 +40,17 @@ public class DataGridViewWithFilter<TFilter> : DataGridView where TFilter : Filt
 
     private FilterModel<T> FillFilter<T>(FilterModel<T> filter, List<FilterColumn> filterColumns)
     {
-        var fields = filter.GetType().GetFields();
-        foreach (var field in fields)
+        var properties = filter.GetType().GetProperties();
+        foreach (var property in properties)
         {
-            var filedValue = field.GetValue(filter);
-            MethodInfo updateFilterFieldMethod = filedValue.GetType().GetMethod("UpdateFilter");
-            // TODO: мб переделать
-            var filterColumn = filterColumns.FirstOrDefault(x => field.Name.Contains(x.Name));
+            var value = property.GetValue(filter);
+            MethodInfo updateFilterFieldMethod =  value.GetType().GetMethod("UpdateFilter");
+            var popName = property.GetCustomAttribute<FieldFilterNameAttribute>()?.Name;
+            var filterColumn = filterColumns.FirstOrDefault(x => x.Name.Equals(popName));
             var parameters = filterColumn.Value.Equals("")
                 ? new object[] { _filterMapper, "", "" }
                 : new object[] { _filterMapper, filterColumn.Value, filterColumn.ValueComboBox };
-            updateFilterFieldMethod.Invoke(filedValue, parameters);
+            updateFilterFieldMethod.Invoke(value, parameters);
         }
 
         return filter;
@@ -69,7 +69,6 @@ public class DataGridViewWithFilter<TFilter> : DataGridView where TFilter : Filt
         _popup.AutoSize = true;
         _popup.Margin = Padding.Empty;
         _popup.Padding = Padding.Empty;
-        // TODO: Говно
         var colType = Columns[_columnIndex].ValueType.ToString();
         FillCombobox(_comboBox, colType);
         switch (colType)
@@ -110,7 +109,7 @@ public class DataGridViewWithFilter<TFilter> : DataGridView where TFilter : Filt
         _dateTimeCtrl.CustomFormat = "dd.MM.yyyy";
         _dateTimeCtrl.TextChanged -= DatePicker_TextChanged!;
         _dateTimeCtrl.TextChanged += DatePicker_TextChanged!;
-
+            
         _saveFilterCtrl.Text = "Save filter";
         _saveFilterCtrl.Size = new Size(widthTool, 30);
         _saveFilterCtrl.Click -= SaveFilter_Click!;
@@ -128,8 +127,7 @@ public class DataGridViewWithFilter<TFilter> : DataGridView where TFilter : Filt
         _comboBox.Text = "";
         SaveFilter_Click(sender, e);
     }
-
-    // TODO: мб пепределать
+    
     private void DatePicker_TextChanged(object sender, EventArgs e)
     {
         _textBoxCtrl.Text = _dateTimeCtrl.Text;
