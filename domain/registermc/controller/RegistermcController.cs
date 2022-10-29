@@ -1,4 +1,6 @@
-﻿using PISWF.domain.registermc.model.entity;
+﻿using System.Linq.Expressions;
+using LinqKit;
+using PISWF.domain.registermc.model.entity;
 using PISWF.domain.registermc.model.view;
 using PISWF.domain.registermc.service;
 using PISWF.infrasrtucture.auth.controller;
@@ -18,16 +20,43 @@ public class RegistermcController
         _registermcService = registermcService;
     }
 
-    public List<RegisterMCShort> Read(Page page, Func<RegisterMC, bool> filter)
+    public List<RegisterMCShort> Read(Page page, Expression<Func<RegisterMC, bool>> filter)
     {
-        return _registermcService.Read(page, filter);
+        var user = _authController.AutorizedUser;
+        var userFirstRole = user.Roles.FirstOrDefault();
+        var predicate = PredicateBuilder.True<RegisterMC>().And(filter);
+        if (userFirstRole is not null)
+        {
+            predicate = userFirstRole.Visibility.Rate switch
+            {
+                "Реестра" => predicate,
+                "Муниципальный" => predicate.And(x => x.Municipality.Id.Equals(user.Municipality.Id)),
+                "Организации" => predicate.And(x => x.Organization.Id.Equals(user.Organization.Id))
+            };
+        }
+
+        return _registermcService.Read(page, predicate.Compile());
     }
 
     public List<RegisterMCShort> Read(Page page)
     {
+        var user = _authController.AutorizedUser;
+        var userFirstRole = user.Roles.FirstOrDefault();
+        var pTrue = PredicateBuilder.True<RegisterMC>(); 
+        var predicate = PredicateBuilder.False<RegisterMC>(); 
+        if (userFirstRole is not null)
+        {
+            predicate = userFirstRole.Visibility.Rate switch
+            {
+                "Реестра" => pTrue,
+                "Муниципальный" => pTrue.And(x => x.Municipality.Id.Equals(user.Municipality.Id)),
+                "Организации" => pTrue.And(x => x.Organization.Id.Equals(user.Organization.Id))
+            };
+        }
+
         return _registermcService.Read(page);
     }
-    
+
     public RegisterMCLong Read(long id)
     {
         return _registermcService.Read(id);

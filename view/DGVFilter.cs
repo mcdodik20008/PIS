@@ -2,6 +2,9 @@
 using pis.infrasrtucture.filter.impl;
 using PISWF.domain.registermc.controller;
 using PISWF.domain.registermc.model.entity;
+using PISWF.infrasrtucture.auth.controller;
+using PISWF.infrasrtucture.auth.model.entity;
+using PISWF.infrasrtucture.auth.model.view;
 using PISWF.infrasrtucture.filter;
 using PISWF.infrasrtucture.page;
 
@@ -11,10 +14,14 @@ public class DgvFilter : Form
 {
     private RegistermcController _registermcController;
 
+    private AuthController _authController;
+    
     private Page _page = new(0, 25);
 
-    public DgvFilter(RegistermcController registermcController, FilterFactory factory, FilterMapper filterMapper)
+    public DgvFilter(RegistermcController registermcController, AuthController authController, FilterFactory factory, FilterMapper filterMapper)
     {
+        _authController = authController; 
+        authController.Authorization(new UserBasic("admin", "1234"));
         _registermcController = registermcController;
         _dg = new(factory, filterMapper);
         InitializeItems();
@@ -34,7 +41,9 @@ public class DgvFilter : Form
         _passwordBox.Location = new Point(650, 150);
         _createUserButton.Location = new Point(650, 200);
         _createUserButton.Click += FillWithFilter;
+        // TODO: почему-то первый раз с фильтром не рабоитает???
         _dg.FillDataGrid(_registermcController.Read(_page));
+        _dg.FillDataGrid(_registermcController.Read(_page, _dg.GetFilter<RegisterMC>()));
         _dg.Bounds = new Rectangle(0, 0, 600, 600);
         _dg.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom;
         _dg.AllowUserToAddRows = false;

@@ -1,7 +1,9 @@
-﻿using PISWF.domain.registermc.context.repository;
+﻿using Microsoft.EntityFrameworkCore;
+using PISWF.domain.registermc.context.repository;
 using PISWF.domain.registermc.model.entity;
 using PISWF.domain.registermc.model.mapper;
 using PISWF.domain.registermc.model.view;
+using PISWF.infrasrtucture.auth.controller;
 using PISWF.infrasrtucture.page;
 
 namespace PISWF.domain.registermc.service;
@@ -38,13 +40,15 @@ public class RegistermcService
     public List<RegisterMCShort> Read(Page page)
     {
         return RegisterMcMapper.Map<List<RegisterMCShort>>(RegisterMcRepository.Entity
+            .Include(x => x.Organization)
+            .Include(x => x.Municipality)
             .Skip(page.Size*page.Number)
             .Take(page.Size)
         );
     }
-
+    // TODO: Ограничение по ролям
     public List<RegisterMCShort> Read(Page page, Func<RegisterMC, bool> filter)
-    {
+    { 
         return RegisterMcMapper.Map<List<RegisterMCShort>>(RegisterMcRepository.Entity
                 .Where(filter)
                 .Skip(page.Size*page.Number)
@@ -54,7 +58,12 @@ public class RegistermcService
     
     public RegisterMCLong Read(long id)
     {
-        return RegisterMcMapper.Map<RegisterMCLong>(RegisterMcRepository.Entity.Find(id));
+        return RegisterMcMapper.Map<RegisterMCLong>(RegisterMcRepository.Entity
+            .Include(x => x.Organization)
+            .Include(x => x.Municipality)
+            .Include(x => x.Documents)
+            .FirstOrDefault(x => x.Equals(id))
+        );
     }
 
     public RegisterMCShort Create(RegisterMCShort view)

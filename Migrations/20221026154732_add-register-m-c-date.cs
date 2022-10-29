@@ -16,8 +16,8 @@ namespace PISWF.Migrations
             var numbers = Enumerable.Range(0, valuesCount).Select(x => rnd.Next(0, 1000).ToString()).ToArray();
             var date = Enumerable.Range(0, valuesCount).Select(x => 
                 Trash.RndDate(DateTime.Now.AddYears(-2), DateTime.Now).ToString().Substring(0, 10).Split('.')).ToArray();
-            var organizations = Enumerable.Range(0, valuesCount).Select(x => rnd.Next(1, 4).ToString()).ToArray();
-            var municipality = Enumerable.Range(0, valuesCount).Select(x => rnd.Next(1, 4).ToString()).ToArray();
+            var organizations = Enumerable.Range(0, valuesCount).Select(x => rnd.Next(1, 5).ToString()).ToArray();
+            var municipality = Enumerable.Range(0, valuesCount).Select(x => rnd.Next(1, 5).ToString()).ToArray();
             var year = Enumerable.Range(0, valuesCount).Select(x => rnd.Next(2010, 2022).ToString()).ToArray();
             var price = Enumerable.Range(0, valuesCount).Select(x => rnd.Next(100000, 5000000).ToString()).ToArray();
             var subvention_share = Enumerable.Range(0, valuesCount).Select(x => new Random(x).Next(100000, 5000000).ToString()).ToArray();

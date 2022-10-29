@@ -3,8 +3,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PISWF.infrasrtucture.auth.model.entity;
 
-[Table("role")]
-public class Role
+[Table("visibility")]
+public class Visibility
 {
     [Key]
     [Required]
@@ -12,12 +12,6 @@ public class Role
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public long Id { get; set; }
 
-    [Column("name")]
-    public string? Name { get; set; }
-
-    [Column("visibility_id")]
-    public Visibility? Visibility { get; set; }
-    
-    [Column("users")]
-    public List<User>? Users { get; set; }
+    [Column("rate")]
+    public string? Rate { get; set; }
 }

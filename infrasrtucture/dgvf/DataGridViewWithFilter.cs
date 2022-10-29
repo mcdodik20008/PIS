@@ -1,4 +1,5 @@
 ﻿using System.Data;
+using System.Linq.Expressions;
 using System.Reflection;
 using DGVWF;
 using pis.infrasrtucture.filter.impl;
@@ -30,12 +31,11 @@ public class DataGridViewWithFilter<TFilter> : DataGridView where TFilter : Filt
         _filterMapper = filterMapper;
     }
 
-    public Func<TObject, bool> GetFilter<TObject>()
+    public Expression<Func<TObject, bool>> GetFilter<TObject>()
     {
         var filter = _filter as FilterModel<TObject>;
         filter = FillFilter(filter, _filterColumns);
-        var res = filter.FilterExpression;
-        return res;
+        return filter.FilterExpression();
     }
 
     private FilterModel<T> FillFilter<T>(FilterModel<T> filter, List<FilterColumn> filterColumns)
@@ -47,7 +47,7 @@ public class DataGridViewWithFilter<TFilter> : DataGridView where TFilter : Filt
             MethodInfo updateFilterFieldMethod =  value.GetType().GetMethod("UpdateFilter");
             var popName = property.GetCustomAttribute<FieldFilterNameAttribute>()?.Name;
             var filterColumn = filterColumns.FirstOrDefault(x => x.Name.Equals(popName));
-            var parameters = filterColumn.Value.Equals("")
+            var parameters = Equals(filterColumn, null) || Equals(filterColumn.Value, "")
                 ? new object[] { _filterMapper, "", "" }
                 : new object[] { _filterMapper, filterColumn.Value, filterColumn.ValueComboBox };
             updateFilterFieldMethod.Invoke(value, parameters);

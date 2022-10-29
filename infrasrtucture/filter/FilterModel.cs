@@ -1,11 +1,13 @@
-﻿namespace PISWF.infrasrtucture.filter;
+﻿using System.Linq.Expressions;
 
-public abstract class FilterModel
+namespace PISWF.infrasrtucture.filter;
+
+public interface FilterModel
 {
-    public abstract void Reset();
+    void Reset();
 }
 
-public abstract class FilterModel<T> : FilterModel
+public interface FilterModel<T> : FilterModel
 {
-    public abstract Func<T, bool> FilterExpression { get; }
+    Expression<Func<T, bool>> FilterExpression();
 }

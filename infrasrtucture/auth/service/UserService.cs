@@ -1,4 +1,5 @@
-﻿using PISWF.infrasrtucture.auth.context.repository;
+﻿using Microsoft.EntityFrameworkCore;
+using PISWF.infrasrtucture.auth.context.repository;
 using PISWF.infrasrtucture.auth.model.entity;
 using PISWF.infrasrtucture.auth.model.mapper;
 using PISWF.infrasrtucture.auth.model.view;
@@ -31,7 +32,12 @@ public class UserService
     {
         var hash = userShort.Password;
         var predicate = new Func<User, bool>(x => x.Login!.Equals(userShort.Login) && x.Password.Equals(hash));
-        var user = UserRepository.Entity.Where(predicate).FirstOrDefault();
+        var user = UserRepository.Entity
+            .Include(x => x.Roles)
+            .ThenInclude(y => y.Visibility)
+            .Include(x => x.Organization)
+            .Include(x => x.Municipality)
+            .FirstOrDefault(predicate);
         return user ?? throw new UnauthorizedAccessException("Ошибка в логине или пароле");
     }
 
@@ -62,5 +68,10 @@ public class UserService
         UserRepository.Entity.Remove(user);
         UserRepository.SaveChanges();
         return user;
+    }
+
+    public List<Role> ReadRole()
+    {
+        return RoleRepository.Entity.ToList();
     }
 }

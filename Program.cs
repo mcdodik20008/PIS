@@ -1,5 +1,9 @@
 using LightInject;
 using pis.infrasrtucture.filter.impl;
+using PISWF.infrasrtucture.auth.controller;
+using PISWF.infrasrtucture.auth.model.entity;
+using PISWF.infrasrtucture.auth.model.view;
+using PISWF.infrasrtucture.auth.service;
 using PISWF.infrasrtucture.filter;
 using PISWF.infrasrtucture.logger.controller;
 using PISWF.infrasrtucture.page;
@@ -17,9 +21,9 @@ public static class Program
     public static void Main(string[] args)
     {
         var container = new AppContainer();
-        Application.EnableVisualStyles();
-        Application.SetCompatibleTextRenderingDefault(false);
-        Application.Run(container.GetInstance<DgvFilter>());
+           Application.EnableVisualStyles();
+           Application.SetCompatibleTextRenderingDefault(false);
+           Application.Run(container.GetInstance<DgvFilter>());
     }
     
 }
