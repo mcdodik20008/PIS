@@ -14,11 +14,11 @@ namespace PISWF.Migrations
             migrationBuilder.Sql("INSERT INTO \"user\" (login, \"password\", \"MunicipalityId\") VALUES ('muni2', 90120, 2)");
             migrationBuilder.Sql("INSERT INTO \"user\" (login, \"password\", \"MunicipalityId\") VALUES ('admin', 90120, 4)");
             
-            migrationBuilder.Sql("INSERT INTO \"RoleUser\"  VALUES (2, 'muni1')");
-            migrationBuilder.Sql("INSERT INTO \"RoleUser\"  VALUES (2, 'muni2')");
-            migrationBuilder.Sql("INSERT INTO \"RoleUser\"  VALUES (3, 'org1')");
-            migrationBuilder.Sql("INSERT INTO \"RoleUser\"  VALUES (3, 'org2')");
-            migrationBuilder.Sql("INSERT INTO \"RoleUser\"  VALUES (1, 'admin')");
+            migrationBuilder.Sql("INSERT INTO \"RoleUser\"  VALUES (1, 'muni1')");
+            migrationBuilder.Sql("INSERT INTO \"RoleUser\"  VALUES (8, 'muni2')");
+            migrationBuilder.Sql("INSERT INTO \"RoleUser\"  VALUES (4, 'org1')");
+            migrationBuilder.Sql("INSERT INTO \"RoleUser\"  VALUES (10, 'org2')");
+            migrationBuilder.Sql("INSERT INTO \"RoleUser\"  VALUES (2, 'admin')");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
