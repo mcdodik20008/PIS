@@ -33,4 +33,10 @@ public class UserAuth
         Login = login;
         this.password = password;
     }
+    
+    public UserAuth(string? login, string password)
+    {
+        Login = login;
+        this.password = password;
+    }
 }

@@ -24,14 +24,14 @@ public class UserService
 
     public User Authorization(string login, string password)
     {
-        var userShort = new UserBasic(login, password);
-        return Authorization(userShort);
+        var userBasic = new UserAuth(login, password);
+        return Authorization(userBasic);
     }
 
-    public User Authorization(UserBasic userShort)
+    public User Authorization(UserAuth userAuth)
     {
-        var hash = userShort.Password;
-        var predicate = new Func<User, bool>(x => x.Login!.Equals(userShort.Login) && x.Password.Equals(hash));
+        var hash = userAuth.Password;
+        var predicate = new Func<User, bool>(x => x.Login!.Equals(userAuth.Login) && x.Password.Equals(hash));
         var user = UserRepository.Entity
             .Include(x => x.Roles)
             .ThenInclude(y => y.Visibility)
@@ -47,9 +47,9 @@ public class UserService
         return UserMapper.Map<List<UserAuth>>(entity);
     }
 
-    public User Add(UserBasic userShort)
+    public User Add(UserBasic userBasic)
     {
-        var user = UserMapper.Map<User>(userShort);
+        var user = UserMapper.Map<User>(userBasic);
         UserRepository.Entity.Add(user);
         UserRepository.SaveChanges();
         return user;
@@ -62,9 +62,9 @@ public class UserService
         return user;
     }
 
-    public User Delete(UserBasic userShort)
+    public User Delete(UserBasic userBasic)
     {
-        var user = UserMapper.Map<User>(userShort);
+        var user = UserMapper.Map<User>(userBasic);
         UserRepository.Entity.Remove(user);
         UserRepository.SaveChanges();
         return user;

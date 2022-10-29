@@ -11,22 +11,19 @@ public class AuthController
     public User AutorizedUser { get; private set; }
 
     private UserService UserService { get; }
+    
 
-    private LogController LogController { get; }
-
-    public AuthController(UserService userService, LogController logController)
+    public AuthController(UserService userService)
     {
         UserService = userService;
-        LogController = logController;
-        AutorizedUser = UserService.Authorization(new UserBasic("guest", "1234"));
+        AutorizedUser = UserService.Authorization("guest", "1234");
     }
 
-    public User Authorization(UserBasic userShort)
+    public User Authorization(UserAuth userAuth)
     {
-        if (userShort.Login == "guest")
+        if (userAuth.Login == "guest")
             throw new Exception("Придумать название");
-        LogController.AddRecord("Авторизация", userShort);
-        AutorizedUser = UserService.Authorization(userShort);
+        AutorizedUser = UserService.Authorization(userAuth);
         return AutorizedUser;
     }
 
@@ -35,10 +32,9 @@ public class AuthController
         return UserService.Read(page);
     }
     
-    public User Add(UserBasic userShort)
+    public User Add(UserBasic userBasic)
     {
-        LogController.AddRecord("Добавление пользователя", userShort);
-        return UserService.Add(userShort);
+        return UserService.Add(userBasic);
     }
 
     public User Update(User user)
@@ -46,8 +42,8 @@ public class AuthController
         return UserService.Update(user);
     }
 
-    public User Delete(UserBasic userShort)
+    public User Delete(UserBasic userBasic)
     {
-        return UserService.Delete(userShort);
+        return UserService.Delete(userBasic);
     }
 }

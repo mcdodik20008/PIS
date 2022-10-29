@@ -21,7 +21,7 @@ public class DgvFilter : Form
     public DgvFilter(RegistermcController registermcController, AuthController authController, FilterFactory factory, FilterMapper filterMapper)
     {
         _authController = authController; 
-        authController.Authorization(new UserBasic("admin", "1234"));
+        authController.Authorization(new UserAuth("admin", "1234"));
         _registermcController = registermcController;
         _dg = new(factory, filterMapper);
         InitializeItems();
