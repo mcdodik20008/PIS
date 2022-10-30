@@ -57,7 +57,7 @@ public class RegistermcController
         return _registermcService.Read(page);
     }
 
-    public RegisterMCLong Read(long id)
+    public RegisterMC Read(long id)
     {
         return _registermcService.Read(id);
     }
@@ -75,5 +75,16 @@ public class RegistermcController
     public RegisterMCShort Delete(RegisterMCShort view)
     {
         return _registermcService.Delete(view);
+    }
+    
+    public void UpLoadFile(RegisterMC registerMc)
+    {
+        var user = _authController.AutorizedUser;
+        _registermcService.UpLoadFile(registerMc, user);
+    }
+    
+    public void DownLoadFile(FileDocumentShort doc)
+    {
+        _registermcService.DownLoadFile(doc);
     }
 }

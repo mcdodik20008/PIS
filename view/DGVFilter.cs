@@ -32,6 +32,7 @@ public class DgvFilter : Form
     {
         _dg.DataSource = null;
         _dg.FillDataGrid(_registermcController.Read(_page, _dg.GetFilter<RegisterMC>()));
+        _registermcController.UpLoadFile(_registermcController.Read(1));
     }
 
     private void InitializeItems()
@@ -63,6 +64,7 @@ public class DgvFilter : Form
     private TextBox _nameBox = new();
     private TextBox _passwordBox = new();
     private Button _createUserButton = new();
+    private Panel _panel = new();
 
     #endregion
 }
