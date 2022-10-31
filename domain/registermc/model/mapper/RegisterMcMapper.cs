@@ -21,9 +21,4 @@ public class RegisterMcMapper : Mapper
     public RegisterMcMapper(IConfigurationProvider configurationProvider) : base(configurationProvider)
     {
     }
-
-    public override string ToString()
-    {
-        return "Маппер";
-    }
 }

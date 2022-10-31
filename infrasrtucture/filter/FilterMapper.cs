@@ -17,9 +17,4 @@ public class FilterMapper : Mapper
             }))
     {
     }
-
-    public FilterMapper(IConfigurationProvider configuration) : base(configuration)
-    {
-        configuration.AssertConfigurationIsValid();
-    }
 }

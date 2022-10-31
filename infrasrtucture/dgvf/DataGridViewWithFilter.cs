@@ -7,6 +7,7 @@ using PISWF.infrasrtucture.filter;
 
 namespace pis.infrasrtucture.dgvf;
 
+// TODO: refactor
 public class DataGridViewWithFilter<TFilter> : DataGridView where TFilter : FilterModel
 {
     private int _columnIndex;

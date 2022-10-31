@@ -50,8 +50,7 @@ public class UserService
     public User Add(UserBasic userBasic)
     {
         var user = UserMapper.Map<User>(userBasic);
-        UserRepository.Entity.Add(user);
-        UserRepository.SaveChanges();
+        UserRepository.AddAndSave(user);
         return user;
     }
 

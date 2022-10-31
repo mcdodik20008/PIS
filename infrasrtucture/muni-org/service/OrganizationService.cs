@@ -30,14 +30,14 @@ public class OrganizationService
     public OrganizationShort Add(OrganizationShort organizationShort)
     {
         var organization = Mapper.Map<Organization>(organizationShort);
-        Repository.UpdateAndSave(organization);
+        Repository.AddAndSave(organization);
         return organizationShort;
     }
     
     public OrganizationShort Update(OrganizationShort organizationShort)
     {
         var organization = Mapper.Map<Organization>(organizationShort);
-        Repository.UpdateAndSave(organization);
+        Repository.AddAndSave(organization);
         return organizationShort;
     }
     

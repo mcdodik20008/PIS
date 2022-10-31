@@ -10,9 +10,9 @@ public class LogController
 {
     private LogService LogService { get; set; }
     
-    private Lazy<AuthController> AuthController { get; set; }
+    private AuthController AuthController { get; set; }
 
-    public LogController(LogService logService,  Lazy<AuthController> authController)
+    public LogController(LogService logService,  AuthController authController)
     {
         LogService = logService;
         AuthController = authController;
@@ -29,7 +29,7 @@ public class LogController
         {
             MethodName = methodName, 
             JsonEntity = JsonSerializer.Serialize(jsonEntity), 
-            Author = AuthController.Value.AutorizedUser,
+            Author = AuthController.AutorizedUser,
             LogDate = DateTime.Now
         };
         return LogService.AddRecord(log);

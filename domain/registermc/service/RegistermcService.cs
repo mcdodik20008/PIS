@@ -48,8 +48,7 @@ public class RegistermcService
             .Take(page.Size)
         );
     }
-
-    // TODO: Ограничение по ролям
+    
     public List<RegisterMCShort> Read(Page page, Func<RegisterMC, bool> filter)
     {
         return RegisterMcMapper.Map<List<RegisterMCShort>>(RegisterMcRepository.Entity
@@ -72,16 +71,17 @@ public class RegistermcService
     public RegisterMCShort Create(RegisterMCShort view)
     {
         var entity = RegisterMcMapper.Map<RegisterMC>(view);
-        RegisterMcRepository.UpdateAndSave(entity);
+        RegisterMcRepository.AddAndSave(entity);
         return view;
     }
 
+    // TODO: тестить
     public RegisterMCLong Update(long id, RegisterMCLong view)
     {
         view.Id = id;
         var register = RegisterMcRepository.Entity.Find(id);
         register = RegisterMcMapper.Map(view, register);
-        RegisterMcRepository.UpdateAndSave(register);
+        RegisterMcRepository.AddAndSave(register);
         return view;
     }
 
@@ -92,6 +92,7 @@ public class RegistermcService
         return view;
     }
 
+    // TODO: Рефакторить
     public void UpLoadFile(RegisterMC register, User user)
     {
         var date = DateTime.Now.ToString()
