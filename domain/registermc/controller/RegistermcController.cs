@@ -40,21 +40,7 @@ public class RegistermcController
 
     public List<RegisterMCShort> Read(Page page)
     {
-        var user = _authController.AutorizedUser;
-        var userFirstRole = user.Roles.FirstOrDefault();
-        var pTrue = PredicateBuilder.True<RegisterMC>(); 
-        var predicate = PredicateBuilder.False<RegisterMC>(); 
-        if (userFirstRole is not null)
-        {
-            predicate = userFirstRole.Visibility.Rate switch
-            {
-                "Реестра" => pTrue,
-                "Муниципальный" => pTrue.And(x => x.Municipality.Id.Equals(user.Municipality.Id)),
-                "Организации" => pTrue.And(x => x.Organization.Id.Equals(user.Organization.Id))
-            };
-        }
-
-        return _registermcService.Read(page);
+        return _registermcService.Read(new Page(0, 0));
     }
 
     public RegisterMC Read(long id)

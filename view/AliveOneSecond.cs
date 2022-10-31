@@ -7,7 +7,6 @@ public class AliveOneSecond : Form
     
     public AliveOneSecond()
     {
-        // TODO: Как разместить форму слева снизу?
         Location = new Point(900, 900);
         pb.Maximum = (int)ms;
         pb.Dock = DockStyle.Bottom;
@@ -15,7 +14,8 @@ public class AliveOneSecond : Form
         Size = new Size(200, 200);
         FormBorderStyle = FormBorderStyle.None;
         StartPosition = FormStartPosition.Manual;
-        Location = new Point(0, 0);
+        Rectangle screenSize = Screen.PrimaryScreen.Bounds;
+        Location = new Point(screenSize.Width - Width, screenSize.Height - Height);
         Show();
         TimerToDie();
     }

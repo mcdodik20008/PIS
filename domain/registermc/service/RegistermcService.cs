@@ -10,8 +10,6 @@ using PISWF.infrasrtucture.page;
 
 namespace PISWF.domain.registermc.service;
 
-// TODO: Не забыть только апдатать, сохранение на отдельную кнопку
-
 public class RegistermcService
 {
     private FileDocumentMapper FileDocumentMapper { get; }
@@ -48,8 +46,7 @@ public class RegistermcService
             .Take(page.Size)
         );
     }
-
-    // TODO: Ограничение по ролям
+    
     public List<RegisterMCShort> Read(Page page, Func<RegisterMC, bool> filter)
     {
         return RegisterMcMapper.Map<List<RegisterMCShort>>(RegisterMcRepository.Entity

@@ -30,9 +30,10 @@ public class DgvFilter : Form
 
     private void FillWithFilter(object e, object sender)
     {
-        _dg.DataSource = null;
-        _dg.FillDataGrid(_registermcController.Read(_page, _dg.GetFilter<RegisterMC>()));
-        _registermcController.UpLoadFile(_registermcController.Read(1));
+        new Thread(() => new AliveOneSecond()).Start();
+        /* _dg.DataSource = null;
+         _dg.FillDataGrid(_registermcController.Read(_page, _dg.GetFilter<RegisterMC>()));
+         _registermcController.UpLoadFile(_registermcController.Read(1));*/
     }
 
     private void InitializeItems()

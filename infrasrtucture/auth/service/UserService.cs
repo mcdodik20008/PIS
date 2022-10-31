@@ -69,9 +69,4 @@ public class UserService
         UserRepository.SaveChanges();
         return user;
     }
-
-    public List<Role> ReadRole()
-    {
-        return RoleRepository.Entity.ToList();
-    }
 }
