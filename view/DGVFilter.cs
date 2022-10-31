@@ -18,9 +18,9 @@ public class DgvFilter : Form
     
     private Page _page = new(0, 25);
 
-    public DgvFilter(RegistermcController registermcController, AuthController authController, FilterFactory factory, FilterMapper filterMapper)
+    public DgvFilter(RegistermcController registermcController, AuthController authController, IFilterFactory factory, FilterMapper filterMapper)
     {
-        _authController = authController; 
+        _authController = authController;
         authController.Authorization(new UserAuth("admin", "1234"));
         _registermcController = registermcController;
         _dg = new(factory, filterMapper);
@@ -32,7 +32,7 @@ public class DgvFilter : Form
     {
         _dg.DataSource = null;
         _dg.FillDataGrid(_registermcController.Read(_page, _dg.GetFilter<RegisterMC>()));
-        _registermcController.UpLoadFile(_registermcController.Read(1));
+        //_registermcController.UpLoadFile(_registermcController.Read(1));
     }
 
     private void InitializeItems()
