@@ -53,7 +53,7 @@ public class RegistermcService
     {
         return RegisterMcMapper.Map<List<RegisterMCShort>>(RegisterMcRepository.Entity
             .Where(filter)
-            .OrderBy(x => x, new RegisterMcComparer<RegisterMC>(sortParameters))
+            .OrderBy(x => x, new UltimateComparer<RegisterMC>(sortParameters))
             .Skip(page.Size * page.Number)
             .Take(page.Size)
         );

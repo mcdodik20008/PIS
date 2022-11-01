@@ -1,14 +1,13 @@
-﻿using System.Reflection;
-using PISWF.domain.registermc.service;
+﻿using PISWF.domain.registermc.service;
 
 namespace PISWF.domain.registermc.model.entity;
 
-public class RegisterMcComparer<T> : IComparer<T>
+public class UltimateComparer<T> : IComparer<T>
 {
     private SortParameters<RegisterMC> _sortParameters;
 
     
-    public RegisterMcComparer(SortParameters<RegisterMC> sortParameters)
+    public UltimateComparer(SortParameters<RegisterMC> sortParameters)
     {
         _sortParameters = sortParameters;
     }
@@ -19,7 +18,7 @@ public class RegisterMcComparer<T> : IComparer<T>
         if (ReferenceEquals(null, y)) return 1;
         if (ReferenceEquals(null, x)) return -1;
 
-        foreach (var sortParameter in _sortParameters.NameSortColumns)
+        foreach (var sortParameter in _sortParameters.list)
         {
             var property = sortParameter.Property;
             try

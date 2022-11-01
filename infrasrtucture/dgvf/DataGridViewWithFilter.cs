@@ -229,6 +229,6 @@ public class DataGridViewWithFilter<TFilter> : DataGridView where TFilter : Filt
 
     public SortParameters<T> SortParameters<T>()
     {
-        return null;
+        throw new NotImplementedException();
     }
 }

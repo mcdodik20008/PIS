@@ -2,5 +2,5 @@
 
 public class SortParameters<T>
 {
-    public List<SortParameter> NameSortColumns { get; } = new();
+    public List<SortParameter> list { get; } = new();
 }
