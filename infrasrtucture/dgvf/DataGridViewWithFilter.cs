@@ -3,6 +3,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using DGVWF;
 using pis.infrasrtucture.filter.impl;
+using PISWF.domain.registermc.service;
 using PISWF.infrasrtucture.filter;
 
 namespace pis.infrasrtucture.dgvf;
@@ -14,6 +15,7 @@ public class DataGridViewWithFilter<TFilter> : DataGridView where TFilter : Filt
     private readonly TFilter _filter;
     private readonly FilterMapper _filterMapper;
     private readonly List<FilterColumn> _filterColumns = new();
+    private readonly List<string> sortColumns = new();
 
     #region formelements
 
@@ -30,7 +32,25 @@ public class DataGridViewWithFilter<TFilter> : DataGridView where TFilter : Filt
     {
         _filter = factory.Find<TFilter>();
         _filterMapper = filterMapper;
+        ColumnHeaderMouseClick += (o, e) =>
+        {
+            if (o is DataGridView grid)
+            {
+                string colName = grid.Columns[e.ColumnIndex].DataPropertyName;
+
+                sortColumns.Remove(colName);
+                sortColumns.Add(colName);
+                string sortExpr = "";
+                foreach (string c in sortColumns)
+                    sortExpr = c + "," + sortExpr;
+                if (grid.DataSource is DataTable table)
+                {
+                    table.DefaultView.Sort = sortExpr.Trim(',');
+                }
+            }
+        };
     }
+
 
     public Expression<Func<TObject, bool>> GetFilter<TObject>()
     {
@@ -45,7 +65,7 @@ public class DataGridViewWithFilter<TFilter> : DataGridView where TFilter : Filt
         foreach (var property in properties)
         {
             var value = property.GetValue(filter);
-            MethodInfo updateFilterFieldMethod =  value.GetType().GetMethod("UpdateFilter");
+            MethodInfo updateFilterFieldMethod = value.GetType().GetMethod("UpdateFilter");
             var popName = property.GetCustomAttribute<FieldFilterNameAttribute>()?.Name;
             var filterColumn = filterColumns.FirstOrDefault(x => x.Name.Equals(popName));
             var parameters = Equals(filterColumn, null) || Equals(filterColumn.Value, "")
@@ -110,7 +130,7 @@ public class DataGridViewWithFilter<TFilter> : DataGridView where TFilter : Filt
         _dateTimeCtrl.CustomFormat = "dd.MM.yyyy";
         _dateTimeCtrl.TextChanged -= DatePicker_TextChanged!;
         _dateTimeCtrl.TextChanged += DatePicker_TextChanged!;
-            
+
         _saveFilterCtrl.Text = "Save filter";
         _saveFilterCtrl.Size = new Size(widthTool, 30);
         _saveFilterCtrl.Click -= SaveFilter_Click!;
@@ -128,7 +148,7 @@ public class DataGridViewWithFilter<TFilter> : DataGridView where TFilter : Filt
         _comboBox.Text = "";
         SaveFilter_Click(sender, e);
     }
-    
+
     private void DatePicker_TextChanged(object sender, EventArgs e)
     {
         _textBoxCtrl.Text = _dateTimeCtrl.Text;
@@ -203,6 +223,12 @@ public class DataGridViewWithFilter<TFilter> : DataGridView where TFilter : Filt
         var header = new DataGridFilterHeader();
         header.FilterButtonClicked += Header_FilterButtonClicked!;
         e.Column.HeaderCell = header;
+        e.Column.SortMode = DataGridViewColumnSortMode.NotSortable;
         base.OnColumnAdded(e);
+    }
+
+    public SortPatemeters<T> SortParameters<T>()
+    {
+        throw new NotImplementedException();
     }
 }

@@ -20,7 +20,7 @@ public class RegistermcController
         _registermcService = registermcService;
     }
 
-    public List<RegisterMCShort> Read(Page page, Expression<Func<RegisterMC, bool>> filter)
+    public List<RegisterMCShort> Read(Page page, Expression<Func<RegisterMC, bool>> filter, SortPatemeters<RegisterMC> sortParameters)
     {
         var user = _authController.AutorizedUser;
         var userFirstRole = user.Roles.FirstOrDefault();
@@ -35,7 +35,7 @@ public class RegistermcController
             };
         }
 
-        return _registermcService.Read(page, predicate.Compile());
+        return _registermcService.Read(page, predicate.Compile(), sortParameters);
     }
 
     public List<RegisterMCShort> Read(Page page)
