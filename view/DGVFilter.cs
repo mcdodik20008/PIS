@@ -31,7 +31,7 @@ public class DgvFilter : Form
     private void FillWithFilter(object e, object sender)
     {
         _dg.DataSource = null;
-        _dg.FillDataGrid(_registermcController.Read(_page, _dg.GetFilter<RegisterMC>(), _dg.SortParameters<RegisterMC>()));
+        _dg.FillDataGrid(_registermcController.Read(_page, _dg.GetFilter<RegisterMC>(), _dg.GetSortParameters<RegisterMC>()));
         //_registermcController.UpLoadFile(_registermcController.Read(1));
     }
 
@@ -44,7 +44,7 @@ public class DgvFilter : Form
         _createUserButton.Click += FillWithFilter;
         // TODO: почему-то первый раз с фильтром не рабоитает???
         _dg.FillDataGrid(_registermcController.Read(_page));
-        _dg.FillDataGrid(_registermcController.Read(_page, _dg.GetFilter<RegisterMC>(), _dg.SortParameters<RegisterMC>()));
+        _dg.FillDataGrid(_registermcController.Read(_page, _dg.GetFilter<RegisterMC>(), _dg.GetSortParameters<RegisterMC>()));
         _dg.Bounds = new Rectangle(0, 0, 600, 600);
         _dg.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom;
         _dg.AllowUserToAddRows = false;

@@ -26,7 +26,7 @@ public class UltimateComparer<T> : IComparer<T>
                 var valueX = property.GetValue(x) as IComparable;
                 var valueY = property.GetValue(y) as IComparable;
 
-                var result = (valueX).CompareTo(valueY);
+                var result = valueX.CompareTo(valueY);
                 if (result != 0)
                     return sortParameter.IsAscending ? result : -result;
             }

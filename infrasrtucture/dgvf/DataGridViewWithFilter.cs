@@ -228,7 +228,7 @@ public class DataGridViewWithFilter<TFilter> : DataGridView where TFilter : Filt
     }
 
     // Сам решай нужен ли дженерик параметр
-    public SortParameters SortParameters<T>()
+    public SortParameters GetSortParameters<T>()
     {
         throw new NotImplementedException();
     }
