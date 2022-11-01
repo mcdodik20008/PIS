@@ -49,7 +49,7 @@ public class RegistermcService
         );
     }
     
-    public List<RegisterMCShort> Read(Page page, Func<RegisterMC, bool> filter, SortParameters<RegisterMC> sortParameters)
+    public List<RegisterMCShort> Read(Page page, Func<RegisterMC, bool> filter, SortParameters sortParameters)
     {
         return RegisterMcMapper.Map<List<RegisterMCShort>>(RegisterMcRepository.Entity
             .Where(filter)

@@ -4,10 +4,10 @@ namespace PISWF.domain.registermc.model.entity;
 
 public class UltimateComparer<T> : IComparer<T>
 {
-    private SortParameters<RegisterMC> _sortParameters;
+    private SortParameters _sortParameters;
 
     
-    public UltimateComparer(SortParameters<RegisterMC> sortParameters)
+    public UltimateComparer(SortParameters sortParameters)
     {
         _sortParameters = sortParameters;
     }
