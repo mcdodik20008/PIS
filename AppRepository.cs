@@ -24,8 +24,9 @@ public abstract class AppRepository<T> where T : class
         SaveChanges = appDbContext.SaveChanges;
     }
     
-    public void UpdateAndSave(T entity)
+    public void AddAndSave(T entity)
     {
-        Entity.Update(entity);
+        Entity.Add(entity);
+        SaveChanges();
     }
 }

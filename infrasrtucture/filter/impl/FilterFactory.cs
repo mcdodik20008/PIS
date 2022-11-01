@@ -16,7 +16,8 @@ public class FilterFactory : IFilterFactory
     
     public TFilter Find<TFilter>() where TFilter : FilterModel
     {
-        if (Collection.FirstOrDefault(f => f is TFilter) is TFilter filter){
+        if (Collection.FirstOrDefault(f => f is TFilter) is TFilter filter)
+        {
             return filter;
         }
         AddNew<TFilter>();
