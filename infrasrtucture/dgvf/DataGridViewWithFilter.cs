@@ -227,8 +227,8 @@ public class DataGridViewWithFilter<TFilter> : DataGridView where TFilter : Filt
         base.OnColumnAdded(e);
     }
 
-    public SortPatemeters<T> SortParameters<T>()
+    public SortParameters<T> SortParameters<T>()
     {
-        throw new NotImplementedException();
+        return null;
     }
 }

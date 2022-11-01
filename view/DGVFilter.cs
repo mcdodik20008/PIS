@@ -16,7 +16,7 @@ public class DgvFilter : Form
 
     private AuthController _authController;
     
-    private Page _page = new(0, 100);
+    private Page _page = new(0, 25);
 
     public DgvFilter(RegistermcController registermcController, AuthController authController, IFilterFactory factory, FilterMapper filterMapper)
     {

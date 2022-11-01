@@ -20,7 +20,7 @@ public class RegistermcController
         _registermcService = registermcService;
     }
 
-    public List<RegisterMCShort> Read(Page page, Expression<Func<RegisterMC, bool>> filter, SortPatemeters<RegisterMC> sortParameters)
+    public List<RegisterMCShort> Read(Page page, Expression<Func<RegisterMC, bool>> filter, SortParameters<RegisterMC> sortParameters)
     {
         var user = _authController.AutorizedUser;
         var userFirstRole = user.Roles.FirstOrDefault();

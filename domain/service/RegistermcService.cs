@@ -49,11 +49,11 @@ public class RegistermcService
         );
     }
     
-    public List<RegisterMCShort> Read(Page page, Func<RegisterMC, bool> filter, SortPatemeters<RegisterMC> sortParameters)
+    public List<RegisterMCShort> Read(Page page, Func<RegisterMC, bool> filter, SortParameters<RegisterMC> sortParameters)
     {
         return RegisterMcMapper.Map<List<RegisterMCShort>>(RegisterMcRepository.Entity
             .Where(filter)
-            .OrderBy(x => x, new RegisterMcComparer(sortParameters))
+            .OrderBy(x => x, new RegisterMcComparer<RegisterMC>(sortParameters))
             .Skip(page.Size * page.Number)
             .Take(page.Size)
         );
