@@ -4,6 +4,7 @@ using PISWF.domain.registermc.context.repository;
 using PISWF.domain.registermc.model.entity;
 using PISWF.domain.registermc.model.mapper;
 using PISWF.domain.registermc.model.view;
+using PISWF.infrasrtucture;
 using PISWF.infrasrtucture.auth.controller;
 using PISWF.infrasrtucture.auth.model.entity;
 using PISWF.infrasrtucture.page;
@@ -14,6 +15,8 @@ namespace PISWF.domain.registermc.service;
 
 public class RegistermcService
 {
+    private ExcelExporter ExcelExporter { get; }
+
     private FileDocumentMapper FileDocumentMapper { get; }
 
     private FileDocumentRepository FileDocumentRepository { get; }
@@ -26,12 +29,14 @@ public class RegistermcService
         FileDocumentMapper fileDocumentMapper,
         FileDocumentRepository fileDocumentRepository,
         RegisterMcMapper registerMcMapper,
-        RegisterMcRepository registerMcRepository)
+        RegisterMcRepository registerMcRepository,
+        ExcelExporter excelExporter)
     {
         FileDocumentMapper = fileDocumentMapper;
         FileDocumentRepository = fileDocumentRepository;
         RegisterMcMapper = registerMcMapper;
         RegisterMcRepository = registerMcRepository;
+        ExcelExporter = excelExporter;
     }
 
     public List<RegisterMCLong> Read()
@@ -48,7 +53,7 @@ public class RegistermcService
             .Take(page.Size)
         );
     }
-    
+
     public List<RegisterMCShort> Read(Page page, Func<RegisterMC, bool> filter, SortParameters sortParameters)
     {
         var comperer = new UltimateComparer<RegisterMC>(sortParameters);
@@ -94,6 +99,14 @@ public class RegistermcService
         return view;
     }
 
+    public void ExportToExcel(Func<RegisterMC, bool> filter, string path = "C:\\pisDoc\\reports\\")
+    {
+        var report = ExcelExporter.Generate(Read(filter));
+        path += "RegisterMCReport.xlsx";
+        CreateDirrectory(path);
+        File.WriteAllBytes(path, report);
+    }
+
     // TODO: Рефакторить
     public void UpLoadFile(RegisterMC register, User user)
     {
@@ -112,6 +125,7 @@ public class RegistermcService
         RegisterMcRepository.SaveChanges();
     }
 
+    // TODO: он вообще нужен?
     public void DownLoadFile(FileDocumentShort doc)
     {
         throw new NotImplementedException();
@@ -133,15 +147,31 @@ public class RegistermcService
         {
             MessageBox.Show("Ошибка чтения скана образа документа");
         }
+
         return null;
     }
-    
+
     private void SaveFile(Image image, FileDocument fileDocument)
     {
-        var directory = fileDocument.FilePath.Split("\\");
-        directory = directory.Take(directory.Length - 1).ToArray();
-        var path = String.Join("\\", directory);
-        Directory.CreateDirectory(path);
+        CreateDirrectory(fileDocument.FilePath);
         image.Save(fileDocument.FilePath, ImageFormat.Png);
+    }
+
+    private void CreateDirrectory(string path)
+    {
+        var directory = path.Split("\\");
+        directory = directory.Take(directory.Length - 1).ToArray();
+        path = String.Join("\\", directory);
+        Directory.CreateDirectory(path);
+    }
+
+    private List<RegisterMC> Read(Func<RegisterMC, bool> filter)
+    {
+        return RegisterMcRepository.Entity
+            .Include(x => x.Organization)
+            .Include(x => x.Municipality)
+            .Include(x => x.Documents)
+            .Where(filter)
+            .ToList();
     }
 }

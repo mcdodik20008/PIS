@@ -4,6 +4,7 @@ using PISWF.domain.registermc.context.repository;
 using PISWF.domain.registermc.controller;
 using PISWF.domain.registermc.model.mapper;
 using PISWF.domain.registermc.service;
+using PISWF.infrasrtucture;
 using PISWF.infrasrtucture.auth.context.repository;
 using PISWF.infrasrtucture.auth.controller;
 using PISWF.infrasrtucture.auth.model.mapper;
@@ -56,6 +57,12 @@ public class AppContainer : ServiceContainer
         this.RegisterSingleton<FilterFactory>();
         this.RegisterSingleton<RegisterFilter>();
         this.RegisterSingleton<FilterMapper>();
+        #endregion
+
+        #region excel exporter
+        
+        this.RegisterSingleton<ExcelExporter>();
+        
         #endregion
     }
 }

@@ -20,7 +20,8 @@ public class RegistermcController
         _registermcService = registermcService;
     }
 
-    public List<RegisterMCShort> Read(Page page, Expression<Func<RegisterMC, bool>> filter, SortParameters sortParameters)
+    public List<RegisterMCShort> Read(Page page, Expression<Func<RegisterMC, bool>> filter,
+        SortParameters sortParameters)
     {
         var user = _authController.AutorizedUser;
         var userFirstRole = user.Roles.FirstOrDefault();
@@ -62,13 +63,30 @@ public class RegistermcController
     {
         return _registermcService.Delete(view);
     }
-    
+
+    public void ExportToExcel()
+    {
+        var user = _authController.AutorizedUser;
+        var userFirstRole = user.Roles.FirstOrDefault();
+        var predicate = PredicateBuilder.True<RegisterMC>();
+        if (userFirstRole is not null)
+        {
+            predicate = userFirstRole.Visibility.Rate switch
+            {
+                "Реестра" => predicate,
+                "Муниципальный" => predicate.And(x => x.Municipality.Id.Equals(user.Municipality.Id)),
+                "Организации" => predicate.And(x => x.Organization.Id.Equals(user.Organization.Id))
+            };
+        }
+        _registermcService.ExportToExcel(predicate.Compile());
+    }
+
     public void UpLoadFile(RegisterMC registerMc)
     {
         var user = _authController.AutorizedUser;
         _registermcService.UpLoadFile(registerMc, user);
     }
-    
+
     public void DownLoadFile(FileDocumentShort doc)
     {
         _registermcService.DownLoadFile(doc);
