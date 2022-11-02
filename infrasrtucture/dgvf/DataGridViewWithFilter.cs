@@ -3,6 +3,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using DGVWF;
 using pis.infrasrtucture.filter.impl;
+using PISWF.domain.registermc.model.entity;
 using PISWF.domain.registermc.service;
 using PISWF.infrasrtucture.filter;
 
@@ -230,6 +231,13 @@ public class DataGridViewWithFilter<TFilter> : DataGridView where TFilter : Filt
     // Сам решай нужен ли дженерик параметр
     public SortParameters GetSortParameters<T>()
     {
+        var reg = typeof(RegisterMC);
+        var parameterId = new SortParameter(reg.GetProperty("Year"));
+        var parameterNumber = new SortParameter(reg.GetProperty("Number"));
+        var parameters = new SortParameters();
+        parameters.list.Add(parameterId);
+        parameters.list.Add(parameterNumber);
+        return parameters;
         throw new NotImplementedException();
     }
 }

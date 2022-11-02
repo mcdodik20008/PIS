@@ -30,8 +30,9 @@ public class DgvFilter : Form
 
     private void FillWithFilter(object e, object sender)
     {
-        _dg.DataSource = null;
-        _dg.FillDataGrid(_registermcController.Read(_page, _dg.GetFilter<RegisterMC>(), _dg.GetSortParameters<RegisterMC>()));
+      /*  _dg.DataSource = null;
+        _dg.FillDataGrid(_registermcController.Read(_page, _dg.GetFilter<RegisterMC>(), _dg.GetSortParameters<RegisterMC>()));*/
+      _registermcController.ExportToExcel();
         //_registermcController.UpLoadFile(_registermcController.Read(1));
     }
 
