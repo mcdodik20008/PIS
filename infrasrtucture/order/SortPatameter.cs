@@ -4,7 +4,7 @@ namespace PISWF.domain.registermc.service;
 
 public class SortParameter
 {
-    public SortParameter(PropertyInfo property, bool isAscending)
+    public SortParameter(PropertyInfo property, bool isAscending = true)
     {
         Property = property;
         IsAscending = isAscending;
