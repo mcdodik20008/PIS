@@ -1,5 +1,6 @@
 ﻿using System.Linq.Expressions;
 using LinqKit;
+using PISWF.domain.model.validator;
 using PISWF.domain.registermc.model.entity;
 using PISWF.domain.registermc.model.view;
 using PISWF.domain.registermc.service;
@@ -13,6 +14,8 @@ public class RegistermcController
     private RegistermcService _registermcService;
 
     private AuthController _authController;
+
+
 
     public RegistermcController(RegistermcService registermcService, AuthController authController)
     {
@@ -46,7 +49,7 @@ public class RegistermcController
         return _registermcService.Read(page);
     }
 
-    public RegisterMC Read(long id)
+    public RegisterMCLong Read(long id)
     {
         return _registermcService.Read(id);
     }

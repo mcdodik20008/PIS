@@ -1,5 +1,6 @@
 ﻿using System.Drawing.Imaging;
 using Microsoft.EntityFrameworkCore;
+using PISWF.domain.model.validator;
 using PISWF.domain.registermc.context.repository;
 using PISWF.domain.registermc.model.entity;
 using PISWF.domain.registermc.model.mapper;
@@ -22,19 +23,23 @@ public class RegistermcService
     private RegisterMcMapper RegisterMcMapper { get; }
 
     private RegisterMcRepository RegisterMcRepository { get; }
+    
+    private RegistermcValidator Validator { get; set; }
 
     public RegistermcService(
         FileDocumentMapper fileDocumentMapper,
         FileDocumentRepository fileDocumentRepository,
         RegisterMcMapper registerMcMapper,
         RegisterMcRepository registerMcRepository,
-        ExcelExporter excelExporter)
+        ExcelExporter excelExporter, 
+        RegistermcValidator validator)
     {
         FileDocumentMapper = fileDocumentMapper;
         FileDocumentRepository = fileDocumentRepository;
         RegisterMcMapper = registerMcMapper;
         RegisterMcRepository = registerMcRepository;
         ExcelExporter = excelExporter;
+        Validator = validator;
     }
 
     public List<RegisterMCShort> Read(Page page)
@@ -58,9 +63,9 @@ public class RegistermcService
         );
     }
 
-    public RegisterMC Read(long id)
+    public RegisterMCLong Read(long id)
     {
-        return RegisterMcMapper.Map<RegisterMC>(RegisterMcRepository.Entity
+        return RegisterMcMapper.Map<RegisterMCLong>(RegisterMcRepository.Entity
             .Include(x => x.Organization)
             .Include(x => x.Municipality)
             .Include(x => x.Documents)
@@ -71,6 +76,7 @@ public class RegistermcService
     public RegisterMCShort Create(RegisterMCShort view)
     {
         var entity = RegisterMcMapper.Map<RegisterMC>(view);
+        Validator.Validate(entity);
         RegisterMcRepository.AddAndSave(entity);
         return view;
     }
@@ -81,6 +87,7 @@ public class RegistermcService
         view.Id = id;
         var register = RegisterMcRepository.Entity.Find(id);
         register = RegisterMcMapper.Map(view, register);
+        Validator.Validate(register);
         RegisterMcRepository.AddAndSave(register);
         return view;
     }
