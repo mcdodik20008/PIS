@@ -1,5 +1,6 @@
 ﻿using LightInject;
 using pis.infrasrtucture.filter.impl;
+using PISWF.domain.model.validator;
 using PISWF.domain.registermc.context.repository;
 using PISWF.domain.registermc.controller;
 using PISWF.domain.registermc.model.mapper;
@@ -35,6 +36,7 @@ public class AppContainer : ServiceContainer
         this.RegisterSingleton<FileDocumentRepository>();
         this.RegisterSingleton<RegisterMcMapper>();
         this.RegisterSingleton<RegisterMcRepository>();
+        this.RegisterSingleton<RegistermcValidator>();
         #endregion
         
         #region auth
