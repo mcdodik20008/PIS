@@ -12,7 +12,6 @@ public class AuthController
 
     private UserService UserService { get; }
     
-
     public AuthController(UserService userService)
     {
         UserService = userService;
