@@ -14,6 +14,7 @@ public class ExcelExporter
                 x.GetCustomAttribute(typeof(ToExcelAttribute)) is not null
             ).ToArray();
         var sheet = package.Workbook.Worksheets.Add($"{type.Name} Report");
+        sheet.Protection.IsProtected = true;
         sheet.Cells[1, 1, 1, props.Length]
             .LoadFromArrays(new object[][] { props.Select(x => x.Name).ToArray() });
         var row = 2;

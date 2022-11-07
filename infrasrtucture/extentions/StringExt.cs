@@ -1,6 +1,4 @@
-﻿using System.Security.Policy;
-
-namespace PISWF.infrasrtucture.extentions;
+﻿namespace PISWF.infrasrtucture.extentions;
 
 public static class StringExt
 {

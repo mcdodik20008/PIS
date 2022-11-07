@@ -1,12 +1,10 @@
 ﻿using System.Drawing.Imaging;
-using System.Runtime.InteropServices.JavaScript;
 using Microsoft.EntityFrameworkCore;
 using PISWF.domain.registermc.context.repository;
 using PISWF.domain.registermc.model.entity;
 using PISWF.domain.registermc.model.mapper;
 using PISWF.domain.registermc.model.view;
 using PISWF.infrasrtucture;
-using PISWF.infrasrtucture.auth.controller;
 using PISWF.infrasrtucture.auth.model.entity;
 using PISWF.infrasrtucture.extentions;
 using PISWF.infrasrtucture.page;

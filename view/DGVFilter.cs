@@ -3,7 +3,6 @@ using pis.infrasrtucture.filter.impl;
 using PISWF.domain.registermc.controller;
 using PISWF.domain.registermc.model.entity;
 using PISWF.infrasrtucture.auth.controller;
-using PISWF.infrasrtucture.auth.model.entity;
 using PISWF.infrasrtucture.auth.model.view;
 using PISWF.infrasrtucture.filter;
 using PISWF.infrasrtucture.page;

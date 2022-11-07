@@ -1,7 +1,6 @@
 ﻿using PISWF.infrasrtucture.auth.model.entity;
 using PISWF.infrasrtucture.auth.model.view;
 using PISWF.infrasrtucture.auth.service;
-using PISWF.infrasrtucture.logger.controller;
 using PISWF.infrasrtucture.page;
 
 namespace PISWF.infrasrtucture.auth.controller;
