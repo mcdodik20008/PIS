@@ -103,8 +103,8 @@ public class RegistermcService
     {
         var report = ExcelExporter.Generate(Read(filter));
         var dateOnly = DateOnly.FromDateTime(DateTime.Now);
-        path += $"{dateOnly}-RegisterMCReport.xlsx";
         Directory.CreateDirectory(path.GetDirectory());
+        path += $"{dateOnly}".Replace(new[] { '.' }, '-') + "-RegisterMCReport.xlsx";
         File.WriteAllBytes(path, report);
     }
     
