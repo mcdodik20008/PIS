@@ -17,7 +17,7 @@
 					"_parent": {
 						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
 					},
-					"name": "Main",
+					"name": "9 лаба",
 					"defaultDiagram": true,
 					"ownedViews": [
 						{
@@ -28908,7 +28908,6 @@
 							"propertyLabel": {
 								"$ref": "AAAAAAGEUW516IKbJUA="
 							},
-							"showEndOrder": "hide",
 							"tailRoleNameLabel": {
 								"$ref": "AAAAAAGEUW516IKc3ng="
 							},
@@ -29456,7 +29455,7 @@
 									"font": "Arial;13;0",
 									"left": 2126,
 									"top": 1589,
-									"width": 54.310546875,
+									"width": 55.6689453125,
 									"height": 13,
 									"alpha": 4.211208351572928,
 									"distance": 34.0147027033899,
@@ -29679,7 +29678,6 @@
 							"propertyLabel": {
 								"$ref": "AAAAAAGEUYD9FXRABCA="
 							},
-							"showEndOrder": "hide",
 							"tailRoleNameLabel": {
 								"$ref": "AAAAAAGEUYD9FXRBTJk="
 							},
@@ -30145,7 +30143,6 @@
 							"propertyLabel": {
 								"$ref": "AAAAAAGEUaOz9P3UFrY="
 							},
-							"showEndOrder": "hide",
 							"tailRoleNameLabel": {
 								"$ref": "AAAAAAGEUaOz9P3VxVk="
 							},
@@ -37530,7 +37527,7 @@
 					"_parent": {
 						"$ref": "AAAAAAGEI+fXeQ1TaiU="
 					},
-					"name": "UseCaseDiagram1"
+					"name": "1 лаба"
 				}
 			]
 		},
@@ -37556,7 +37553,7 @@
 							"_parent": {
 								"$ref": "AAAAAAGEI+lzRRLH3vs="
 							},
-							"name": "SequenceDiagram1",
+							"name": "8 лаба",
 							"ownedViews": [
 								{
 									"_type": "UMLSeqLifelineView",
