@@ -38237,6 +38237,34 @@
 					"type": ""
 				}
 			]
+		},
+		{
+			"_type": "UMLCollaboration",
+			"_id": "AAAAAAGEXDeiKk5GsGA=",
+			"_parent": {
+				"$ref": "AAAAAAFF+h6SjaM2Hec="
+			},
+			"name": "Collaboration2",
+			"ownedElements": [
+				{
+					"_type": "UMLInteraction",
+					"_id": "AAAAAAGEXDeiKk5HDiY=",
+					"_parent": {
+						"$ref": "AAAAAAGEXDeiKk5GsGA="
+					},
+					"name": "Interaction1",
+					"ownedElements": [
+						{
+							"_type": "UMLSequenceDiagram",
+							"_id": "AAAAAAGEXDeiKk5IfUk=",
+							"_parent": {
+								"$ref": "AAAAAAGEXDeiKk5HDiY="
+							},
+							"name": "6 лаба"
+						}
+					]
+				}
+			]
 		}
 	]
 }
