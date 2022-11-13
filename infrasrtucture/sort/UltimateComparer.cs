@@ -1,4 +1,5 @@
-﻿using PISWF.domain.registermc.service;
+﻿using pis.infrasrtucture.sort;
+using PISWF.domain.registermc.service;
 
 namespace PISWF.domain.registermc.model.entity;
 
@@ -20,6 +21,8 @@ public class UltimateComparer<T> : IComparer<T>
 
         foreach (var sortParameter in _sortParameters.list)
         {
+            if (sortParameter.Direction.Equals(SortDirection.None))
+                continue;
             var property = sortParameter.Property;
             try
             {
@@ -28,7 +31,7 @@ public class UltimateComparer<T> : IComparer<T>
 
                 var result = valueX.CompareTo(valueY);
                 if (result != 0)
-                    return sortParameter.IsAscending ? result : -result;
+                    return sortParameter.Direction.Equals(SortDirection.Up) ? result : -result;
             }
             catch (Exception e)
             {

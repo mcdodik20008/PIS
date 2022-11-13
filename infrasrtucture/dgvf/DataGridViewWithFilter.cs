@@ -2,7 +2,7 @@
 using System.Linq.Expressions;
 using System.Reflection;
 using DGVWF;
-using PISWF.domain.registermc.model.entity;
+using pis.infrasrtucture.sort;
 using PISWF.domain.registermc.service;
 using PISWF.infrasrtucture.filter;
 
@@ -11,11 +11,11 @@ namespace pis.infrasrtucture.dgvf;
 // TODO: refactor
 public class DataGridViewWithFilter<TFilter> : DataGridView where TFilter : FilterModel
 {
+    private int order = 0;
     private int _columnIndex;
     private readonly TFilter _filter;
-    private readonly FilterMapper _filterMapper;
-    private readonly List<FilterColumn> _filterColumns = new();
-    private readonly List<string> sortColumns = new();
+    private readonly FilterSorterMapper _filterSorterMapper;
+    private readonly List<FilterSorterColumn> _filterColumns = new();
 
     #region formelements
 
@@ -24,57 +24,15 @@ public class DataGridViewWithFilter<TFilter> : DataGridView where TFilter : Filt
     private readonly Button _saveFilterCtrl = new();
     private readonly Button _clearButtonCtrl = new();
     private readonly ToolStripDropDown _popup = new();
-    private readonly ComboBox _comboBox = new();
+    private readonly ComboBox _comboBoxFilter = new();
+    private readonly ComboBox _comboBoxSort = new();
 
     #endregion
 
-    public DataGridViewWithFilter(IFilterFactory factory, FilterMapper filterMapper)
+    public DataGridViewWithFilter(IFilterFactory factory, FilterSorterMapper filterSorterMapper)
     {
         _filter = factory.Find<TFilter>();
-        _filterMapper = filterMapper;
-        ColumnHeaderMouseClick += (o, e) =>
-        {
-            if (o is DataGridView grid)
-            {
-                string colName = grid.Columns[e.ColumnIndex].DataPropertyName;
-
-                sortColumns.Remove(colName);
-                sortColumns.Add(colName);
-                string sortExpr = "";
-                foreach (string c in sortColumns)
-                    sortExpr = c + "," + sortExpr;
-                if (grid.DataSource is DataTable table)
-                {
-                    table.DefaultView.Sort = sortExpr.Trim(',');
-                }
-            }
-        };
-    }
-
-
-    public Expression<Func<TObject, bool>> GetFilter<TObject>()
-    {
-        var filter = _filter as FilterModel<TObject>;
-        filter = FillFilter(filter, _filterColumns);
-        return filter.FilterExpression();
-    }
-
-    private FilterModel<T> FillFilter<T>(FilterModel<T> filter, List<FilterColumn> filterColumns)
-    {
-        var properties = filter.GetType().GetProperties();
-        foreach (var property in properties)
-        {
-            var value = property.GetValue(filter);
-            MethodInfo updateFilterFieldMethod = value.GetType().GetMethod("UpdateFilter");
-            var popName = property.GetCustomAttribute<FieldFilterNameAttribute>()?.Name;
-            var filterColumn = filterColumns.FirstOrDefault(x => x.Name.Equals(popName));
-            var parameters = Equals(filterColumn, null) || Equals(filterColumn.Value, "")
-                ? new object[] { _filterMapper, "", "" }
-                : new object[] { _filterMapper, filterColumn.Value, filterColumn.ValueComboBox };
-            updateFilterFieldMethod.Invoke(value, parameters);
-        }
-
-        return filter;
+        _filterSorterMapper = filterSorterMapper;
     }
 
     private void Header_FilterButtonClicked(object sender, ColumnFilterClickedEventArg e)
@@ -82,16 +40,18 @@ public class DataGridViewWithFilter<TFilter> : DataGridView where TFilter : Filt
         _columnIndex = e.ColumnIndex;
         InitializeCtrls(_columnIndex);
         var valueTextBox = GetControlHost(_textBoxCtrl);
-        var actionBox = GetControlHost(_comboBox);
+        var actionBox = GetControlHost(_comboBoxFilter);
         var saveButton = GetControlHost(_saveFilterCtrl);
         var clearButton = GetControlHost(_clearButtonCtrl);
         var dateTimePicker = GetControlHost(_dateTimeCtrl);
+        var sortBox = GetControlHost(_comboBoxSort);
         _popup.Items.Clear();
         _popup.AutoSize = true;
         _popup.Margin = Padding.Empty;
         _popup.Padding = Padding.Empty;
         var colType = Columns[_columnIndex].ValueType.ToString();
-        FillCombobox(_comboBox, colType);
+        FillFilterCombobox(_comboBoxFilter, colType);
+        FillSortCombobox(_comboBoxSort);
         switch (colType)
         {
             case "System.DateTime":
@@ -109,6 +69,7 @@ public class DataGridViewWithFilter<TFilter> : DataGridView where TFilter : Filt
                 break;
         }
 
+        _popup.Items.Add(sortBox);
         _popup.Items.Add(saveButton);
         _popup.Items.Add(clearButton);
         _popup.Show(this, e.ButtonRectangle.X, e.ButtonRectangle.Bottom);
@@ -118,9 +79,12 @@ public class DataGridViewWithFilter<TFilter> : DataGridView where TFilter : Filt
     {
         var widthTool = Columns[colIndex].Width + 50;
         if (widthTool < 130) widthTool = 130;
-
-        _comboBox.Text = _filterColumns[_columnIndex].ValueComboBox;
-        _comboBox.Size = new Size(widthTool, 30);
+        
+        _comboBoxSort.Text = _filterColumns[_columnIndex].ValueSorter;
+        _comboBoxSort.Size = new Size(widthTool, 30);
+        
+        _comboBoxFilter.Text = _filterColumns[_columnIndex].ValueFilter;
+        _comboBoxFilter.Size = new Size(widthTool, 30);
 
         _textBoxCtrl.Text = _filterColumns[_columnIndex].Value;
         _textBoxCtrl.Size = new Size(widthTool, 30);
@@ -131,12 +95,12 @@ public class DataGridViewWithFilter<TFilter> : DataGridView where TFilter : Filt
         _dateTimeCtrl.TextChanged -= DatePicker_TextChanged!;
         _dateTimeCtrl.TextChanged += DatePicker_TextChanged!;
 
-        _saveFilterCtrl.Text = "Save filter";
+        _saveFilterCtrl.Text = "Save";
         _saveFilterCtrl.Size = new Size(widthTool, 30);
-        _saveFilterCtrl.Click -= SaveFilter_Click!;
-        _saveFilterCtrl.Click += SaveFilter_Click!;
+        _saveFilterCtrl.Click -= SaveFilterSorter_Click!;
+        _saveFilterCtrl.Click += SaveFilterSorter_Click!;
 
-        _clearButtonCtrl.Text = "Clear filter";
+        _clearButtonCtrl.Text = "Clear";
         _clearButtonCtrl.Size = new Size(widthTool, 30);
         _clearButtonCtrl.Click -= ClearFilter_Click!;
         _clearButtonCtrl.Click += ClearFilter_Click!;
@@ -145,20 +109,23 @@ public class DataGridViewWithFilter<TFilter> : DataGridView where TFilter : Filt
     private void ClearFilter_Click(object? sender, EventArgs e)
     {
         _textBoxCtrl.Text = "";
-        _comboBox.Text = "";
-        SaveFilter_Click(sender, e);
+        _comboBoxFilter.Text = "Без фильтрации";
+        _comboBoxSort.Text = "Без соритровки";
+        SaveFilterSorter_Click(sender, e);
     }
 
     private void DatePicker_TextChanged(object sender, EventArgs e)
     {
         _textBoxCtrl.Text = _dateTimeCtrl.Text;
-        SaveFilter_Click(sender, e);
+        SaveFilterSorter_Click(sender, e);
     }
 
-    private void SaveFilter_Click(object sender, EventArgs e)
+    private void SaveFilterSorter_Click(object sender, EventArgs e)
     {
         _filterColumns[_columnIndex].Value = _textBoxCtrl.Text;
-        _filterColumns[_columnIndex].ValueComboBox = _comboBox.Text;
+        _filterColumns[_columnIndex].Order = order++;
+        _filterColumns[_columnIndex].ValueFilter = _comboBoxFilter.Text;
+        _filterColumns[_columnIndex].ValueSorter = _comboBoxSort.Text;
         _popup.Close();
     }
 
@@ -170,17 +137,21 @@ public class DataGridViewWithFilter<TFilter> : DataGridView where TFilter : Filt
 
         foreach (var prop in propertys)
         {
+            if (prop.Name.ToLower().Equals("id"))
+                continue;
             dt.Columns.Add(prop.Name, prop.PropertyType);
             if (_filterColumns.Count < propertys.Length)
             {
-                _filterColumns.Add(new FilterColumn(prop.Name, prop.PropertyType, "", ""));
+                if (prop.Name.ToLower().Equals("id"))
+                    continue;
+                _filterColumns.Add(new FilterSorterColumn(prop, prop.Name, prop.PropertyType));
             }
         }
 
         foreach (var entity in sourse)
         {
             var values = GetEntityValues(entity, propertys);
-            dt.Rows.Add(values.ToArray());
+            dt.Rows.Add(values);
         }
 
         DataSource = dt;
@@ -188,11 +159,16 @@ public class DataGridViewWithFilter<TFilter> : DataGridView where TFilter : Filt
 
     private object[] GetEntityValues<T>(T entity, PropertyInfo[] propertys)
     {
-        var values = new object[propertys.Length];
+        var values = new List<object>();
         var index = 0;
         foreach (var prop in propertys)
-            values[index++] = prop.GetValue(entity);
-        return values;
+        {
+            if (prop.Name.ToLower().Equals("id"))
+                continue;
+            values.Add(prop.GetValue(entity));
+        }
+
+        return values.ToArray();
     }
 
     private ToolStripControlHost GetControlHost(Control control)
@@ -205,15 +181,25 @@ public class DataGridViewWithFilter<TFilter> : DataGridView where TFilter : Filt
         return host;
     }
 
-    private void FillCombobox(ComboBox comboBox, string columnType)
+    private void FillFilterCombobox(ComboBox comboBox, string columnType)
     {
         var values = columnType switch
         {
-            "System.DateTime" => new[] { "До", "После" },
+            "System.DateTime" => new[] { "Без фильтрации", "До", "После" },
             "System.Int32" or "System.Int64" or "System.Double"
-                => new[] { "Меньше", "Больше", "Равно" }
+                => new[] { "Без фильтрации", "Меньше", "Больше", "Равно" }
         };
-        _comboBox.Text = _filterColumns[_columnIndex].ValueComboBox;
+        var val = _filterColumns[_columnIndex].ValueFilter;
+        comboBox.Text = val is null || val.Equals("") ? values[0] : val;
+        comboBox.Items.Clear();
+        comboBox.Items.AddRange(values);
+    }
+
+    private void FillSortCombobox(ComboBox comboBox)
+    {
+        var values = new[] { "Без соритровки", "По возрастанию", "По убыванию" };
+        var val = _filterColumns[_columnIndex].ValueSorter;
+        comboBox.Text = val is null || val.Equals("") ? values[0] : val;
         comboBox.Items.Clear();
         comboBox.Items.AddRange(values);
     }
@@ -226,17 +212,42 @@ public class DataGridViewWithFilter<TFilter> : DataGridView where TFilter : Filt
         e.Column.SortMode = DataGridViewColumnSortMode.NotSortable;
         base.OnColumnAdded(e);
     }
+    
+    public Expression<Func<TObject, bool>> GetFilter<TObject>()
+    {
+        var filter = _filter as FilterModel<TObject>;
+        filter = FillFilter(filter, _filterColumns);
+        return filter.FilterExpression();
+    }
 
-    // Сам решай нужен ли дженерик параметр
+    private FilterModel<T> FillFilter<T>(FilterModel<T> filter, List<FilterSorterColumn> filterColumns)
+    {
+        var properties = filter.GetType().GetProperties();
+        foreach (var property in properties)
+        {
+            var value = property.GetValue(filter);
+            MethodInfo updateFilterFieldMethod = value.GetType().GetMethod("UpdateFilter");
+            var popName = property.GetCustomAttribute<FieldFilterNameAttribute>()?.Name;
+            var filterColumn = filterColumns.FirstOrDefault(x => x.Name.Equals(popName));
+            var parameters = Equals(filterColumn, null) || Equals(filterColumn.Value, "")
+                ? new object[] { _filterSorterMapper, "", "" }
+                : new object[] { _filterSorterMapper, filterColumn.Value, filterColumn.ValueFilter };
+            updateFilterFieldMethod.Invoke(value, parameters);
+        }
+
+        return filter;
+    }
+    
     public SortParameters GetSortParameters<T>()
     {
-        var reg = typeof(RegisterMC);
-        var parameterId = new SortParameter(reg.GetProperty("Year"));
-        var parameterNumber = new SortParameter(reg.GetProperty("Number"));
+        var type = typeof(T);
         var parameters = new SortParameters();
-        parameters.list.Add(parameterId);
-        parameters.list.Add(parameterNumber);
+        foreach (var column in _filterColumns.OrderBy(x => x.Order))
+        {
+            var prop = type.GetProperty(column.Property.Name);
+            var val = _filterSorterMapper.Map<SortDirection>(column.ValueSorter);
+            parameters.list.Add(new SortParameter(prop, val));
+        }
         return parameters;
-        throw new NotImplementedException();
     }
 }

@@ -58,7 +58,7 @@ public class AppContainer : ServiceContainer
         this.RegisterSingleton<IFilterFactory, FilterFactory>();
         this.RegisterSingleton<FilterFactory>();
         this.RegisterSingleton<RegisterFilter>();
-        this.RegisterSingleton<FilterMapper>();
+        this.RegisterSingleton<FilterSorterMapper>();
         #endregion
 
         #region excel exporter

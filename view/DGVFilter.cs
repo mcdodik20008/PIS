@@ -17,21 +17,21 @@ public class DgvFilter : Form
     
     private Page _page = new(0, 25);
 
-    public DgvFilter(RegistermcController registermcController, AuthController authController, IFilterFactory factory, FilterMapper filterMapper)
+    public DgvFilter(RegistermcController registermcController, AuthController authController, IFilterFactory factory, FilterSorterMapper filterSorterMapper)
     {
         _authController = authController;
         authController.Authorization(new UserAuth("admin", "1234"));
         _registermcController = registermcController;
-        _dg = new(factory, filterMapper);
+        _dg = new(factory, filterSorterMapper);
         InitializeItems();
         AddControls();
     }
 
     private void FillWithFilter(object e, object sender)
     {
-      /*  _dg.DataSource = null;
-        _dg.FillDataGrid(_registermcController.Read(_page, _dg.GetFilter<RegisterMC>(), _dg.GetSortParameters<RegisterMC>()));*/
-      _registermcController.ExportToExcel();
+        _dg.DataSource = null;
+        _dg.FillDataGrid(_registermcController.Read(_page, _dg.GetFilter<RegisterMC>(), _dg.GetSortParameters<RegisterMC>()));
+        //_registermcController.ExportToExcel();
         //_registermcController.UpLoadFile(_registermcController.Read(1));
     }
 
