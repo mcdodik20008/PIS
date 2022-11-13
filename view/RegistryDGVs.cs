@@ -1,4 +1,5 @@
-﻿using PISWF.infrasrtucture.auth.controller;
+﻿using System.Data;
+using PISWF.infrasrtucture.auth.controller;
 using PISWF.infrasrtucture.auth.model.view;
 using pis.infrasrtucture.dgvf;
 using pis.infrasrtucture.filter.impl;
@@ -19,19 +20,23 @@ public class DGVs : Form
     
     private Page _page = new(0, 25);
     
-    public DGVs(AuthController authController, IFilterFactory factory, FilterSorterMapper filterSorterMapper, RegistermcController registermcController)
+    public DGVs(AuthController authController, 
+        IFilterFactory factory, 
+        FilterSorterMapper filterSorterMapper, 
+        RegistermcController registermcController)
     {
         _registermcController = registermcController;
         _authController = authController;
         dg = new(factory, filterSorterMapper);
         InitializeItems();
         AddControls();
-
+       // dg.Columns[0].Visible = false; //вот тут затуп!!!
     }
     
     private void OpenLongDgv(object e, object sender)
     {
-        var dgvLongForm = new DgvLong();
+        var id = dg.CurrentRow.Cells[0].Value.ToString();
+        var dgvLongForm = new DgvLong(Convert.ToInt32(id), _registermcController);
         dgvLongForm.ShowDialog();
     }
     
@@ -46,6 +51,8 @@ public class DGVs : Form
         //dg.Bounds = new Rectangle(0, 0, 655, 460);
         dg.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom;
         dg.AllowUserToAddRows = false;
+        
+
         
         openButton.Location = new Point(658, 346);
         openButton.Size = new System.Drawing.Size(120, 28);

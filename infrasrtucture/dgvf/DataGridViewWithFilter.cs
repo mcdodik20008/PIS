@@ -137,13 +137,11 @@ public class DataGridViewWithFilter<TFilter> : DataGridView where TFilter : Filt
 
         foreach (var prop in propertys)
         {
-            if (prop.Name.ToLower().Equals("id"))
-                continue;
+           
             dt.Columns.Add(prop.Name, prop.PropertyType);
             if (_filterColumns.Count < propertys.Length)
             {
-                if (prop.Name.ToLower().Equals("id"))
-                    continue;
+          
                 _filterColumns.Add(new FilterSorterColumn(prop, prop.Name, prop.PropertyType));
             }
         }
@@ -163,8 +161,7 @@ public class DataGridViewWithFilter<TFilter> : DataGridView where TFilter : Filt
         var index = 0;
         foreach (var prop in propertys)
         {
-            if (prop.Name.ToLower().Equals("id"))
-                continue;
+        
             values.Add(prop.GetValue(entity));
         }
 
