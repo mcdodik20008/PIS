@@ -27,6 +27,9 @@ public class AppContainer : ServiceContainer
 
         #region form
         this.RegisterSingleton<DgvFilter>();
+        this.RegisterSingleton<Auth>();
+        this.RegisterSingleton<DGVs>();
+        this.RegisterSingleton<DgvLong>();
         #endregion
 
         #region registermc

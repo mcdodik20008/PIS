@@ -108,6 +108,24 @@ namespace PISWF.Migrations
                     b.ToTable("register-m-c");
                 });
 
+            modelBuilder.Entity("PISWF.infrasrtucture.auth.model.entity.Possibility", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<string>("Rate")
+                        .HasColumnType("text")
+                        .HasColumnName("rate");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("possibility");
+                });
+
             modelBuilder.Entity("PISWF.infrasrtucture.auth.model.entity.Role", b =>
                 {
                     b.Property<long>("Id")
@@ -121,10 +139,15 @@ namespace PISWF.Migrations
                         .HasColumnType("text")
                         .HasColumnName("name");
 
+                    b.Property<long?>("PossibilityId")
+                        .HasColumnType("bigint");
+
                     b.Property<long?>("VisibilityId")
                         .HasColumnType("bigint");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("PossibilityId");
 
                     b.HasIndex("VisibilityId");
 
@@ -309,9 +332,15 @@ namespace PISWF.Migrations
 
             modelBuilder.Entity("PISWF.infrasrtucture.auth.model.entity.Role", b =>
                 {
+                    b.HasOne("PISWF.infrasrtucture.auth.model.entity.Possibility", "Possibility")
+                        .WithMany()
+                        .HasForeignKey("PossibilityId");
+
                     b.HasOne("PISWF.infrasrtucture.auth.model.entity.Visibility", "Visibility")
                         .WithMany()
                         .HasForeignKey("VisibilityId");
+
+                    b.Navigation("Possibility");
 
                     b.Navigation("Visibility");
                 });

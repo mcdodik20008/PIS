@@ -18,6 +18,9 @@ public class Role
     [Column("visibility_id")]
     public Visibility? Visibility { get; set; }
     
+    [Column("possibility_id")]
+    public Possibility? Possibility { get; set; }
+    
     [Column("users")]
     public List<User>? Users { get; set; }
 }

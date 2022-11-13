@@ -16,7 +16,7 @@ public static class Program
         var container = new AppContainer();
            Application.EnableVisualStyles();
            Application.SetCompatibleTextRenderingDefault(false);
-           Application.Run(container.GetInstance<DgvFilter>());
+           Application.Run(container.GetInstance<Auth>());
     }
     
 }
