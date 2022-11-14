@@ -13,7 +13,7 @@ public class DataGridViewWithFilter<TValue,TFilter> : DataGridView where TFilter
 {
     private int order = 0;
     private int _columnIndex;
-    private List<TValue> _values;
+    private List<TValue> _values = new();
     private readonly TFilter _filter;
     private readonly FilterSorterMapper _filterSorterMapper;
     private readonly List<FilterSorterColumn> _filterColumns = new();
@@ -133,6 +133,7 @@ public class DataGridViewWithFilter<TValue,TFilter> : DataGridView where TFilter
 
     public void FillDataGrid(List<TValue> sourse)
     {
+        _values.Clear();
         _values.AddRange(sourse);
         var dt = new DataTable();
         Columns.Clear();
