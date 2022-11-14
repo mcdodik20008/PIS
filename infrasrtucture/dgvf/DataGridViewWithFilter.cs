@@ -3,6 +3,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using DGVWF;
 using pis.infrasrtucture.sort;
+using PISWF.domain.registermc.model.view;
 using PISWF.domain.registermc.service;
 using PISWF.infrasrtucture.filter;
 
@@ -141,10 +142,13 @@ public class DataGridViewWithFilter<TValue,TFilter> : DataGridView where TFilter
 
         foreach (var prop in propertys)
         {
+            if (prop.Name.ToLower().Equals("id"))
+                continue;
             dt.Columns.Add(prop.Name, prop.PropertyType);
             if (_filterColumns.Count < propertys.Length)
             {
-          
+                if (prop.Name.ToLower().Equals("id"))
+                    continue;
                 _filterColumns.Add(new FilterSorterColumn(prop, prop.Name, prop.PropertyType));
             }
         }
@@ -164,13 +168,14 @@ public class DataGridViewWithFilter<TValue,TFilter> : DataGridView where TFilter
         var index = 0;
         foreach (var prop in propertys)
         {
-        
+            if (prop.Name.ToLower().Equals("id"))
+                continue;
             values.Add(prop.GetValue(entity));
         }
 
         return values.ToArray();
     }
-
+    
     private ToolStripControlHost GetControlHost(Control control)
     {
         var host = new ToolStripControlHost(control);
@@ -218,6 +223,11 @@ public class DataGridViewWithFilter<TValue,TFilter> : DataGridView where TFilter
         var filter = _filter as FilterModel<TObject>;
         filter = FillFilter(filter, _filterColumns);
         return filter.FilterExpression();
+    }
+    
+    public TValue getSelectedItem(int rowIndex)
+    {
+        return _values[rowIndex];
     }
 
     private FilterModel<T> FillFilter<T>(FilterModel<T> filter, List<FilterSorterColumn> filterColumns)
