@@ -9,10 +9,11 @@ using PISWF.infrasrtucture.filter;
 namespace pis.infrasrtucture.dgvf;
 
 // TODO: refactor
-public class DataGridViewWithFilter<TFilter> : DataGridView where TFilter : FilterModel
+public class DataGridViewWithFilter<TValue,TFilter> : DataGridView where TFilter : FilterModel
 {
     private int order = 0;
     private int _columnIndex;
+    private List<TValue> _values;
     private readonly TFilter _filter;
     private readonly FilterSorterMapper _filterSorterMapper;
     private readonly List<FilterSorterColumn> _filterColumns = new();
@@ -31,6 +32,7 @@ public class DataGridViewWithFilter<TFilter> : DataGridView where TFilter : Filt
 
     public DataGridViewWithFilter(IFilterFactory factory, FilterSorterMapper filterSorterMapper)
     {
+        // рефлекшином через атрибут доставать филтр
         _filter = factory.Find<TFilter>();
         _filterSorterMapper = filterSorterMapper;
     }
@@ -129,15 +131,15 @@ public class DataGridViewWithFilter<TFilter> : DataGridView where TFilter : Filt
         _popup.Close();
     }
 
-    public void FillDataGrid<T>(IEnumerable<T> sourse)
+    public void FillDataGrid(List<TValue> sourse)
     {
+        _values.AddRange(sourse);
         var dt = new DataTable();
         Columns.Clear();
-        var propertys = typeof(T).GetProperties();
+        var propertys = typeof(TValue).GetProperties();
 
         foreach (var prop in propertys)
         {
-           
             dt.Columns.Add(prop.Name, prop.PropertyType);
             if (_filterColumns.Count < propertys.Length)
             {

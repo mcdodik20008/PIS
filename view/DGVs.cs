@@ -6,6 +6,7 @@ using pis.infrasrtucture.filter.impl;
 using PISWF.infrasrtucture.filter;
 using PISWF.domain.registermc.controller;
 using PISWF.domain.registermc.model.entity;
+using PISWF.domain.registermc.model.view;
 using PISWF.domain.registermc.service;
 using PISWF.infrasrtucture.page;
 
@@ -91,7 +92,7 @@ public class DGVs : Form
     
     #region компоненты для формы
     
-    private DataGridViewWithFilter<RegisterFilter> dg;
+    private DataGridViewWithFilter<RegisterMCShort, RegisterFilter> dg;
     private Button openButton = new();
     private Button addButton = new();
     private Button deleteButton = new();

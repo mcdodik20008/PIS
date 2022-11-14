@@ -2,6 +2,7 @@
 using pis.infrasrtucture.filter.impl;
 using PISWF.domain.registermc.controller;
 using PISWF.domain.registermc.model.entity;
+using PISWF.domain.registermc.model.view;
 using PISWF.infrasrtucture.auth.controller;
 using PISWF.infrasrtucture.auth.model.view;
 using PISWF.infrasrtucture.filter;
@@ -31,8 +32,6 @@ public class DgvFilter : Form
     {
         _dg.DataSource = null;
         _dg.FillDataGrid(_registermcController.Read(_page, _dg.GetFilter<RegisterMC>(), _dg.GetSortParameters<RegisterMC>()));
-        //_registermcController.ExportToExcel();
-        //_registermcController.UpLoadFile(_registermcController.Read(1));
     }
 
     private void InitializeItems()
@@ -60,7 +59,7 @@ public class DgvFilter : Form
 
     #region компоненты для формы
 
-    private DataGridViewWithFilter<RegisterFilter> _dg;
+    private DataGridViewWithFilter<RegisterMCShort, RegisterFilter> _dg;
     private TextBox _nameBox = new();
     private TextBox _passwordBox = new();
     private Button _createUserButton = new();
