@@ -10,19 +10,13 @@ namespace PISWF.view;
 public class Auth: Form
 {
     private AuthController _authController;
+
+    private DGVs _dgVs;
     
-    private IFilterFactory _factory;
-    
-    private FilterSorterMapper _filterSorterMapper;
-    
-    private RegistermcController _registermcController;
-    
-    public Auth(AuthController authController, IFilterFactory factory, FilterSorterMapper filterSorterMapper, RegistermcController registermcController)
+    public Auth(AuthController authController, DGVs dgVs)
     {
-        _registermcController = registermcController;
-        _factory = factory;
+        _dgVs = dgVs;
         _authController = authController;
-        _filterSorterMapper = filterSorterMapper;
         InitializeItems();
         AddControls();
 
@@ -38,8 +32,7 @@ public class Auth: Form
 
         if (!_authController.AutorizedUser.Login.Equals("guest"))
         {
-            var dgVsForm = new DGVs(_authController, _factory, _filterSorterMapper, _registermcController);
-            dgVsForm.ShowDialog();
+            _dgVs.ShowDialog();
         }
     }
     

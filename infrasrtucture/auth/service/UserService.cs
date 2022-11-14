@@ -35,6 +35,8 @@ public class UserService
         var user = UserRepository.Entity
             .Include(x => x.Roles)
             .ThenInclude(y => y.Visibility)
+            .Include(x => x.Roles)
+            .ThenInclude(x => x.Possibility)
             .Include(x => x.Organization)
             .Include(x => x.Municipality)
             .FirstOrDefault(predicate);

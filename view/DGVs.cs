@@ -51,9 +51,7 @@ public class DGVs : Form
         //dg.Bounds = new Rectangle(0, 0, 655, 460);
         dg.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom;
         dg.AllowUserToAddRows = false;
-        
 
-        
         openButton.Location = new Point(658, 346);
         openButton.Size = new System.Drawing.Size(120, 28);
         openButton.Text = "Открыть";
