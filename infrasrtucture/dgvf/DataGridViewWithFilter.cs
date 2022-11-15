@@ -147,9 +147,6 @@ public class DataGridViewWithFilter<TValue,TFilter> : DataGridView where TFilter
             dt.Columns.Add(prop.Name, prop.PropertyType);
             if (_filterColumns.Count < propertys.Length)
             {
-                // это тут точно нужно?, и if в ife - сомнительная те ма
-                if (prop.Name.ToLower().Equals("id"))
-                    continue;
                 _filterColumns.Add(new FilterSorterColumn(prop, prop.Name, prop.PropertyType));
             }
         }
@@ -226,8 +223,7 @@ public class DataGridViewWithFilter<TValue,TFilter> : DataGridView where TFilter
         return filter.FilterExpression();
     }
     
-    // методы с большой буквы называются
-    public TValue getSelectedItem(int rowIndex)
+    public TValue GetSelectedItem(int rowIndex)
     {
         return _values[rowIndex];
     }

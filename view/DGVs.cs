@@ -36,7 +36,7 @@ public class DGVs : Form
     
     private void OpenLongDgv(object e, object sender)
     {
-        var selectedItem = dg.getSelectedItem(dg.CurrentRow.Index);
+        var selectedItem = dg.GetSelectedItem(dg.CurrentRow.Index);
         var dgvLongForm = new DgvLong(selectedItem, _registermcController);
         dgvLongForm.ShowDialog();
     }
