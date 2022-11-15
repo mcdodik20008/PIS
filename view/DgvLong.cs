@@ -5,12 +5,17 @@ namespace PISWF.view;
 
 public class DgvLong : Form
 {
+    // в названии поля short есть, в названии аргумента конструктора - нет
     private RegisterMCShort _registerMcShort;
     private RegistermcController _registermcController;
+    // почему id - int? Если оно long.
     private int _id;
     public DgvLong(RegisterMCShort registerMc, RegistermcController registermcController)
     {
+        // тогда и тут довнкастить не надо
         _id = (int)registerMc.Id;
+        // особо нет смысла передавать и id и registerMcShort, а вот с помощью контроллера и id
+        // (полученного из short-а или просто переданного в конструкторе) получить long версию - можно
         _registerMcShort = registerMc;
         _registermcController = registermcController;
         InitializeItems();
@@ -22,6 +27,7 @@ public class DgvLong : Form
     {
         Size = new Size(590, 550);
         
+        // как будто-бы 'System.Drawing' - можн выпилить
         numberLabel.Location = new System.Drawing.Point(218, 10);
         numberLabel.Size = new System.Drawing.Size(72, 20);
         numberLabel.Text = "Номер МК";
@@ -194,5 +200,6 @@ public class DgvLong : Form
     private Button changeButton = new ();
     private Button uploadFileButton = new ();
     private Button deleteFileButton = new ();
+    
     #endregion
 }
