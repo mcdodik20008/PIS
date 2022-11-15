@@ -7,11 +7,22 @@ public class DgvLong : Form
 {
     private RegisterMCLong _registerMcLong;
     private RegistermcController _registermcController;
+    
     public DgvLong(RegisterMCShort registerMcShort, RegistermcController registermcController)
     {
         _registerMcLong = registermcController.Read(registerMcShort.Id);
         _registermcController = registermcController;
         InitializeItems();
+        InitializeFormForOpen();
+        AddControls();
+    }
+    
+    public DgvLong(RegisterMCLong registerMCLong, RegistermcController registermcController) //для создания новой
+    {
+        _registerMcLong = registerMCLong;
+        _registermcController = registermcController;
+        InitializeItems();
+        InitializeFormForAdd();
         AddControls();
     }
     
@@ -69,52 +80,40 @@ public class DgvLong : Form
         
         numberBox.Location = new Point(321, 10);
         numberBox.Size = new Size(200, 20);
-        numberBox.Text = _registerMcLong.Number.ToString();
 
         validDatePicker.Location = new Point(321, 40);
         validDatePicker.Size = new Size(200, 20);
-        validDatePicker.Value = _registerMcLong.ValidDate;
-        
+
         locationBox.Location = new Point(321, 70);
         locationBox.Size = new Size(200, 20);
-        locationBox.Text = _registerMcLong.Location;
-        
+
         actionTimePicker.Location = new Point(321, 100);
         actionTimePicker.Size = new Size(200, 20);
-        actionTimePicker.Value = _registerMcLong.ActionDate;
-        
+
         organizationBox.Location = new Point(321, 130);
         organizationBox.Size = new Size(200, 20);
-        organizationBox.Text = _registerMcLong.Organization.ToString();
-        
+
         municipalityBox.Location = new Point(321, 160);
         municipalityBox.Size = new Size(200, 20);
-        municipalityBox.Text = _registerMcLong.Municipality.ToString();
         
         omsuBox.Location = new Point(321, 190);
         omsuBox.Size = new Size(200, 20);
-        omsuBox.Text = _registerMcLong.Omsu;
-       
+
         yearBox.Location = new Point(321, 220);
         yearBox.Size = new Size(200, 20);
-        yearBox.Text = _registerMcLong.Year.ToString(); 
 
         priceBox.Location = new Point(321, 250);
         priceBox.Size = new Size(200, 20);
-        priceBox.Text = _registerMcLong.Price.ToString(); 
-        
+
         subventionShareBox.Location = new Point(321, 280);
         subventionShareBox.Size = new Size(200, 20);
-        subventionShareBox.Text = _registerMcLong.SubventionShare.ToString(); 
-       
+
         amountMoneyBox.Location = new Point(321, 325);
         amountMoneyBox.Size = new Size(200, 20);
-        amountMoneyBox.Text = _registerMcLong.AmountMoney.ToString();
-        
+
         partMoneyBox.Location = new Point(321, 386);
         partMoneyBox.Size = new Size(200, 20);
-        partMoneyBox.Text = _registerMcLong.SubventionShare.ToString(); 
-           
+
         changeButton.Location = new Point(24, 460);
         changeButton.Size = new Size(125, 28);
         changeButton.Text = "Изменить";
@@ -129,6 +128,42 @@ public class DgvLong : Form
         deleteFileButton.Size = new Size(150, 28);
         deleteFileButton.Text = "Удалить файл";
         //deleteFileButton.Click +=
+        
+        confirmButton.Location = new Point(400, 460);
+        confirmButton.Size = new Size(150, 28);
+        confirmButton.Text = "Добавить";
+        confirmButton.Click += Add;
+    }
+    
+    private void Add(object e, object sender)
+    {
+        _registerMcLong.Number = numberBox.Text; 
+        //TODO запонить контроллер из текстбоксов
+        _registermcController.Create(_registerMcLong);
+    }
+    
+    private void InitializeFormForAdd()
+    {
+        changeButton.Hide();
+        uploadFileButton.Hide();
+        deleteFileButton.Hide();
+    }
+    
+    private void InitializeFormForOpen()
+    {
+        confirmButton.Hide();
+        numberBox.Text = _registerMcLong.Number;
+        validDatePicker.Value = _registerMcLong.ValidDate;
+        locationBox.Text = _registerMcLong.Location;
+        actionTimePicker.Value = _registerMcLong.ActionDate;
+        organizationBox.Text = _registerMcLong.Organization.ToString();
+        municipalityBox.Text = _registerMcLong.Municipality.ToString();
+        omsuBox.Text = _registerMcLong.Omsu;
+        yearBox.Text = _registerMcLong.Year.ToString(); 
+        priceBox.Text = _registerMcLong.Price.ToString(); 
+        subventionShareBox.Text = _registerMcLong.SubventionShare.ToString(); 
+        amountMoneyBox.Text = _registerMcLong.AmountMoney.ToString();
+        partMoneyBox.Text = _registerMcLong.SubventionShare.ToString();
     }
     
     private void AddControls()
@@ -160,6 +195,7 @@ public class DgvLong : Form
         Controls.Add(changeButton);
         Controls.Add(uploadFileButton);
         Controls.Add(deleteFileButton);
+        Controls.Add(confirmButton);
     }
     
     #region компоненты для формы
@@ -191,6 +227,7 @@ public class DgvLong : Form
     private Button changeButton = new ();
     private Button uploadFileButton = new ();
     private Button deleteFileButton = new ();
-    
+    private Button confirmButton = new ();
+
     #endregion
 }

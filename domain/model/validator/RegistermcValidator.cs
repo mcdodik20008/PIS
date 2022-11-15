@@ -13,7 +13,7 @@ public class RegistermcValidator : AbstractValidator<RegisterMC>
             .Must(c => c > 0).WithMessage(msg + " должно быть больше 0");
         
         RuleFor(c => c.Number)
-            .Must(c => c > 0).WithMessage(msg + " должно быть больше 0");
+            .Must(c => c.Length > 0).WithMessage(msg + " должно быть больше 0");
 
         RuleFor(c => c)
             .Must(c => c.Municipality is not null || c.Municipality is not null)

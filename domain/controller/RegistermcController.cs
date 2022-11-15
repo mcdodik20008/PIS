@@ -54,7 +54,7 @@ public class RegistermcController
         return _registermcService.Read(id);
     }
 
-    public RegisterMCShort Create(RegisterMCShort view)
+    public RegisterMCLong Create(RegisterMCLong view)
     {
         return _registermcService.Create(view);
     }

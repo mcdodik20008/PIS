@@ -81,8 +81,9 @@ namespace PISWF.Migrations
                     b.Property<long>("MunicipalityId")
                         .HasColumnType("bigint");
 
-                    b.Property<int>("Number")
-                        .HasColumnType("integer")
+                    b.Property<string>("Number")
+                        .IsRequired()
+                        .HasColumnType("text")
                         .HasColumnName("number");
 
                     b.Property<string>("Omsu")

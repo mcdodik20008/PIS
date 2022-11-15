@@ -41,6 +41,19 @@ public class DGVs : Form
         dgvLongForm.ShowDialog();
     }
     
+    private void FillWithFilter(object e, object sender)
+    {
+        dg.DataSource = null;
+        dg.FillDataGrid(_registermcController.Read(_page, dg.GetFilter<RegisterMC>(), dg.GetSortParameters<RegisterMC>()));
+    }
+    
+    private void CreateNew(object e, object sender)
+    {
+        var registerMCLong = new RegisterMCLong();
+        var dgvLongForm = new DgvLong(registerMCLong, _registermcController);
+        dgvLongForm.ShowDialog();
+    }
+    
     private void InitializeItems()
     {
         Size = new Size(800, 600);
@@ -53,6 +66,11 @@ public class DGVs : Form
         dg.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom;
         dg.AllowUserToAddRows = false;
 
+        filterButton.Location = new Point(658, 317);
+        filterButton.Size = new System.Drawing.Size(120, 28);
+        filterButton.Text = "Фильтровать";
+        filterButton.Click += FillWithFilter;
+        
         openButton.Location = new Point(658, 346);
         openButton.Size = new System.Drawing.Size(120, 28);
         openButton.Text = "Открыть";
@@ -61,7 +79,7 @@ public class DGVs : Form
         addButton.Location = new Point(658, 375);
         addButton.Size = new System.Drawing.Size(120, 28);
         addButton.Text = "Добавить";
-      //  addButton.Click += Authorization;
+        addButton.Click += CreateNew;
         
         deleteButton.Location = new Point(658, 404);
         deleteButton.Size = new System.Drawing.Size(120, 28);
@@ -88,6 +106,7 @@ public class DGVs : Form
         Controls.Add(deleteButton);
         Controls.Add(exportButton);
         Controls.Add(userLabel);
+        Controls.Add(filterButton);
     }
     
     #region компоненты для формы
@@ -97,6 +116,8 @@ public class DGVs : Form
     private Button addButton = new();
     private Button deleteButton = new();
     private Button exportButton = new();
+    private Button filterButton = new ();
     private Label userLabel = new ();
+    
     #endregion
 }

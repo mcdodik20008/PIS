@@ -18,7 +18,7 @@ public class RegisterMC
     [ToExcel]
     [Required]
     [Column("number")]
-    public int Number { get; set; }
+    public string Number { get; set; }
     
     [ToExcel]
     [Required]

@@ -73,7 +73,7 @@ public class RegistermcService
         );
     }
 
-    public RegisterMCShort Create(RegisterMCShort view)
+    public RegisterMCLong Create(RegisterMCLong view)
     {
         var entity = RegisterMcMapper.Map<RegisterMC>(view);
         Validator.Validate(entity);
