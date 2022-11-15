@@ -55,9 +55,9 @@ public class DgvLong : Form
         priceLabel.Size = new Size(120, 20);
         priceLabel.Text = "Цена контракта";
         
-        partLabel.Location = new Point(153, 278);
-        partLabel.Size = new Size(140, 45);
-        partLabel.Text = "Доля субвенции \r\nв цене контракта";
+        subventionShareLabel.Location = new Point(153, 278);
+        subventionShareLabel.Size = new Size(140, 45);
+        subventionShareLabel.Text = "Доля субвенции \r\nв цене контракта";
         
         amountMoneyLabel.Location = new Point(80, 325);
         amountMoneyLabel.Size = new Size(220, 65);
@@ -77,11 +77,11 @@ public class DgvLong : Form
         
         locationBox.Location = new Point(321, 70);
         locationBox.Size = new Size(200, 20);
-        //locationBox.Text = _registermcController.Read(_id). нет 
+        locationBox.Text = _registerMcLong.Location;
         
         actionTimePicker.Location = new Point(321, 100);
         actionTimePicker.Size = new Size(200, 20);
-        //actionTimePicker.Text = _registermcController.Read(_id). нет 
+        actionTimePicker.Value = _registerMcLong.ActionDate;
         
         organizationBox.Location = new Point(321, 130);
         organizationBox.Size = new Size(200, 20);
@@ -93,7 +93,7 @@ public class DgvLong : Form
         
         omsuBox.Location = new Point(321, 190);
         omsuBox.Size = new Size(200, 20);
-        // omsuBox.Text = _registermcController.Read(_id)..ToString(); net 
+        omsuBox.Text = _registerMcLong.Omsu;
        
         yearBox.Location = new Point(321, 220);
         yearBox.Size = new Size(200, 20);
@@ -103,9 +103,9 @@ public class DgvLong : Form
         priceBox.Size = new Size(200, 20);
         priceBox.Text = _registerMcLong.Price.ToString(); 
         
-        partBox.Location = new Point(321, 280);
-        partBox.Size = new Size(200, 20);
-        //partBox.Text = _registermcController.Read(_id).Price.ToString(); 
+        subventionShareBox.Location = new Point(321, 280);
+        subventionShareBox.Size = new Size(200, 20);
+        subventionShareBox.Text = _registerMcLong.SubventionShare.ToString(); 
        
         amountMoneyBox.Location = new Point(321, 325);
         amountMoneyBox.Size = new Size(200, 20);
@@ -142,7 +142,7 @@ public class DgvLong : Form
         Controls.Add(omsuLabel);
         Controls.Add(yearLabel);
         Controls.Add(priceLabel);
-        Controls.Add(partLabel);
+        Controls.Add(subventionShareLabel);
         Controls.Add(amountMoneyLabel);
         Controls.Add(partMoneyLabel);
         Controls.Add(numberBox);
@@ -154,7 +154,7 @@ public class DgvLong : Form
         Controls.Add(omsuBox);
         Controls.Add(yearBox);
         Controls.Add(priceBox);
-        Controls.Add(partBox);
+        Controls.Add(subventionShareBox);
         Controls.Add(amountMoneyBox);
         Controls.Add(partMoneyBox);
         Controls.Add(changeButton);
@@ -173,7 +173,7 @@ public class DgvLong : Form
     private Label omsuLabel = new ();
     private Label yearLabel = new ();
     private Label priceLabel = new ();
-    private Label partLabel = new ();
+    private Label subventionShareLabel = new ();
     private Label amountMoneyLabel = new ();
     private Label partMoneyLabel = new ();
     private TextBox numberBox = new ();
@@ -185,7 +185,7 @@ public class DgvLong : Form
     private TextBox omsuBox = new ();
     private TextBox yearBox = new ();
     private TextBox priceBox = new ();
-    private TextBox partBox = new ();
+    private TextBox subventionShareBox = new ();
     private TextBox amountMoneyBox = new ();
     private TextBox partMoneyBox = new ();
     private Button changeButton = new ();

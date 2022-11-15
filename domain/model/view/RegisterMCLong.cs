@@ -8,12 +8,18 @@ public class RegisterMCLong
     public long Id { get; set; }
 
     public int Number { get; set; }
-
+    
     public DateTime ValidDate { get; set; }
+    
+    public string Location { get; set; }
+    
+    public DateTime ActionDate { get; set; }
 
     public Organization Organization { get; set; }
 
     public Municipality Municipality { get; set; }
+    
+    public string Omsu { get; set; }
     
     public int Year { get; set; }
 

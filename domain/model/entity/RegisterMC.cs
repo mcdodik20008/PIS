@@ -24,6 +24,16 @@ public class RegisterMC
     [Required]
     [Column("valid_date", TypeName = "Date")]
     public DateTime ValidDate { get; set; }
+    
+    [ToExcel]
+    [Required]
+    [Column("location")]
+    public string Location { get; set; }
+    
+    [ToExcel]
+    [Required]
+    [Column("action_date", TypeName = "Date")]
+    public DateTime ActionDate { get; set; }
    
     [ToExcel]
     [Required]
@@ -34,6 +44,11 @@ public class RegisterMC
     [Required]
     [Column("municipality")]
     public Municipality Municipality { get; set; }
+    
+    [ToExcel]
+    [Required]
+    [Column("omsu")]
+    public string Omsu { get; set; }
     
     [ToExcel]
     [Required]
