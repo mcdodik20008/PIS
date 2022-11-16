@@ -143,12 +143,17 @@ public class DgvLong : Form
     public void ClearRegisterMC(RegisterMCLong registerMcLong)
     {
         _registerMcLong = registerMcLong;
-        numberBox.Text = _registerMcLong.Number;
         validDatePicker.Value = DateTime.Today;
-        locationBox.Text = _registerMcLong.Location;
         actionTimePicker.Value = DateTime.Today;
         organizationComboBox.Text = "";
         municipalityComboBox.Text = "";
+        FillInformation();
+    }
+
+    private void FillInformation()
+    {
+        numberBox.Text = _registerMcLong.Number;
+        locationBox.Text = _registerMcLong.Location;
         omsuBox.Text = _registerMcLong.Omsu;
         yearNumericUpDown.Text = _registerMcLong.Year.ToString(); 
         priceNumericUpDown.Text = _registerMcLong.Price.ToString(); 
@@ -160,18 +165,11 @@ public class DgvLong : Form
     private void GetLongRegisterMC(long id)
     {
         _registerMcLong = _registermcController.Read(id);
-        numberBox.Text = _registerMcLong.Number;
         validDatePicker.Value = _registerMcLong.ValidDate;
-        locationBox.Text = _registerMcLong.Location;
         actionTimePicker.Value = _registerMcLong.ActionDate;
         organizationComboBox.Text = _registerMcLong.Organization.ToString();
         municipalityComboBox.Text = _registerMcLong.Municipality.ToString();
-        omsuBox.Text = _registerMcLong.Omsu;
-        yearNumericUpDown.Text = _registerMcLong.Year.ToString(); 
-        priceNumericUpDown.Text = _registerMcLong.Price.ToString(); 
-        subventionShareNumericUpDown.Text = _registerMcLong.SubventionShare.ToString(); 
-        amountMoneyNumericUpDown.Text = _registerMcLong.AmountMoney.ToString();
-        shareFundsSubventionNumericUpDown.Text = _registerMcLong.ShareFundsSubvention.ToString();
+        FillInformation();
     }
 
     private void Add(object e, object sender)
