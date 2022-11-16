@@ -27,6 +27,8 @@ public class DgvLong : Form
     private void InitializeItems()
     {
         Size = new Size(590, 550);
+        Text = "Контракт";
+
         var OrganizationsList = _organizationController.Read();
         var municipalityList = _municipalityController.Read();
         foreach (var organization in OrganizationsList)
@@ -135,13 +137,13 @@ public class DgvLong : Form
         uploadFileButton.Location = new Point(149, 460);
         uploadFileButton.Size = new Size(150, 28);
         uploadFileButton.Text = "Загрузить файл";
-        //uploadFileButton.Click +=
+        uploadFileButton.Click += UploadFile;
            
         deleteFileButton.Location = new Point(298, 460);
         deleteFileButton.Size = new Size(150, 28);
         deleteFileButton.Text = "Удалить файл";
-        //deleteFileButton.Click +=
-        
+        deleteFileButton.Click += DeleteFile;
+
     }
     public void GetShortRegisterMC(RegisterMCShort registerMcShort)
     {
@@ -168,6 +170,16 @@ public class DgvLong : Form
         subventionShareNumericUpDown.Text = _registerMcLong.SubventionShare.ToString(); 
         amountMoneyNumericUpDown.Text = _registerMcLong.AmountMoney.ToString();
         shareFundsSubventionNumericUpDown.Text = _registerMcLong.ShareFundsSubvention.ToString();
+    }
+    
+    private void UploadFile(object e, object sender)
+    {
+        //_registermcController.UpLoadFile(_registerMcLong); почему метод аплоад принимает РегистерМц, а не лонг или шорт
+    }
+    
+    private void DeleteFile(object e, object sender)
+    {
+        //_registermcController.D(_registerMcLong);  нет метода для удаления файла
     }
     
     private void GetLongRegisterMC(long id)

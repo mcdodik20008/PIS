@@ -41,6 +41,7 @@ public class Auth: Form
     private void InitializeItems()
     {
         Size = new Size(480, 310);
+        Text = "Авторизация";
         
         loginBox.Location = new Point(105, 56);
         loginBox.Size = new System.Drawing.Size(294, 27);

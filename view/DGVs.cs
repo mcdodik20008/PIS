@@ -56,9 +56,22 @@ public class DGVs : Form
         _dgvLong.ShowDialog();
     }
     
+    private void Delete(object e, object sender)
+    {
+        var selectedItem = dg.GetSelectedItem(dg.CurrentRow.Index);
+        //не работает, надо фиксить
+        _registermcController.Delete(selectedItem);
+    }
+    
+    private void ExportToExcel(object e, object sender)
+    {
+        _registermcController.ExportToExcel();
+    }
+    
     private void InitializeItems()
     {
         Size = new Size(800, 600);
+        Text = "Реестр";
         
         dg.FillDataGrid(_registermcController.Read(_page));
         dg.FillDataGrid(_registermcController.Read(_page, dg.GetFilter<RegisterMC>(), dg.GetSortParameters<RegisterMC>()));
@@ -67,6 +80,7 @@ public class DGVs : Form
         //dg.Bounds = new Rectangle(0, 0, 655, 460);
         dg.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom;
         dg.AllowUserToAddRows = false;
+        dg.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
         filterButton.Location = new Point(658, 317);
         filterButton.Size = new System.Drawing.Size(120, 28);
@@ -86,12 +100,12 @@ public class DGVs : Form
         deleteButton.Location = new Point(658, 404);
         deleteButton.Size = new System.Drawing.Size(120, 28);
         deleteButton.Text = "Удалить";
-      //  deleteButton.Click += Authorization;
+        deleteButton.Click += Delete;
         
         exportButton.Location = new Point(658, 433);
         exportButton.Size = new System.Drawing.Size(120, 50);
         exportButton.Text = "Экспорт в Excel";
-       // exportButton.Click += Authorization;
+        exportButton.Click += ExportToExcel;
        
        userLabel.Location = new System.Drawing.Point(675, 28);
        userLabel.Size = new System.Drawing.Size(120, 28);
