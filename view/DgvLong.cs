@@ -27,9 +27,17 @@ public class DgvLong : Form
     private void InitializeItems()
     {
         Size = new Size(590, 550);
-        var org = _organizationController.Read();
-        var mun = _municipalityController.Read();
-        
+        var OrganizationsList = _organizationController.Read();
+        var municipalityList = _municipalityController.Read();
+        foreach (var organization in OrganizationsList)
+        {
+            organizationComboBox.Items.Add(organization.Name);
+        }
+        foreach (var municipality in municipalityList)
+        {
+            municipalityComboBox.Items.Add(municipality.Name);
+        }
+
         numberLabel.Location = new Point(218, 10);
         numberLabel.Size = new Size(72, 20);
         numberLabel.Text = "Номер МК";
@@ -179,17 +187,18 @@ public class DgvLong : Form
         _registerMcLong.Location = locationBox.Text;
         _registerMcLong.ActionDate = actionTimePicker.Value;
         var organization = new Organization();
-      //  organization.Id = ;
         organization.Name = organizationComboBox.Text;
         _registerMcLong.Organization = organization;
-        //_registerMcLong.Municipality.Id = municipalityBox.Text;
+        var municipality = new Municipality();
+        municipality.Name = municipalityComboBox.Text;
+        _registerMcLong.Municipality = municipality;
         _registerMcLong.Omsu = omsuBox.Text;
         _registerMcLong.Year = Int32.Parse(yearNumericUpDown.Text);
         _registerMcLong.Price = double.Parse(priceNumericUpDown.Text);
         _registerMcLong.SubventionShare = Double.Parse(subventionShareNumericUpDown.Text);
         _registerMcLong.AmountMoney = Double.Parse(amountMoneyNumericUpDown.Text);
         _registerMcLong.ShareFundsSubvention = Double.Parse(shareFundsSubventionNumericUpDown.Text);
-        //_registermcController.Create(_registerMcLong);
+        _registermcController.Create(_registerMcLong);
     }
     
     private void AddControls()
