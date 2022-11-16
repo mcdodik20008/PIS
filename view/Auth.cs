@@ -19,7 +19,9 @@ public class Auth: Form
         _authController = authController;
         InitializeItems();
         AddControls();
-
+        //для тестов
+        loginBox.Text = "admin";
+        passwordBox.Text = "1234";
     }
     
     private void Authorization(object e, object sender)

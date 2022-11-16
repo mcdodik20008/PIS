@@ -19,26 +19,28 @@ public class DGVs : Form
     
     private RegistermcController _registermcController;
     
+    private DgvLong _dgvLong;
+    
     private Page _page = new(0, 25);
     
     public DGVs(AuthController authController, 
         IFilterFactory factory, 
         FilterSorterMapper filterSorterMapper, 
-        RegistermcController registermcController)
+        RegistermcController registermcController, DgvLong dgvLong)
     {
+        _dgvLong = dgvLong;
         _registermcController = registermcController;
         _authController = authController;
         dg = new(factory, filterSorterMapper);
         InitializeItems();
         AddControls();
-       // dg.Columns[0].Visible = false; //вот тут затуп!!!
     }
     
     private void OpenLongDgv(object e, object sender)
     {
         var selectedItem = dg.GetSelectedItem(dg.CurrentRow.Index);
-        var dgvLongForm = new DgvLong(selectedItem, _registermcController);
-        dgvLongForm.ShowDialog();
+        _dgvLong.GetShortRegisterMC(selectedItem);
+        _dgvLong.ShowDialog();
     }
     
     private void FillWithFilter(object e, object sender)
@@ -50,8 +52,8 @@ public class DGVs : Form
     private void CreateNew(object e, object sender)
     {
         var registerMCLong = new RegisterMCLong();
-        var dgvLongForm = new DgvLong(registerMCLong, _registermcController);
-        dgvLongForm.ShowDialog();
+        _dgvLong.ClearRegisterMC(registerMCLong);
+        _dgvLong.ShowDialog();
     }
     
     private void InitializeItems()

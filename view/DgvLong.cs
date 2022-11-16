@@ -1,5 +1,8 @@
 ﻿using PISWF.domain.registermc.controller;
 using PISWF.domain.registermc.model.view;
+using PISWF.infrasrtucture.muni_org.controller;
+using PISWF.infrasrtucture.muni_org.model.entity;
+using PISWF.infrasrtucture.muni_org.service;
 
 namespace PISWF.view;
 
@@ -7,30 +10,25 @@ public class DgvLong : Form
 {
     private RegisterMCLong _registerMcLong;
     private RegistermcController _registermcController;
+    private OrganizationController _organizationController;
+    private MunicipalityController _municipalityController;
     
-    public DgvLong(RegisterMCShort registerMcShort, RegistermcController registermcController)
+    public DgvLong(RegistermcController registermcController, 
+        OrganizationController organizationController,
+        MunicipalityController municipalityController)
     {
-        _registerMcLong = registermcController.Read(registerMcShort.Id);
-        InitializeFormForOpen();
-
-    }
-
-    public DgvLong(RegisterMCLong registerMCLong, RegistermcController registermcController) : this(registermcController)
-    {
-        _registerMcLong = registerMCLong;
-        InitializeFormForAdd();
-    }
-
-    public DgvLong(RegistermcController registermcController)
-    {
-        InitializeItems(); 
-        AddControls();
         _registermcController = registermcController;
+        _organizationController = organizationController;
+        _municipalityController = municipalityController;
+        InitializeItems();
+        AddControls();
     }
-
+    
     private void InitializeItems()
     {
         Size = new Size(590, 550);
+        var org = _organizationController.Read();
+        var mun = _municipalityController.Read();
         
         numberLabel.Location = new Point(218, 10);
         numberLabel.Size = new Size(72, 20);
@@ -92,34 +90,39 @@ public class DgvLong : Form
         actionTimePicker.Location = new Point(321, 100);
         actionTimePicker.Size = new Size(200, 20);
 
-        organizationBox.Location = new Point(321, 130);
-        organizationBox.Size = new Size(200, 20);
+        organizationComboBox.Location = new Point(321, 130);
+        organizationComboBox.Size = new Size(200, 20);
 
-        municipalityBox.Location = new Point(321, 160);
-        municipalityBox.Size = new Size(200, 20);
+        municipalityComboBox.Location = new Point(321, 160);
+        municipalityComboBox.Size = new Size(200, 20);
         
         omsuBox.Location = new Point(321, 190);
         omsuBox.Size = new Size(200, 20);
 
-        yearBox.Location = new Point(321, 220);
-        yearBox.Size = new Size(200, 20);
+        yearNumericUpDown.Location = new Point(321, 220);
+        yearNumericUpDown.Size = new Size(200, 20);
+        yearNumericUpDown.Maximum = 9999999;
 
-        priceBox.Location = new Point(321, 250);
-        priceBox.Size = new Size(200, 20);
+        priceNumericUpDown.Location = new Point(321, 250);
+        priceNumericUpDown.Size = new Size(200, 20);
+        priceNumericUpDown.Maximum = 9999999;
 
-        subventionShareBox.Location = new Point(321, 280);
-        subventionShareBox.Size = new Size(200, 20);
+        subventionShareNumericUpDown.Location = new Point(321, 280);
+        subventionShareNumericUpDown.Size = new Size(200, 20);
+        subventionShareNumericUpDown.Maximum = 9999999;
 
-        amountMoneyBox.Location = new Point(321, 325);
-        amountMoneyBox.Size = new Size(200, 20);
+        amountMoneyNumericUpDown.Location = new Point(321, 325);
+        amountMoneyNumericUpDown.Size = new Size(200, 20);
+        amountMoneyNumericUpDown.Maximum = 9999999;
 
-        partMoneyBox.Location = new Point(321, 386);
-        partMoneyBox.Size = new Size(200, 20);
+        shareFundsSubventionNumericUpDown.Location = new Point(321, 386);
+        shareFundsSubventionNumericUpDown.Size = new Size(200, 20);
+        shareFundsSubventionNumericUpDown.Maximum = 9999999;
 
         changeButton.Location = new Point(24, 460);
         changeButton.Size = new Size(125, 28);
-        changeButton.Text = "Изменить";
-        //changeButton.Click+= ; 
+        changeButton.Text = "Сохранить";
+        changeButton.Click+= Add; 
            
         uploadFileButton.Location = new Point(149, 460);
         uploadFileButton.Size = new Size(150, 28);
@@ -131,41 +134,64 @@ public class DgvLong : Form
         deleteFileButton.Text = "Удалить файл";
         //deleteFileButton.Click +=
         
-        confirmButton.Location = new Point(400, 460);
-        confirmButton.Size = new Size(150, 28);
-        confirmButton.Text = "Добавить";
-        confirmButton.Click += Add;
+    }
+    public void GetShortRegisterMC(RegisterMCShort registerMcShort)
+    {
+        GetLongRegisterMC(registerMcShort.Id);
     }
     
-    private void Add(object e, object sender)
+    public void ClearRegisterMC(RegisterMCLong registerMcLong)
     {
-        _registerMcLong.Number = numberBox.Text; 
-        //TODO запонить контроллер из текстбоксов
-        _registermcController.Create(_registerMcLong);
+        _registerMcLong = registerMcLong;
+        numberBox.Text = _registerMcLong.Number;
+        validDatePicker.Value = DateTime.Today;
+        locationBox.Text = _registerMcLong.Location;
+        actionTimePicker.Value = DateTime.Today;
+        organizationComboBox.Text = "";
+        municipalityComboBox.Text = "";
+        omsuBox.Text = _registerMcLong.Omsu;
+        yearNumericUpDown.Text = _registerMcLong.Year.ToString(); 
+        priceNumericUpDown.Text = _registerMcLong.Price.ToString(); 
+        subventionShareNumericUpDown.Text = _registerMcLong.SubventionShare.ToString(); 
+        amountMoneyNumericUpDown.Text = _registerMcLong.AmountMoney.ToString();
+        shareFundsSubventionNumericUpDown.Text = _registerMcLong.ShareFundsSubvention.ToString();
     }
     
-    private void InitializeFormForAdd()
+    private void GetLongRegisterMC(long id)
     {
-        changeButton.Hide();
-        uploadFileButton.Hide();
-        deleteFileButton.Hide();
-    }
-    
-    private void InitializeFormForOpen()
-    {
-        confirmButton.Hide();
+        _registerMcLong = _registermcController.Read(id);
         numberBox.Text = _registerMcLong.Number;
         validDatePicker.Value = _registerMcLong.ValidDate;
         locationBox.Text = _registerMcLong.Location;
         actionTimePicker.Value = _registerMcLong.ActionDate;
-        organizationBox.Text = _registerMcLong.Organization.ToString();
-        municipalityBox.Text = _registerMcLong.Municipality.ToString();
+        organizationComboBox.Text = _registerMcLong.Organization.ToString();
+        municipalityComboBox.Text = _registerMcLong.Municipality.ToString();
         omsuBox.Text = _registerMcLong.Omsu;
-        yearBox.Text = _registerMcLong.Year.ToString(); 
-        priceBox.Text = _registerMcLong.Price.ToString(); 
-        subventionShareBox.Text = _registerMcLong.SubventionShare.ToString(); 
-        amountMoneyBox.Text = _registerMcLong.AmountMoney.ToString();
-        partMoneyBox.Text = _registerMcLong.SubventionShare.ToString();
+        yearNumericUpDown.Text = _registerMcLong.Year.ToString(); 
+        priceNumericUpDown.Text = _registerMcLong.Price.ToString(); 
+        subventionShareNumericUpDown.Text = _registerMcLong.SubventionShare.ToString(); 
+        amountMoneyNumericUpDown.Text = _registerMcLong.AmountMoney.ToString();
+        shareFundsSubventionNumericUpDown.Text = _registerMcLong.ShareFundsSubvention.ToString();
+    }
+
+    private void Add(object e, object sender)
+    {
+        _registerMcLong.Number = numberBox.Text; 
+        _registerMcLong.ValidDate = validDatePicker.Value;
+        _registerMcLong.Location = locationBox.Text;
+        _registerMcLong.ActionDate = actionTimePicker.Value;
+        var organization = new Organization();
+      //  organization.Id = ;
+        organization.Name = organizationComboBox.Text;
+        _registerMcLong.Organization = organization;
+        //_registerMcLong.Municipality.Id = municipalityBox.Text;
+        _registerMcLong.Omsu = omsuBox.Text;
+        _registerMcLong.Year = Int32.Parse(yearNumericUpDown.Text);
+        _registerMcLong.Price = double.Parse(priceNumericUpDown.Text);
+        _registerMcLong.SubventionShare = Double.Parse(subventionShareNumericUpDown.Text);
+        _registerMcLong.AmountMoney = Double.Parse(amountMoneyNumericUpDown.Text);
+        _registerMcLong.ShareFundsSubvention = Double.Parse(shareFundsSubventionNumericUpDown.Text);
+        //_registermcController.Create(_registerMcLong);
     }
     
     private void AddControls()
@@ -186,18 +212,17 @@ public class DgvLong : Form
         Controls.Add(validDatePicker);
         Controls.Add(locationBox);
         Controls.Add(actionTimePicker);
-        Controls.Add(organizationBox);
-        Controls.Add(municipalityBox);
+        Controls.Add(organizationComboBox);
+        Controls.Add(municipalityComboBox);
         Controls.Add(omsuBox);
-        Controls.Add(yearBox);
-        Controls.Add(priceBox);
-        Controls.Add(subventionShareBox);
-        Controls.Add(amountMoneyBox);
-        Controls.Add(partMoneyBox);
+        Controls.Add(yearNumericUpDown);
+        Controls.Add(priceNumericUpDown);
+        Controls.Add(subventionShareNumericUpDown);
+        Controls.Add(amountMoneyNumericUpDown);
+        Controls.Add(shareFundsSubventionNumericUpDown);
         Controls.Add(changeButton);
         Controls.Add(uploadFileButton);
         Controls.Add(deleteFileButton);
-        Controls.Add(confirmButton);
     }
     
     #region компоненты для формы
@@ -218,18 +243,17 @@ public class DgvLong : Form
     private DateTimePicker validDatePicker = new ();
     private TextBox locationBox = new ();
     private DateTimePicker actionTimePicker = new();
-    private TextBox organizationBox = new ();
-    private TextBox municipalityBox = new ();
+    private ComboBox organizationComboBox = new ();
+    private ComboBox municipalityComboBox = new ();
     private TextBox omsuBox = new ();
-    private TextBox yearBox = new ();
-    private TextBox priceBox = new ();
-    private TextBox subventionShareBox = new ();
-    private TextBox amountMoneyBox = new ();
-    private TextBox partMoneyBox = new ();
+    private NumericUpDown yearNumericUpDown = new ();
+    private NumericUpDown priceNumericUpDown = new ();
+    private NumericUpDown subventionShareNumericUpDown = new ();
+    private NumericUpDown amountMoneyNumericUpDown = new ();
+    private NumericUpDown shareFundsSubventionNumericUpDown = new ();
     private Button changeButton = new ();
     private Button uploadFileButton = new ();
     private Button deleteFileButton = new ();
-    private Button confirmButton = new ();
 
     #endregion
 }

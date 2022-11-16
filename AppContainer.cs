@@ -14,6 +14,10 @@ using PISWF.infrasrtucture.filter;
 using PISWF.infrasrtucture.logger.context;
 using PISWF.infrasrtucture.logger.controller;
 using PISWF.infrasrtucture.logger.service;
+using PISWF.infrasrtucture.muni_org.context.repository;
+using PISWF.infrasrtucture.muni_org.controller;
+using PISWF.infrasrtucture.muni_org.model.mapper;
+using PISWF.infrasrtucture.muni_org.service;
 using PISWF.view;
 
 namespace PISWF;
@@ -40,6 +44,20 @@ public class AppContainer : ServiceContainer
         this.RegisterSingleton<RegisterMcMapper>();
         this.RegisterSingleton<RegisterMcRepository>();
         this.RegisterSingleton<RegistermcValidator>();
+        #endregion
+        
+        #region organization
+        this.RegisterSingleton<OrganizationController>();
+        this.RegisterSingleton<OrganizationService>();
+        this.RegisterSingleton<OrganizationRepository>();
+        this.RegisterSingleton<OrganizationMapper>();
+        #endregion
+        
+        #region municipality
+        this.RegisterSingleton<MunicipalityController>();
+        this.RegisterSingleton<MunicipalityService>();
+        this.RegisterSingleton<MunicipalityRepository>();
+        this.RegisterSingleton<MunicipalityMapper>();
         #endregion
         
         #region auth
