@@ -11,21 +11,23 @@ public class DgvLong : Form
     public DgvLong(RegisterMCShort registerMcShort, RegistermcController registermcController)
     {
         _registerMcLong = registermcController.Read(registerMcShort.Id);
-        _registermcController = registermcController;
-        InitializeItems();
         InitializeFormForOpen();
-        AddControls();
+
     }
-    
-    public DgvLong(RegisterMCLong registerMCLong, RegistermcController registermcController) //для создания новой
+
+    public DgvLong(RegisterMCLong registerMCLong, RegistermcController registermcController) : this(registermcController)
     {
         _registerMcLong = registerMCLong;
-        _registermcController = registermcController;
-        InitializeItems();
         InitializeFormForAdd();
-        AddControls();
     }
-    
+
+    public DgvLong(RegistermcController registermcController)
+    {
+        InitializeItems(); 
+        AddControls();
+        _registermcController = registermcController;
+    }
+
     private void InitializeItems()
     {
         Size = new Size(590, 550);

@@ -67,6 +67,10 @@ public class DataGridViewWithFilter<TValue,TFilter> : DataGridView where TFilter
                 _popup.Items.Add(actionBox);
                 _popup.Items.Add(valueTextBox);
                 break;
+            case "System.String":
+                _popup.Items.Add(actionBox);
+                _popup.Items.Add(valueTextBox);
+                break;
             default:
                 _popup.Items.Add(valueTextBox);
                 break;
@@ -190,7 +194,8 @@ public class DataGridViewWithFilter<TValue,TFilter> : DataGridView where TFilter
         {
             "System.DateTime" => new[] { "Без фильтрации", "До", "После" },
             "System.Int32" or "System.Int64" or "System.Double"
-                => new[] { "Без фильтрации", "Меньше", "Больше", "Равно" }
+                => new[] { "Без фильтрации", "Меньше", "Больше", "Равно" },
+            _ => new[]{ "Содержит" }
         };
         var val = _filterColumns[_columnIndex].ValueFilter;
         comboBox.Text = val is null || val.Equals("") ? values[0] : val;

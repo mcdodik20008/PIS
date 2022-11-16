@@ -29,12 +29,15 @@ public class FilterField<T> where T : IComparable
         var type = typeof(TEnt).GetProperty(propName);
         if (Comparators.None != Action)
         {
+            var xx = "123";
+            var x = "1";
+            var f = Value.ToString();
             predicate = Action switch
             {
                 Comparators.Equals => predicate.And(l => type.GetValue(l).Equals(Value)),
                 Comparators.Less => predicate.And(l => Value.CompareTo(type.GetValue(l) as IComparable) == 1),
                 Comparators.More => predicate.And(l => Value.CompareTo(type.GetValue(l) as IComparable) == -1),
-                Comparators.Like => predicate.And(l => Value.ToString().Contains(l.ToString()!))
+                Comparators.Like => predicate.And(l => type.GetValue(l).ToString().Contains(Value.ToString()))
             };
         }
 

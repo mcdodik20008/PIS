@@ -8,7 +8,7 @@ namespace pis.infrasrtucture.filter.impl;
 public class RegisterFilter : FilterModel<RegisterMC>
 {
     [FieldFilterName("Number")] 
-    public FilterField<int> NumberField { get; set; } = new(0, Comparators.None);
+    public FilterField<string> NumberField { get; set; } = new("", Comparators.None);
 
     [FieldFilterName("ValidDate")]
     public FilterField<DateTime> ValidDateField { get; set; } = new(DateTime.Now, Comparators.None);
@@ -31,7 +31,7 @@ public class RegisterFilter : FilterModel<RegisterMC>
 
     public void Reset()
     {
-        NumberField = new FilterField<int>(0, Comparators.None);
+        NumberField = new FilterField<string>("", Comparators.None);
         ValidDateField = new FilterField<DateTime>(DateTime.Now, Comparators.None);
         YearField = new FilterField<int>(0, Comparators.None);
         PriceField = new FilterField<double>(0, Comparators.None);
