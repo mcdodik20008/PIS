@@ -1,6 +1,5 @@
 ﻿using System.Linq.Expressions;
 using LinqKit;
-using PISWF.domain.model.validator;
 using PISWF.domain.registermc.model.entity;
 using PISWF.domain.registermc.model.view;
 using PISWF.domain.registermc.service;

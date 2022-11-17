@@ -1,13 +1,10 @@
-﻿using System.Data;
-using PISWF.infrasrtucture.auth.controller;
-using PISWF.infrasrtucture.auth.model.view;
+﻿using PISWF.infrasrtucture.auth.controller;
 using pis.infrasrtucture.dgvf;
 using pis.infrasrtucture.filter.impl;
 using PISWF.infrasrtucture.filter;
 using PISWF.domain.registermc.controller;
 using PISWF.domain.registermc.model.entity;
 using PISWF.domain.registermc.model.view;
-using PISWF.domain.registermc.service;
 using PISWF.infrasrtucture.page;
 
 
@@ -46,11 +43,13 @@ public class DGVs : Form
     private void FillWithFilter(object e, object sender)
     {
         dg.DataSource = null;
+        // можно на несколько строк разбить, не читаемо
         dg.FillDataGrid(_registermcController.Read(_page, dg.GetFilter<RegisterMC>(), dg.GetSortParameters<RegisterMC>()));
     }
     
     private void CreateNew(object e, object sender)
     {
+        // можно без объявления переменной передавать?
         var registerMCLong = new RegisterMCLong();
         _dgvLong.ClearRegisterMC(registerMCLong);
         _dgvLong.ShowDialog();
@@ -60,7 +59,7 @@ public class DGVs : Form
     {
         var selectedItem = dg.GetSelectedItem(dg.CurrentRow.Index);
         //не работает, надо фиксить
-        _registermcController.Delete(selectedItem);
+        _registermcController.Delete(selectedItem); // посмотрю
     }
     
     private void ExportToExcel(object e, object sender)

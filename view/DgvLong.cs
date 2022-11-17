@@ -2,18 +2,21 @@
 using PISWF.domain.registermc.model.view;
 using PISWF.infrasrtucture.muni_org.controller;
 using PISWF.infrasrtucture.muni_org.model.entity;
-using PISWF.infrasrtucture.muni_org.service;
 
 namespace PISWF.view;
 
 public class DgvLong : Form
 {
     private RegisterMCLong _registerMcLong;
+    
     private RegistermcController _registermcController;
+    
     private OrganizationController _organizationController;
+    
     private MunicipalityController _municipalityController;
     
-    public DgvLong(RegistermcController registermcController, 
+    public DgvLong(
+        RegistermcController registermcController, 
         OrganizationController organizationController,
         MunicipalityController municipalityController)
     {
@@ -24,13 +27,20 @@ public class DgvLong : Form
         AddControls();
     }
     
+    // жто точно get с типом void?
+    public void GetShortRegisterMC(RegisterMCShort registerMcShort)
+    {
+        GetLongRegisterMC(registerMcShort.Id);
+    }
+    
     private void InitializeItems()
     {
         Size = new Size(590, 550);
         Text = "Контракт";
-
+        // одна с большой вторая с маленькой??
         var OrganizationsList = _organizationController.Read();
         var municipalityList = _municipalityController.Read();
+        // может лучше одним for?
         foreach (var organization in OrganizationsList)
         {
             organizationComboBox.Items.Add(organization.Name);
@@ -40,54 +50,59 @@ public class DgvLong : Form
             municipalityComboBox.Items.Add(municipality.Name);
         }
 
+        FF();
+    }
+
+    private void FF()
+    {
         numberLabel.Location = new Point(218, 10);
         numberLabel.Size = new Size(72, 20);
         numberLabel.Text = "Номер МК";
-        
+
         validDateLabel.Location = new Point(146, 39);
         validDateLabel.Size = new Size(144, 20);
         validDateLabel.Text = "Дата заключения МК";
-        
+
         locationLabel.Location = new Point(105, 65);
         locationLabel.Size = new Size(170, 20);
         locationLabel.Text = "Место оказания услуги";
-        
+
         actionTimeLabel.Location = new Point(165, 92);
         actionTimeLabel.Size = new Size(125, 20);
         actionTimeLabel.Text = "Дата действия МК";
-        
+
         organizationLabel.Location = new Point(174, 118);
         organizationLabel.Size = new Size(116, 20);
         organizationLabel.Text = "Исполнитель МК";
-        
+
         municipalityLabel.Location = new Point(150, 140);
         municipalityLabel.Size = new Size(130, 45);
         municipalityLabel.Text = "Муниципальное \r\nобразование";
-        
+
         omsuLabel.Location = new Point(223, 181);
         omsuLabel.Size = new Size(55, 20);
         omsuLabel.Text = "ОМСУ";
-        
+
         yearLabel.Location = new Point(138, 204);
         yearLabel.Size = new Size(145, 45);
         yearLabel.Text = "Год, на который \r\nвыдана субвенция";
-        
+
         priceLabel.Location = new Point(160, 247);
         priceLabel.Size = new Size(120, 20);
         priceLabel.Text = "Цена контракта";
-        
+
         subventionShareLabel.Location = new Point(153, 278);
         subventionShareLabel.Size = new Size(140, 45);
         subventionShareLabel.Text = "Доля субвенции \r\nв цене контракта";
-        
+
         amountMoneyLabel.Location = new Point(80, 325);
         amountMoneyLabel.Size = new Size(220, 65);
         amountMoneyLabel.Text = "Объём денежных средств, \r\nвыплаченных Исполнителю \r\nпо контракту";
-        
+
         partMoneyLabel.Location = new Point(80, 392);
         partMoneyLabel.Size = new Size(220, 65);
         partMoneyLabel.Text = "Доля денежных средств \r\nиз субвенции, выплаченной \r\nпо контракту в %\r\n\r\n";
-        
+
         numberBox.Location = new Point(321, 10);
         numberBox.Size = new Size(200, 20);
 
@@ -105,7 +120,7 @@ public class DgvLong : Form
 
         municipalityComboBox.Location = new Point(321, 160);
         municipalityComboBox.Size = new Size(200, 20);
-        
+
         omsuBox.Location = new Point(321, 190);
         omsuBox.Size = new Size(200, 20);
 
@@ -132,24 +147,19 @@ public class DgvLong : Form
         changeButton.Location = new Point(24, 460);
         changeButton.Size = new Size(125, 28);
         changeButton.Text = "Сохранить";
-        changeButton.Click+= Add; 
-           
+        changeButton.Click += Add;
+
         uploadFileButton.Location = new Point(149, 460);
         uploadFileButton.Size = new Size(150, 28);
         uploadFileButton.Text = "Загрузить файл";
         uploadFileButton.Click += UploadFile;
-           
+
         deleteFileButton.Location = new Point(298, 460);
         deleteFileButton.Size = new Size(150, 28);
         deleteFileButton.Text = "Удалить файл";
         deleteFileButton.Click += DeleteFile;
+    }
 
-    }
-    public void GetShortRegisterMC(RegisterMCShort registerMcShort)
-    {
-        GetLongRegisterMC(registerMcShort.Id);
-    }
-    
     public void ClearRegisterMC(RegisterMCLong registerMcLong)
     {
         _registerMcLong = registerMcLong;
@@ -160,6 +170,8 @@ public class DgvLong : Form
         FillInformation();
     }
 
+    // может лучше параметр передавать, а то странно получается ничего не передаём, а что-то заполняем
+    // странное название fixxInformation - ты же тут контролы заполняешь, а не информацию, не?
     private void FillInformation()
     {
         numberBox.Text = _registerMcLong.Number;
@@ -192,15 +204,18 @@ public class DgvLong : Form
         FillInformation();
     }
 
+    // мб какой-то отдельный метод на заполнение registerMC
     private void Add(object e, object sender)
     {
         _registerMcLong.Number = numberBox.Text; 
         _registerMcLong.ValidDate = validDatePicker.Value;
         _registerMcLong.Location = locationBox.Text;
         _registerMcLong.ActionDate = actionTimePicker.Value;
+        // почему создаёшь новую оргу, а не берешь из списка? В бд новая создасться.
         var organization = new Organization();
         organization.Name = organizationComboBox.Text;
         _registerMcLong.Organization = organization;
+        // почему создаёшь новую municipality, а не берешь из списка? В бд новая создасться.
         var municipality = new Municipality();
         municipality.Name = municipalityComboBox.Text;
         _registerMcLong.Municipality = municipality;

@@ -11,8 +11,6 @@ public class OrganizationMapper : Mapper
         {
             cfg.CreateMap<Organization, OrganizationShort>();
             cfg.CreateMap<OrganizationShort, Organization>();
-           // cfg.CreateMap<List<Organization>, List<OrganizationShort>>();
-           // cfg.CreateMap<List<OrganizationShort>, List<Organization>>();
         })
     )
     {

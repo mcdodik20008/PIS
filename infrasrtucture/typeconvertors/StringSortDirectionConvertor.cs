@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using pis.infrasrtucture.sort;
-using PISWF.infrasrtucture.filter;
 
 namespace pis.infrasrtucture.mappertypeconvertor;
 

@@ -6,5 +6,6 @@ namespace PISWF;
 public partial class AppDbContext
 {
     public DbSet<Municipality> Municipalities { get; set; }
+    
     public DbSet<Organization> Organizations { get; set; }
 }
