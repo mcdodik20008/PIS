@@ -1,4 +1,5 @@
 ﻿using PISWF.infrasrtucture.muni_org.model.entity;
+using PISWF.infrasrtucture.muni_org.model.view;
 
 namespace PISWF.domain.registermc.model.view;
 
@@ -14,9 +15,9 @@ public class RegisterMCLong
     
     public DateTime ActionDate { get; set; }
 
-    public Organization Organization { get; set; }
+    public OrganizationShort OrganizationShort { get; set; }
 
-    public Municipality Municipality { get; set; }
+    public MunicipalityShort MunicipalityShort { get; set; }
     
     public string Omsu { get; set; }
     

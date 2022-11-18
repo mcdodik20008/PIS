@@ -36,7 +36,7 @@ public class DGVs : Form
     private void OpenLongDgv(object e, object sender)
     {
         var selectedItem = dg.GetSelectedItem(dg.CurrentRow.Index);
-        _dgvLong.GetShortRegisterMC(selectedItem);
+        _dgvLong.SetShortRegisterMC(selectedItem);
         _dgvLong.ShowDialog();
     }
     
@@ -44,14 +44,16 @@ public class DGVs : Form
     {
         dg.DataSource = null;
         // можно на несколько строк разбить, не читаемо
-        dg.FillDataGrid(_registermcController.Read(_page, dg.GetFilter<RegisterMC>(), dg.GetSortParameters<RegisterMC>()));
+        //так пойдет? я не знаю как лучше
+        dg.FillDataGrid(_registermcController.Read(
+            _page, 
+            dg.GetFilter<RegisterMC>(), 
+            dg.GetSortParameters<RegisterMC>()));
     }
     
     private void CreateNew(object e, object sender)
     {
-        // можно без объявления переменной передавать?
-        var registerMCLong = new RegisterMCLong();
-        _dgvLong.ClearRegisterMC(registerMCLong);
+        _dgvLong.ClearRegisterMC(new RegisterMCLong());
         _dgvLong.ShowDialog();
     }
     

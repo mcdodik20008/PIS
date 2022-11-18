@@ -2,6 +2,7 @@
 using PISWF.domain.registermc.model.view;
 using PISWF.infrasrtucture.muni_org.controller;
 using PISWF.infrasrtucture.muni_org.model.entity;
+using PISWF.infrasrtucture.muni_org.model.view;
 
 namespace PISWF.view;
 
@@ -27,8 +28,7 @@ public class DgvLong : Form
         AddControls();
     }
     
-    // жто точно get с типом void?
-    public void GetShortRegisterMC(RegisterMCShort registerMcShort)
+    public void SetShortRegisterMC(RegisterMCShort registerMcShort)
     {
         GetLongRegisterMC(registerMcShort.Id);
     }
@@ -37,18 +37,10 @@ public class DgvLong : Form
     {
         Size = new Size(590, 550);
         Text = "Контракт";
-        // одна с большой вторая с маленькой??
-        var OrganizationsList = _organizationController.Read();
+        var organizationsList = _organizationController.Read();
         var municipalityList = _municipalityController.Read();
-        // может лучше одним for?
-        foreach (var organization in OrganizationsList)
-        {
-            organizationComboBox.Items.Add(organization.Name);
-        }
-        foreach (var municipality in municipalityList)
-        {
-            municipalityComboBox.Items.Add(municipality.Name);
-        }
+        organizationComboBox.DataSource = organizationsList;
+        municipalityComboBox.DataSource = municipalityList;
 
         FF();
     }
@@ -167,12 +159,12 @@ public class DgvLong : Form
         actionTimePicker.Value = DateTime.Today;
         organizationComboBox.Text = "";
         municipalityComboBox.Text = "";
-        FillInformation();
+        FillControls();
     }
 
-    // может лучше параметр передавать, а то странно получается ничего не передаём, а что-то заполняем
-    // странное название fixxInformation - ты же тут контролы заполняешь, а не информацию, не?
-    private void FillInformation()
+    // может лучше параметр передавать, а то странно получается ничего не передаём, а что-то заполняем 
+    // не понял какой параметр
+    private void FillControls()
     {
         numberBox.Text = _registerMcLong.Number;
         locationBox.Text = _registerMcLong.Location;
@@ -199,33 +191,36 @@ public class DgvLong : Form
         _registerMcLong = _registermcController.Read(id);
         validDatePicker.Value = _registerMcLong.ValidDate;
         actionTimePicker.Value = _registerMcLong.ActionDate;
-        organizationComboBox.Text = _registerMcLong.Organization.ToString();
-        municipalityComboBox.Text = _registerMcLong.Municipality.ToString();
-        FillInformation();
+        //organizationComboBox.Text = _registerMcLong.OrganizationShort.Name; фикс маппера нужен а я тупень
+        //municipalityComboBox.Text = _registerMcLong.MunicipalityShort.Name;
+        FillControls();
     }
 
-    // мб какой-то отдельный метод на заполнение registerMC
-    private void Add(object e, object sender)
+    private void FillRegisterMC()
     {
         _registerMcLong.Number = numberBox.Text; 
         _registerMcLong.ValidDate = validDatePicker.Value;
         _registerMcLong.Location = locationBox.Text;
         _registerMcLong.ActionDate = actionTimePicker.Value;
-        // почему создаёшь новую оргу, а не берешь из списка? В бд новая создасться.
-        var organization = new Organization();
-        organization.Name = organizationComboBox.Text;
-        _registerMcLong.Organization = organization;
-        // почему создаёшь новую municipality, а не берешь из списка? В бд новая создасться.
-        var municipality = new Municipality();
-        municipality.Name = municipalityComboBox.Text;
-        _registerMcLong.Municipality = municipality;
+        var organizationList = _organizationController.Read();
+        var municipalityList = _municipalityController.Read();
+        _registerMcLong.OrganizationShort = organizationList[organizationComboBox.SelectedIndex];
+        _registerMcLong.MunicipalityShort = municipalityList[municipalityComboBox.SelectedIndex];
         _registerMcLong.Omsu = omsuBox.Text;
         _registerMcLong.Year = Int32.Parse(yearNumericUpDown.Text);
         _registerMcLong.Price = double.Parse(priceNumericUpDown.Text);
         _registerMcLong.SubventionShare = Double.Parse(subventionShareNumericUpDown.Text);
         _registerMcLong.AmountMoney = Double.Parse(amountMoneyNumericUpDown.Text);
         _registerMcLong.ShareFundsSubvention = Double.Parse(shareFundsSubventionNumericUpDown.Text);
-        _registermcController.Create(_registerMcLong);
+    }
+    
+    private void Add(object e, object sender)
+    {
+        FillRegisterMC();
+        if (_registerMcLong.Id.Equals(0))
+            _registermcController.Create(_registerMcLong);
+        else
+            _registermcController.Update(_registerMcLong.Id, _registerMcLong);
     }
     
     private void AddControls()
