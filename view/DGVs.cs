@@ -70,6 +70,31 @@ public class DGVs : Form
         _registermcController.ExportToExcel();
     }
     
+    private void UpdatePageSize(object e, object sender)
+    {
+        _page = new Page(int.Parse(numberPageBox.Text)-1, (int)sizePageNumericUpDown.Value);
+        dg.FillDataGrid(_registermcController.Read(_page, dg.GetFilter<RegisterMC>(), dg.GetSortParameters<RegisterMC>()));
+    }
+    
+    private void UpdatePageNumberDown(object e, object sender)
+    {
+        if (_page.Number == 0)
+            MessageBox.Show("Номер страницы не может быть меньше 1");
+        else
+        {
+            _page = new Page(_page.Number-1, (int)sizePageNumericUpDown.Value);
+            numberPageBox.Text = (_page.Number + 1).ToString();
+            dg.FillDataGrid(_registermcController.Read(_page, dg.GetFilter<RegisterMC>(), dg.GetSortParameters<RegisterMC>()));
+        }
+    }
+    
+    private void UpdatePageNumberUp(object e, object sender)
+    {
+        _page = new Page(_page.Number+ 1, (int)sizePageNumericUpDown.Value);
+        numberPageBox.Text = (_page.Number+1).ToString();
+        dg.FillDataGrid(_registermcController.Read(_page, dg.GetFilter<RegisterMC>(), dg.GetSortParameters<RegisterMC>()));
+    }
+    
     private void InitializeItems()
     {
         Size = new Size(800, 600);
@@ -78,7 +103,7 @@ public class DGVs : Form
         dg.FillDataGrid(_registermcController.Read(_page));
         dg.FillDataGrid(_registermcController.Read(_page, dg.GetFilter<RegisterMC>(), dg.GetSortParameters<RegisterMC>()));
         dg.Location = new Point(0, 0);
-        dg.Size = new Size(655, 600);
+        dg.Size = new Size(655, 500);
         dg.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom;
         dg.AllowUserToAddRows = false;
         dg.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
@@ -117,7 +142,35 @@ public class DGVs : Form
        userLabel.Size = new Size(120, 28);
        var user = _authController.AutorizedUser.FirstName +" "+  _authController.AutorizedUser.LastName;
        userLabel.Text = user;
-        
+
+       numberPageLabel.Location = new Point(12,525);
+       numberPageLabel.Size = new Size(132, 18);
+       numberPageLabel.Text = "Номер страницы";
+
+       downPageButton.Location = new Point(145,525);
+       downPageButton.Size = new Size(44, 23);
+       downPageButton.Text = "<";
+       downPageButton.Click += UpdatePageNumberDown;
+       
+       numberPageBox.Location = new Point(190,525);
+       numberPageBox.Size = new Size(46, 18);
+       numberPageBox.Text = "1";
+       numberPageBox.TextChanged += UpdatePageSize;
+
+       upPageButton.Location = new Point(237,525);
+       upPageButton.Size = new Size(44, 23);
+       upPageButton.Text = ">";
+       upPageButton.Click += UpdatePageNumberUp;
+       
+       sizePageLabel.Location = new Point(292,525);
+       sizePageLabel.Size = new Size(132, 18);
+       sizePageLabel.Text = "Размер страницы";
+
+       sizePageNumericUpDown.Location = new Point(425,525);
+       sizePageNumericUpDown.Size = new Size(44, 23);
+       sizePageNumericUpDown.Value = 25;
+       sizePageNumericUpDown.ValueChanged += UpdatePageSize;
+       sizePageNumericUpDown.TextChanged += UpdatePageSize;
     }
     
     private void AddControls()
@@ -129,6 +182,12 @@ public class DGVs : Form
         Controls.Add(exportButton);
         Controls.Add(userLabel);
         Controls.Add(filterButton);
+        Controls.Add(numberPageLabel);
+        Controls.Add(downPageButton);
+        Controls.Add(numberPageBox);
+        Controls.Add(upPageButton);
+        Controls.Add(sizePageLabel);
+        Controls.Add(sizePageNumericUpDown);
     }
     
     #region компоненты для формы
@@ -140,6 +199,12 @@ public class DGVs : Form
     private Button exportButton = new();
     private Button filterButton = new ();
     private Label userLabel = new ();
+    private Label numberPageLabel = new();
+    private Button downPageButton = new();
+    private TextBox numberPageBox = new();
+    private Button upPageButton = new();
+    private Label sizePageLabel = new ();
+    private NumericUpDown sizePageNumericUpDown = new ();
     
     #endregion
 }
