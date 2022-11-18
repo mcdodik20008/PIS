@@ -191,8 +191,8 @@ public class DgvLong : Form
         _registerMcLong = _registermcController.Read(id);
         validDatePicker.Value = _registerMcLong.ValidDate;
         actionTimePicker.Value = _registerMcLong.ActionDate;
-        //organizationComboBox.Text = _registerMcLong.OrganizationShort.Name; фикс маппера нужен а я тупень
-        //municipalityComboBox.Text = _registerMcLong.MunicipalityShort.Name;
+        organizationComboBox.Text = _registerMcLong.OrganizationShort.Name; 
+        municipalityComboBox.Text = _registerMcLong.MunicipalityShort.Name;
         FillControls();
     }
 
