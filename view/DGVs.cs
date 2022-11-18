@@ -103,7 +103,7 @@ public class DGVs : Form
         dg.FillDataGrid(_registermcController.Read(_page));
         dg.FillDataGrid(_registermcController.Read(_page, dg.GetFilter<RegisterMC>(), dg.GetSortParameters<RegisterMC>()));
         dg.Location = new Point(0, 0);
-        dg.Size = new Size(655, 500);
+        dg.Size = new Size(655, 510);
         dg.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom;
         dg.AllowUserToAddRows = false;
         dg.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
@@ -143,30 +143,30 @@ public class DGVs : Form
        var user = _authController.AutorizedUser.FirstName +" "+  _authController.AutorizedUser.LastName;
        userLabel.Text = user;
 
-       numberPageLabel.Location = new Point(12,525);
+       numberPageLabel.Location = new Point(12,520);
        numberPageLabel.Size = new Size(132, 18);
        numberPageLabel.Text = "Номер страницы";
 
-       downPageButton.Location = new Point(145,525);
-       downPageButton.Size = new Size(44, 23);
+       downPageButton.Location = new Point(145,520);
+       downPageButton.Size = new Size(44, 27);
        downPageButton.Text = "<";
        downPageButton.Click += UpdatePageNumberDown;
        
-       numberPageBox.Location = new Point(190,525);
+       numberPageBox.Location = new Point(190,520);
        numberPageBox.Size = new Size(46, 18);
        numberPageBox.Text = "1";
        numberPageBox.TextChanged += UpdatePageSize;
 
-       upPageButton.Location = new Point(237,525);
-       upPageButton.Size = new Size(44, 23);
+       upPageButton.Location = new Point(237,520);
+       upPageButton.Size = new Size(44, 27);
        upPageButton.Text = ">";
        upPageButton.Click += UpdatePageNumberUp;
        
-       sizePageLabel.Location = new Point(292,525);
+       sizePageLabel.Location = new Point(292,520);
        sizePageLabel.Size = new Size(132, 18);
        sizePageLabel.Text = "Размер страницы";
 
-       sizePageNumericUpDown.Location = new Point(425,525);
+       sizePageNumericUpDown.Location = new Point(425,520);
        sizePageNumericUpDown.Size = new Size(44, 23);
        sizePageNumericUpDown.Value = 25;
        sizePageNumericUpDown.ValueChanged += UpdatePageSize;

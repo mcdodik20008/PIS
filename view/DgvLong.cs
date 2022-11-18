@@ -42,7 +42,7 @@ public class DgvLong : Form
     
     private void InitializeItems()
     {
-        Size = new Size(590, 550);
+        Size = new Size(830, 550);
         Text = "Контракт";
         var organizationsList = _organizationController.Read();
         var municipalityList = _municipalityController.Read();
@@ -157,6 +157,12 @@ public class DgvLong : Form
         deleteFileButton.Size = new Size(150, 28);
         deleteFileButton.Text = "Удалить файл";
         deleteFileButton.Click += DeleteFile;
+
+        fielsDataGridView.Location = new Point(550,22);
+        fielsDataGridView.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom;
+        fielsDataGridView.AllowUserToAddRows = false;
+        fielsDataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+        fielsDataGridView.ColumnHeadersVisible = false;
     }
 
     public void ClearRegisterMC(RegisterMCLong registerMcLong)
@@ -179,6 +185,7 @@ public class DgvLong : Form
         subventionShareNumericUpDown.Text = registerMcLong.SubventionShare.ToString(); 
         amountMoneyNumericUpDown.Text = registerMcLong.AmountMoney.ToString();
         shareFundsSubventionNumericUpDown.Text = registerMcLong.ShareFundsSubvention.ToString();
+        fielsDataGridView.DataSource = _registerMcLong.Documents;
     }
     
     private void UploadFile(object e, object sender)
@@ -261,6 +268,7 @@ public class DgvLong : Form
         Controls.Add(changeButton);
         Controls.Add(uploadFileButton);
         Controls.Add(deleteFileButton);
+        Controls.Add(fielsDataGridView);
     }
     
     #region компоненты для формы
@@ -292,6 +300,7 @@ public class DgvLong : Form
     private Button changeButton = new ();
     private Button uploadFileButton = new ();
     private Button deleteFileButton = new ();
+    private DataGridView fielsDataGridView = new();
 
     #endregion
 }
