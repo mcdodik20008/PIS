@@ -1,5 +1,6 @@
 ﻿using System.Drawing.Imaging;
 using Microsoft.EntityFrameworkCore;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.Information;
 using PISWF.domain.model.validator;
 using PISWF.domain.registermc.context.repository;
 using PISWF.domain.registermc.model.entity;
@@ -77,26 +78,26 @@ public class RegistermcService
     {
         var entity = RegisterMcMapper.Map<RegisterMC>(view);
         Validator.Validate(entity);
-        RegisterMcRepository.AddAndSave(entity);
+        RegisterMcRepository.Entity.Add(entity);
+        RegisterMcRepository.Save();
         return view;
     }
-
-    // TODO: тестить
+    
     public RegisterMCLong Update(long id, RegisterMCLong view)
     {
         view.Id = id;
         var register = RegisterMcRepository.Entity.Find(id);
         register = RegisterMcMapper.Map(view, register);
         Validator.Validate(register);
-        RegisterMcRepository.AddAndSave(register);
+        RegisterMcRepository.Entity.Update(register);
         return view;
     }
 
-    public RegisterMCShort Delete(RegisterMCShort view)
+    public void Delete(long id)
     {
-        var entity = RegisterMcMapper.Map<RegisterMC>(view);
+        var entity = RegisterMcRepository.Entity.Find(id);
         RegisterMcRepository.Entity.Remove(entity);
-        return view;
+        RegisterMcRepository.SaveChanges();
     }
 
     public void ExportToExcel(Func<RegisterMC, bool> filter, string path = "C:\\pisDoc\\reports\\")
@@ -108,18 +109,23 @@ public class RegistermcService
         File.WriteAllBytes(path, report);
     }
     
-    public void UpLoadFile(RegisterMC register, User user)
+    public void UpLoadFile(RegisterMCLong register, User user)
     {
+        var entity = RegisterMcMapper.Map<RegisterMC>(register);
         var date = DateTime.Now.ToString().Replace(new[] { ' ', ':', '.' }, '-');
         var name = user.Municipality is null ? user.Organization.Name : user.Municipality.Name;
         var doc = new FileDocument();
         doc.FilePath = $"C:\\pisDoc\\{name}\\{date}\\{doc.Name}";
         doc.FileType = "image";
-        SaveFile(OpenFile(doc), doc);
-        register.Documents.Add(doc);
-        RegisterMcRepository.Entity.Update(register);
+        var image = OpenFile(doc);
+        if (image is null)
+            return;
+        SaveFile(image, doc);
+        entity.Documents.Add(doc);
+        RegisterMcRepository.Entity.Update(entity);
         RegisterMcRepository.SaveChanges();
     }
+    
     private Image OpenFile(FileDocument doc)
     {
         var sfd = new OpenFileDialog();
@@ -138,15 +144,11 @@ public class RegistermcService
 
         return null;
     }
-    
-    // TODO: он вообще нужен?
-    public void DownLoadFile(FileDocumentShort doc)
-    {
-        throw new NotImplementedException();
-    }
 
     private void SaveFile(Image image, FileDocument fileDocument)
     {
+        if (image == null)
+            return;
         Directory.CreateDirectory(fileDocument.FilePath);
         image.Save(fileDocument.FilePath, ImageFormat.Png);
     }
@@ -159,5 +161,11 @@ public class RegistermcService
             .Include(x => x.Documents)
             .Where(filter)
             .ToList();
+    }
+
+    public void DeleteFile(long id)
+    {
+        var entity = FileDocumentRepository.Entity.Find(id);
+        FileDocumentRepository.Entity.Remove(entity);
     }
 }

@@ -30,14 +30,16 @@ public class MunicipalityService
     public MunicipalityShort Add(MunicipalityShort municipalityShort)
     {
         var municipality = Mapper.Map<Municipality>(municipalityShort);
-        Repository.AddAndSave(municipality);
+        Repository.Entity.Add(municipality);
+        Repository.Save();
         return municipalityShort;
     }
     
     public MunicipalityShort Update(MunicipalityShort municipalityShort)
     {
         var municipality = Mapper.Map<Municipality>(municipalityShort);
-        Repository.AddAndSave(municipality);
+        Repository.Entity.Add(municipality);
+        Repository.Save();
         return municipalityShort;
     }
     

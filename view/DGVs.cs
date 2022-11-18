@@ -25,6 +25,7 @@ public class DGVs : Form
         FilterSorterMapper filterSorterMapper, 
         RegistermcController registermcController, DgvLong dgvLong)
     {
+        StartPosition = FormStartPosition.CenterScreen;
         _dgvLong = dgvLong;
         _registermcController = registermcController;
         _authController = authController;
@@ -60,8 +61,8 @@ public class DGVs : Form
     private void Delete(object e, object sender)
     {
         var selectedItem = dg.GetSelectedItem(dg.CurrentRow.Index);
-        //не работает, надо фиксить
-        _registermcController.Delete(selectedItem); // посмотрю
+        _registermcController.Delete(selectedItem.Id);
+        dg.FillDataGrid(_registermcController.Read(_page, dg.GetFilter<RegisterMC>(), dg.GetSortParameters<RegisterMC>()));
     }
     
     private void ExportToExcel(object e, object sender)
@@ -78,38 +79,42 @@ public class DGVs : Form
         dg.FillDataGrid(_registermcController.Read(_page, dg.GetFilter<RegisterMC>(), dg.GetSortParameters<RegisterMC>()));
         dg.Location = new Point(0, 0);
         dg.Size = new Size(655, 600);
-        //dg.Bounds = new Rectangle(0, 0, 655, 460);
         dg.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom;
         dg.AllowUserToAddRows = false;
         dg.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
         filterButton.Location = new Point(658, 317);
-        filterButton.Size = new System.Drawing.Size(120, 28);
+        filterButton.Size = new Size(120, 28);
         filterButton.Text = "Фильтровать";
+        filterButton.Click -= FillWithFilter;
         filterButton.Click += FillWithFilter;
         
         openButton.Location = new Point(658, 346);
-        openButton.Size = new System.Drawing.Size(120, 28);
+        openButton.Size = new Size(120, 28);
         openButton.Text = "Открыть";
+        openButton.Click -= OpenLongDgv;
         openButton.Click += OpenLongDgv;
         
         addButton.Location = new Point(658, 375);
-        addButton.Size = new System.Drawing.Size(120, 28);
+        addButton.Size = new Size(120, 28);
         addButton.Text = "Добавить";
+        addButton.Click -= CreateNew;
         addButton.Click += CreateNew;
         
         deleteButton.Location = new Point(658, 404);
-        deleteButton.Size = new System.Drawing.Size(120, 28);
+        deleteButton.Size = new Size(120, 28);
         deleteButton.Text = "Удалить";
+        deleteButton.Click -= Delete;
         deleteButton.Click += Delete;
         
         exportButton.Location = new Point(658, 433);
-        exportButton.Size = new System.Drawing.Size(120, 50);
+        exportButton.Size = new Size(120, 50);
         exportButton.Text = "Экспорт в Excel";
+        exportButton.Click -= ExportToExcel;
         exportButton.Click += ExportToExcel;
        
-       userLabel.Location = new System.Drawing.Point(675, 28);
-       userLabel.Size = new System.Drawing.Size(120, 28);
+       userLabel.Location = new Point(675, 28);
+       userLabel.Size = new Size(120, 28);
        var user = _authController.AutorizedUser.FirstName +" "+  _authController.AutorizedUser.LastName;
        userLabel.Text = user;
         

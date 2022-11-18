@@ -16,21 +16,28 @@ public class DgvLong : Form
     
     private MunicipalityController _municipalityController;
     
+    private List<OrganizationShort> _organizationList;
+    
+    private List<MunicipalityShort> _municipalityList;
+    
     public DgvLong(
         RegistermcController registermcController, 
         OrganizationController organizationController,
         MunicipalityController municipalityController)
     {
+        StartPosition = FormStartPosition.CenterScreen;
         _registermcController = registermcController;
         _organizationController = organizationController;
         _municipalityController = municipalityController;
+        _organizationList = _organizationController.Read();
+        _municipalityList =  _municipalityController.Read();
         InitializeItems();
         AddControls();
     }
     
     public void SetShortRegisterMC(RegisterMCShort registerMcShort)
     {
-        GetLongRegisterMC(registerMcShort.Id);
+        SetLongRegisterMc(registerMcShort.Id);
     }
     
     private void InitializeItems()
@@ -159,68 +166,70 @@ public class DgvLong : Form
         actionTimePicker.Value = DateTime.Today;
         organizationComboBox.Text = "";
         municipalityComboBox.Text = "";
-        FillControls();
+        FillControls(_registerMcLong);
     }
-
-    // может лучше параметр передавать, а то странно получается ничего не передаём, а что-то заполняем 
-    // не понял какой параметр
-    private void FillControls()
+    
+    private void FillControls(RegisterMCLong registerMcLong)
     {
-        numberBox.Text = _registerMcLong.Number;
-        locationBox.Text = _registerMcLong.Location;
-        omsuBox.Text = _registerMcLong.Omsu;
-        yearNumericUpDown.Text = _registerMcLong.Year.ToString(); 
-        priceNumericUpDown.Text = _registerMcLong.Price.ToString(); 
-        subventionShareNumericUpDown.Text = _registerMcLong.SubventionShare.ToString(); 
-        amountMoneyNumericUpDown.Text = _registerMcLong.AmountMoney.ToString();
-        shareFundsSubventionNumericUpDown.Text = _registerMcLong.ShareFundsSubvention.ToString();
+        numberBox.Text = registerMcLong.Number;
+        locationBox.Text = registerMcLong.Location;
+        omsuBox.Text = registerMcLong.Omsu;
+        yearNumericUpDown.Text = registerMcLong.Year.ToString(); 
+        priceNumericUpDown.Text = registerMcLong.Price.ToString(); 
+        subventionShareNumericUpDown.Text = registerMcLong.SubventionShare.ToString(); 
+        amountMoneyNumericUpDown.Text = registerMcLong.AmountMoney.ToString();
+        shareFundsSubventionNumericUpDown.Text = registerMcLong.ShareFundsSubvention.ToString();
     }
     
     private void UploadFile(object e, object sender)
     {
-        //_registermcController.UpLoadFile(_registerMcLong); почему метод аплоад принимает РегистерМц, а не лонг или шорт
+        _registermcController.UpLoadFile(_registerMcLong);
     }
     
     private void DeleteFile(object e, object sender)
     {
-        //_registermcController.D(_registerMcLong);  нет метода для удаления файла
+        _registermcController.DeleteFile(1l);
     }
     
-    private void GetLongRegisterMC(long id)
+    private void SetLongRegisterMc(long id)
     {
         _registerMcLong = _registermcController.Read(id);
         validDatePicker.Value = _registerMcLong.ValidDate;
         actionTimePicker.Value = _registerMcLong.ActionDate;
-        organizationComboBox.Text = _registerMcLong.OrganizationShort.Name; 
-        municipalityComboBox.Text = _registerMcLong.MunicipalityShort.Name;
-        FillControls();
+        organizationComboBox.Text = _registerMcLong.Organization.Name; 
+        municipalityComboBox.Text = _registerMcLong.Municipality.Name;
+        FillControls(_registerMcLong);
     }
 
-    private void FillRegisterMC()
+    private RegisterMCLong FillRegisterMc(RegisterMCLong registerMcLong)
     {
-        _registerMcLong.Number = numberBox.Text; 
-        _registerMcLong.ValidDate = validDatePicker.Value;
-        _registerMcLong.Location = locationBox.Text;
-        _registerMcLong.ActionDate = actionTimePicker.Value;
-        var organizationList = _organizationController.Read();
-        var municipalityList = _municipalityController.Read();
-        _registerMcLong.OrganizationShort = organizationList[organizationComboBox.SelectedIndex];
-        _registerMcLong.MunicipalityShort = municipalityList[municipalityComboBox.SelectedIndex];
-        _registerMcLong.Omsu = omsuBox.Text;
-        _registerMcLong.Year = Int32.Parse(yearNumericUpDown.Text);
-        _registerMcLong.Price = double.Parse(priceNumericUpDown.Text);
-        _registerMcLong.SubventionShare = Double.Parse(subventionShareNumericUpDown.Text);
-        _registerMcLong.AmountMoney = Double.Parse(amountMoneyNumericUpDown.Text);
-        _registerMcLong.ShareFundsSubvention = Double.Parse(shareFundsSubventionNumericUpDown.Text);
+        registerMcLong.Number = numberBox.Text; 
+        registerMcLong.ValidDate = validDatePicker.Value;
+        registerMcLong.Location = locationBox.Text;
+        registerMcLong.ActionDate = actionTimePicker.Value;
+        registerMcLong.Organization = _organizationList[organizationComboBox.SelectedIndex];
+        registerMcLong.Municipality = _municipalityList[municipalityComboBox.SelectedIndex];
+        registerMcLong.Omsu = omsuBox.Text;
+        registerMcLong.Year = Int32.Parse(yearNumericUpDown.Text);
+        registerMcLong.Price = double.Parse(priceNumericUpDown.Text);
+        registerMcLong.SubventionShare = Double.Parse(subventionShareNumericUpDown.Text);
+        registerMcLong.AmountMoney = Double.Parse(amountMoneyNumericUpDown.Text);
+        registerMcLong.ShareFundsSubvention = Double.Parse(shareFundsSubventionNumericUpDown.Text);
+        return registerMcLong;
     }
     
     private void Add(object e, object sender)
     {
-        FillRegisterMC();
-        if (_registerMcLong.Id.Equals(0))
-            _registermcController.Create(_registerMcLong);
+        if (_registerMcLong.Id == 0)
+        {
+            var entity = FillRegisterMc(new RegisterMCLong());
+            _registermcController.Create(entity);
+        }
         else
+        {
+            _registerMcLong = FillRegisterMc(_registerMcLong);
             _registermcController.Update(_registerMcLong.Id, _registerMcLong);
+        }
     }
     
     private void AddControls()

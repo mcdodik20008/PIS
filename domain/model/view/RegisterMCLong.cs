@@ -15,9 +15,9 @@ public class RegisterMCLong
     
     public DateTime ActionDate { get; set; }
 
-    public OrganizationShort OrganizationShort { get; set; }
+    public OrganizationShort Organization { get; set; }
 
-    public MunicipalityShort MunicipalityShort { get; set; }
+    public MunicipalityShort Municipality { get; set; }
     
     public string Omsu { get; set; }
     

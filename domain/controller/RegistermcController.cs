@@ -63,9 +63,9 @@ public class RegistermcController
         return _registermcService.Update(id, view);
     }
 
-    public RegisterMCShort Delete(RegisterMCShort view)
+    public void Delete(long id)
     {
-        return _registermcService.Delete(view);
+        _registermcService.Delete(id);
     }
 
     public void ExportToExcel()
@@ -85,14 +85,14 @@ public class RegistermcController
         _registermcService.ExportToExcel(predicate.Compile());
     }
 
-    public void UpLoadFile(RegisterMC registerMc)
+    public void UpLoadFile(RegisterMCLong registerMc)
     {
         var user = _authController.AutorizedUser;
         _registermcService.UpLoadFile(registerMc, user);
     }
-
-    public void DownLoadFile(FileDocumentShort doc)
+    
+    public void DeleteFile(long fileId)
     {
-        _registermcService.DownLoadFile(doc);
+        _registermcService.DeleteFile(fileId);
     }
 }

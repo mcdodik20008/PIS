@@ -12,6 +12,7 @@ public class Auth: Form
     
     public Auth(AuthController authController, DGVs dgVs)
     {
+        StartPosition = FormStartPosition.CenterScreen;
         _dgVs = dgVs;
         _authController = authController;
         InitializeItems();
@@ -41,22 +42,22 @@ public class Auth: Form
         Text = "Авторизация";
         
         loginBox.Location = new Point(105, 56);
-        loginBox.Size = new System.Drawing.Size(294, 27);
+        loginBox.Size = new Size(294, 27);
         
         passwordBox.Location = new Point(105, 87);
-        passwordBox.Size = new System.Drawing.Size(294, 27);
+        passwordBox.Size = new Size(294, 27);
         
         authorizationButton.Location = new Point(260, 120);
-        authorizationButton.Size = new System.Drawing.Size(139, 34);
+        authorizationButton.Size = new Size(139, 34);
         authorizationButton.Text = "Вход";
         authorizationButton.Click += Authorization;
         
-        loginLabel.Location = new System.Drawing.Point(36, 56);
-        loginLabel.Size = new System.Drawing.Size(53, 20);
+        loginLabel.Location = new Point(36, 56);
+        loginLabel.Size = new Size(53, 20);
         loginLabel.Text = "Login";
         
-        passwordLabel.Location = new System.Drawing.Point(14, 87);
-        passwordLabel.Size = new System.Drawing.Size(75, 20);
+        passwordLabel.Location = new Point(14, 87);
+        passwordLabel.Size = new Size(75, 20);
         passwordLabel.Text = "Password";
     }
     
