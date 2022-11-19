@@ -26,7 +26,7 @@ public class AppContainer : ServiceContainer
 {
     public AppContainer()
     {
-        this.RegisterSingleton<AppDbContext>();
+        this.Register<AppDbContext>();
         this.RegisterSingleton<AppContainer>();
 
         #region form

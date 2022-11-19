@@ -89,8 +89,8 @@ public class RegistermcController
         _registermcService.UpLoadFile(registerMc, user);
     }
     
-    public void DeleteFile(long fileId)
+    public void DeleteFile(long recordId, long fileId)
     {
-        _registermcService.DeleteFile(fileId);
+        _registermcService.DeleteFile(recordId, fileId);
     }
 }
