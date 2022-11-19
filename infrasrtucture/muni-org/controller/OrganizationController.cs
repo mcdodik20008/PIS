@@ -23,7 +23,7 @@ public class OrganizationController
     
     public OrganizationShort Read(long id)
     {
-        return OrganizationService.GetById(id);
+        return null;//OrganizationService.GetById(id);
     }
     
     public OrganizationShort Add(OrganizationShort organizationShort)

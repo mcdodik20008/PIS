@@ -23,7 +23,7 @@ public class MunicipalityController
     
     public MunicipalityShort Read(long id)
     {
-        return MunicipalityService.GetById(id);
+        return null; //MunicipalityService.GetById(id);
     }
     
     public MunicipalityShort Add(MunicipalityShort municipalityShort)

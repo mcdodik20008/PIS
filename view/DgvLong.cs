@@ -197,7 +197,10 @@ public class DgvLong : Form
     
     private void DeleteFile(object e, object sender)
     {
-        _registermcController.DeleteFile(fielsDataGridView.CurrentRow.Index);
+        var xxx = fielsDataGridView.CurrentRow.Cells[0].Value.ToString();
+        _registermcController.DeleteFile(long.Parse(xxx));
+        _registerMcLong = _registermcController.Read(_registerMcLong.Id);
+        fielsDataGridView.DataSource = _registerMcLong.Documents;
     }
     
     private void SetLongRegisterMc(long id)
@@ -232,7 +235,7 @@ public class DgvLong : Form
         if (_registerMcLong.Id == 0)
         {
             var entity = FillRegisterMc(new RegisterMCLong());
-            _registermcController.Create(entity);
+            _registerMcLong = _registermcController.Create(entity);
         }
         else
         {

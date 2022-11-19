@@ -9,6 +9,8 @@ using PISWF.domain.registermc.model.view;
 using PISWF.infrasrtucture;
 using PISWF.infrasrtucture.auth.model.entity;
 using PISWF.infrasrtucture.extentions;
+using PISWF.infrasrtucture.muni_org.controller;
+using PISWF.infrasrtucture.muni_org.service;
 using PISWF.infrasrtucture.page;
 
 namespace PISWF.domain.registermc.service;
@@ -24,19 +26,28 @@ public class RegistermcService
     private RegisterMcRepository RegisterMcRepository { get; }
 
     private RegistermcValidator Validator { get; set; }
+    
+    private OrganizationService OrganizationService { get; set; }
+    
+    private MunicipalityService MunicipalityService { get; set; }
 
     public RegistermcService(
         FileDocumentRepository fileDocumentRepository,
         RegisterMcMapper registerMcMapper,
         RegisterMcRepository registerMcRepository,
         ExcelExporter excelExporter,
-        RegistermcValidator validator)
+        RegistermcValidator validator,
+        OrganizationService organizationService,
+        MunicipalityService municipalityService
+        )
     {
         FileDocumentRepository = fileDocumentRepository;
         RegisterMcMapper = registerMcMapper;
         RegisterMcRepository = registerMcRepository;
         ExcelExporter = excelExporter;
         Validator = validator;
+        OrganizationService = organizationService;
+        MunicipalityService = municipalityService;
     }
 
     public List<RegisterMCShort> Read(Page page)
@@ -74,9 +85,11 @@ public class RegistermcService
     {
         var entity = RegisterMcMapper.Map<RegisterMC>(view);
         Validator.Validate(entity);
-        RegisterMcRepository.Entity.Add(entity);
+        entity.Organization = OrganizationService.GetById(entity.Organization.Id);
+        entity.Municipality = MunicipalityService.GetById(entity.Municipality.Id);
+        var xx = RegisterMcRepository.Entity.Update(entity).Entity;
         RegisterMcRepository.Save();
-        return view;
+        return RegisterMcMapper.Map<RegisterMCLong>(xx);
     }
 
     public RegisterMCLong Update(long id, RegisterMCLong view)
@@ -163,5 +176,6 @@ public class RegistermcService
     {
         var entity = FileDocumentRepository.Entity.Find(id);
         FileDocumentRepository.Entity.Remove(entity);
+        FileDocumentRepository.SaveChanges();
     }
 }

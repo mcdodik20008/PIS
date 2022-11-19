@@ -22,9 +22,9 @@ public class MunicipalityService
         return Mapper.Map<List<MunicipalityShort>>(Repository.Entity.ToList());
     }
     
-    public MunicipalityShort GetById(long id)
+    public Municipality GetById(long id)
     {
-        return Mapper.Map<MunicipalityShort>(Repository.Entity.Find(id));
+        return Repository.Entity.Find(id);
     }
     
     public MunicipalityShort Add(MunicipalityShort municipalityShort)

@@ -22,9 +22,9 @@ public class OrganizationService
         return Mapper.Map<List<OrganizationShort>>(Repository.Entity.ToList());
     }
     
-    public OrganizationShort GetById(long id)
+    public Organization GetById(long id)
     {
-        return Mapper.Map<OrganizationShort>(Repository.Entity.Find(id));
+        return Repository.Entity.Find(id);
     }
     
     public OrganizationShort Add(OrganizationShort organizationShort)
