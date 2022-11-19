@@ -39,7 +39,6 @@ public class AppContainer : ServiceContainer
         #region registermc
         this.RegisterSingleton<RegistermcController>();
         this.RegisterSingleton<RegistermcService>();
-        this.RegisterSingleton<FileDocumentMapper>();
         this.RegisterSingleton<FileDocumentRepository>();
         this.RegisterSingleton<RegisterMcMapper>();
         this.RegisterSingleton<RegisterMcRepository>();
