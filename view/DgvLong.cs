@@ -1,6 +1,7 @@
 ﻿using PISWF.domain.registermc.controller;
 using PISWF.domain.registermc.model.view;
 using PISWF.infrasrtucture.auth.controller;
+using PISWF.infrasrtucture.auth.model.entity;
 using PISWF.infrasrtucture.muni_org.controller;
 using PISWF.infrasrtucture.muni_org.model.entity;
 using PISWF.infrasrtucture.muni_org.model.view;
@@ -9,7 +10,7 @@ namespace PISWF.view;
 
 public class DgvLong : Form
 {
-    private AuthController _authController;
+    private User _user;
     
     private RegisterMCLong _registerMcLong;
     
@@ -33,7 +34,7 @@ public class DgvLong : Form
         _registermcController = registermcController;
         _organizationController = organizationController;
         _municipalityController = municipalityController;
-        _authController = authController;
+        _user = authController.AutorizedUser;
         _organizationList = _organizationController.Read();
         _municipalityList =  _municipalityController.Read();
         InitializeItems();
@@ -55,6 +56,12 @@ public class DgvLong : Form
         municipalityComboBox.DataSource = municipalityList;
 
         FF();
+        if (_user.Roles.Where(x => x.Possibility.Equals("Ведения")).Count() == 0)
+        {
+            changeButton.Hide();
+            uploadFileButton.Hide();
+            deleteFileButton.Hide();
+        }
     }
 
     private void FF()

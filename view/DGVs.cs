@@ -5,6 +5,7 @@ using PISWF.infrasrtucture.filter;
 using PISWF.domain.registermc.controller;
 using PISWF.domain.registermc.model.entity;
 using PISWF.domain.registermc.model.view;
+using PISWF.infrasrtucture.auth.model.entity;
 using PISWF.infrasrtucture.page;
 
 
@@ -12,7 +13,7 @@ namespace PISWF.view;
 
 public class DGVs : Form
 {
-    private AuthController _authController;
+    private User _user;
     
     private RegistermcController _registermcController;
     
@@ -23,12 +24,13 @@ public class DGVs : Form
     public DGVs(AuthController authController, 
         IFilterFactory factory, 
         FilterSorterMapper filterSorterMapper, 
-        RegistermcController registermcController, DgvLong dgvLong)
+        RegistermcController registermcController, 
+        DgvLong dgvLong)
     {
         StartPosition = FormStartPosition.CenterScreen;
         _dgvLong = dgvLong;
         _registermcController = registermcController;
-        _authController = authController;
+        _user = authController.AutorizedUser;
         dg = new(factory, filterSorterMapper);
         InitializeItems();
         AddControls();
@@ -133,7 +135,7 @@ public class DGVs : Form
         deleteButton.Click -= Delete;
         deleteButton.Click += Delete;
         
-        exportButton.Location = new Point(658, 433);
+        exportButton.Location = new Point(658, 267);
         exportButton.Size = new Size(120, 50);
         exportButton.Text = "Экспорт в Excel";
         exportButton.Click -= ExportToExcel;
@@ -141,8 +143,7 @@ public class DGVs : Form
        
        userLabel.Location = new Point(675, 28);
        userLabel.Size = new Size(120, 28);
-       var user = _authController.AutorizedUser.FirstName +" "+  _authController.AutorizedUser.LastName;
-       userLabel.Text = user;
+       userLabel.Text = _user.Login;
 
        numberPageLabel.Location = new Point(12,520);
        numberPageLabel.Size = new Size(132, 18);
@@ -172,6 +173,12 @@ public class DGVs : Form
        sizePageNumericUpDown.Value = 25;
        sizePageNumericUpDown.ValueChanged += UpdatePageSize;
        sizePageNumericUpDown.TextChanged += UpdatePageSize;
+       
+       if (_user.Roles.Where(x => x.Possibility.Equals("Ведения")).Count() == 0)
+       {
+           deleteButton.Hide();
+           addButton.Hide();
+       }
     }
     
     private void AddControls()
