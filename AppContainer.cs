@@ -30,7 +30,6 @@ public class AppContainer : ServiceContainer
         this.RegisterSingleton<AppContainer>();
 
         #region form
-        this.RegisterSingleton<DgvFilter>();
         this.RegisterSingleton<Auth>();
         this.RegisterSingleton<DGVs>();
         this.RegisterSingleton<DgvLong>();
