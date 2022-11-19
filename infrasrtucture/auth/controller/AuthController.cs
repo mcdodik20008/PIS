@@ -24,24 +24,4 @@ public class AuthController
         AutorizedUser = UserService.Authorization(userAuth);
         return AutorizedUser;
     }
-
-    public List<UserAuth> Read(Page page)
-    {
-        return UserService.Read(page);
-    }
-    
-    public User Add(UserBasic userBasic)
-    {
-        return UserService.Add(userBasic);
-    }
-
-    public User Update(User user)
-    {
-        return UserService.Update(user);
-    }
-
-    public User Delete(UserBasic userBasic)
-    {
-        return UserService.Delete(userBasic);
-    }
 }

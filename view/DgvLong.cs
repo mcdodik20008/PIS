@@ -1,5 +1,6 @@
 ﻿using PISWF.domain.registermc.controller;
 using PISWF.domain.registermc.model.view;
+using PISWF.infrasrtucture.auth.controller;
 using PISWF.infrasrtucture.muni_org.controller;
 using PISWF.infrasrtucture.muni_org.model.entity;
 using PISWF.infrasrtucture.muni_org.model.view;
@@ -8,6 +9,8 @@ namespace PISWF.view;
 
 public class DgvLong : Form
 {
+    private AuthController _authController;
+    
     private RegisterMCLong _registerMcLong;
     
     private RegistermcController _registermcController;
@@ -23,12 +26,14 @@ public class DgvLong : Form
     public DgvLong(
         RegistermcController registermcController, 
         OrganizationController organizationController,
-        MunicipalityController municipalityController)
+        MunicipalityController municipalityController,
+        AuthController authController)
     {
         StartPosition = FormStartPosition.CenterScreen;
         _registermcController = registermcController;
         _organizationController = organizationController;
         _municipalityController = municipalityController;
+        _authController = authController;
         _organizationList = _organizationController.Read();
         _municipalityList =  _municipalityController.Read();
         InitializeItems();
