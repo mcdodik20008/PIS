@@ -16,26 +16,22 @@ namespace PISWF.domain.registermc.service;
 public class RegistermcService
 {
     private ExcelExporter ExcelExporter { get; }
-
-    private FileDocumentMapper FileDocumentMapper { get; }
-
+    
     private FileDocumentRepository FileDocumentRepository { get; }
 
     private RegisterMcMapper RegisterMcMapper { get; }
 
     private RegisterMcRepository RegisterMcRepository { get; }
-    
+
     private RegistermcValidator Validator { get; set; }
 
     public RegistermcService(
-        FileDocumentMapper fileDocumentMapper,
         FileDocumentRepository fileDocumentRepository,
         RegisterMcMapper registerMcMapper,
         RegisterMcRepository registerMcRepository,
-        ExcelExporter excelExporter, 
+        ExcelExporter excelExporter,
         RegistermcValidator validator)
     {
-        FileDocumentMapper = fileDocumentMapper;
         FileDocumentRepository = fileDocumentRepository;
         RegisterMcMapper = registerMcMapper;
         RegisterMcRepository = registerMcRepository;
@@ -66,12 +62,12 @@ public class RegistermcService
 
     public RegisterMCLong Read(long id)
     {
-        return RegisterMcMapper.Map<RegisterMCLong>(RegisterMcRepository.Entity
+        var entity = RegisterMcRepository.Entity
             .Include(x => x.Organization)
             .Include(x => x.Municipality)
             .Include(x => x.Documents)
-            .FirstOrDefault(x => x.Id.Equals(id))
-        );
+            .FirstOrDefault(x => x.Id == id);
+        return RegisterMcMapper.Map<RegisterMCLong>(entity);
     }
 
     public RegisterMCLong Create(RegisterMCLong view)
@@ -82,7 +78,7 @@ public class RegistermcService
         RegisterMcRepository.Save();
         return view;
     }
-    
+
     public RegisterMCLong Update(long id, RegisterMCLong view)
     {
         view.Id = id;
@@ -108,10 +104,10 @@ public class RegistermcService
         path += $"{dateOnly}".Replace(new[] { '.' }, '-') + "-RegisterMCReport.xlsx";
         File.WriteAllBytes(path, report);
     }
-    
+
     public void UpLoadFile(RegisterMCLong register, User user)
     {
-        var entity = RegisterMcMapper.Map<RegisterMC>(register);
+        var entity = RegisterMcRepository.Entity.Find(register.Id);
         var date = DateTime.Now.ToString().Replace(new[] { ' ', ':', '.' }, '-');
         var name = user.Municipality is null ? user.Organization.Name : user.Municipality.Name;
         var doc = new FileDocument();
@@ -125,7 +121,7 @@ public class RegistermcService
         RegisterMcRepository.Entity.Update(entity);
         RegisterMcRepository.SaveChanges();
     }
-    
+
     private Image OpenFile(FileDocument doc)
     {
         var sfd = new OpenFileDialog();
@@ -150,7 +146,7 @@ public class RegistermcService
         if (image == null)
             return;
         Directory.CreateDirectory(fileDocument.FilePath);
-        image.Save(fileDocument.FilePath, ImageFormat.Png);
+        image.Save(fileDocument.FilePath + fileDocument.Name, ImageFormat.Png);
     }
 
     private List<RegisterMC> Read(Func<RegisterMC, bool> filter)

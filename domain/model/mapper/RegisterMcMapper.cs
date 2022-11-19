@@ -19,6 +19,8 @@ public class RegisterMcMapper : Mapper
             cfg.CreateMap<OrganizationShort, Organization>();
             cfg.CreateMap<Municipality, MunicipalityShort>();
             cfg.CreateMap<MunicipalityShort, Municipality>();
+            cfg.CreateMap<FileDocument, FileDocumentShort>();
+            cfg.CreateMap<FileDocumentShort, FileDocument>();
         })
     )
     {
