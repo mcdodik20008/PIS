@@ -191,11 +191,13 @@ public class DgvLong : Form
     private void UploadFile(object e, object sender)
     {
         _registermcController.UpLoadFile(_registerMcLong);
+        _registerMcLong = _registermcController.Read(_registerMcLong.Id);
+        fielsDataGridView.DataSource = _registerMcLong.Documents;
     }
     
     private void DeleteFile(object e, object sender)
     {
-        _registermcController.DeleteFile(1l);
+        _registermcController.DeleteFile(fielsDataGridView.CurrentRow.Index);
     }
     
     private void SetLongRegisterMc(long id)
