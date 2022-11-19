@@ -32,6 +32,7 @@ public class Auth: Form
 
         if (!_authController.AutorizedUser.Login.Equals("guest"))
         {
+            _dgVs.FFF();
             _dgVs.ShowDialog();
         }
     }

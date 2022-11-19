@@ -13,7 +13,7 @@ namespace PISWF.view;
 
 public class DGVs : Form
 {
-    private User _user;
+    private AuthController auth;
     
     private RegistermcController _registermcController;
     
@@ -30,7 +30,7 @@ public class DGVs : Form
         StartPosition = FormStartPosition.CenterScreen;
         _dgvLong = dgvLong;
         _registermcController = registermcController;
-        _user = authController.AutorizedUser;
+        auth = authController;
         dg = new(factory, filterSorterMapper);
         InitializeItems();
         AddControls();
@@ -46,8 +46,6 @@ public class DGVs : Form
     private void FillWithFilter(object e, object sender)
     {
         dg.DataSource = null;
-        // можно на несколько строк разбить, не читаемо
-        //так пойдет? я не знаю как лучше
         dg.FillDataGrid(_registermcController.Read(
             _page, 
             dg.GetFilter<RegisterMC>(), 
@@ -143,7 +141,7 @@ public class DGVs : Form
        
        userLabel.Location = new Point(675, 28);
        userLabel.Size = new Size(120, 28);
-       userLabel.Text = _user.Login;
+       //userLabel.Text = _user.Login;
 
        numberPageLabel.Location = new Point(12,520);
        numberPageLabel.Size = new Size(132, 18);
@@ -174,13 +172,17 @@ public class DGVs : Form
        sizePageNumericUpDown.ValueChanged += UpdatePageSize;
        sizePageNumericUpDown.TextChanged += UpdatePageSize;
        
-       if (_user.Roles.Where(x => x.Possibility.Equals("Ведения")).Count() == 0)
-       {
-           deleteButton.Hide();
-           addButton.Hide();
-       }
     }
-    
+
+    public void FFF() //TODO 
+    {
+        if (auth.AutorizedUser.Roles.Where(x => x.Possibility.Equals("Ведения")).Count() == 0)
+        {
+            deleteButton.Hide();
+            addButton.Hide();
+        }
+    }
+
     private void AddControls()
     {
         Controls.Add(dg);

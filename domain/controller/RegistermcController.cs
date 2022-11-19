@@ -4,6 +4,7 @@ using PISWF.domain.registermc.model.entity;
 using PISWF.domain.registermc.model.view;
 using PISWF.domain.registermc.service;
 using PISWF.infrasrtucture.auth.controller;
+using PISWF.infrasrtucture.logger.controller;
 using PISWF.infrasrtucture.page;
 
 namespace PISWF.domain.registermc.controller;
@@ -13,11 +14,14 @@ public class RegistermcController
     private RegistermcService _registermcService;
 
     private AuthController _authController;
+
+    private LogController _logController;
     
-    public RegistermcController(RegistermcService registermcService, AuthController authController)
+    public RegistermcController(RegistermcService registermcService, AuthController authController, LogController logController)
     {
         _authController = authController;
         _registermcService = registermcService;
+        _logController = logController;
     }
 
     public List<RegisterMCShort> Read(
@@ -53,17 +57,21 @@ public class RegistermcController
 
     public RegisterMCLong Create(RegisterMCLong view)
     {
+        _logController.AddRecord("CreateRegisterMC", view);
         return _registermcService.Create(view);
     }
 
     public RegisterMCLong Update(long id, RegisterMCLong view)
     {
+        _logController.AddRecord("UpdateRegisterMC", view);
         return _registermcService.Update(id, view);
     }
 
     public void Delete(long id)
     {
+        var entity = _registermcService.Read(id);
         _registermcService.Delete(id);
+        _logController.AddRecord("DeleteRegisterMC",entity); 
     }
 
     public void ExportToExcel()
@@ -91,6 +99,8 @@ public class RegistermcController
     
     public void DeleteFile(long recordId, long fileId)
     {
+        var entity = _registermcService.Read(recordId).Documents.Find(x=>x.Id==fileId);
         _registermcService.DeleteFile(recordId, fileId);
+        _logController.AddRecord("DeleteFile", entity);
     }
 }

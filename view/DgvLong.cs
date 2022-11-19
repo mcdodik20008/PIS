@@ -2,6 +2,7 @@
 using PISWF.domain.registermc.model.view;
 using PISWF.infrasrtucture.auth.controller;
 using PISWF.infrasrtucture.auth.model.entity;
+using PISWF.infrasrtucture.logger.controller;
 using PISWF.infrasrtucture.muni_org.controller;
 using PISWF.infrasrtucture.muni_org.model.entity;
 using PISWF.infrasrtucture.muni_org.model.view;
@@ -19,6 +20,8 @@ public class DgvLong : Form
     private OrganizationController _organizationController;
     
     private MunicipalityController _municipalityController;
+    
+    private LogController _logController;
     
     private List<OrganizationShort> _organizationList;
     
@@ -253,6 +256,7 @@ public class DgvLong : Form
         {
             _registerMcLong = FillRegisterMc(_registerMcLong);
             _registermcController.Update(_registerMcLong.Id, _registerMcLong);
+            
         }
     }
     
