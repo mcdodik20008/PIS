@@ -62,6 +62,7 @@ public class DGVs : Form
     {
         var selectedItem = dg.GetSelectedItem(dg.CurrentRow.Index);
         _registermcController.Delete(selectedItem.Id);
+        //TODO: удалять файлы вместе с записью
         dg.FillDataGrid(_registermcController.Read(_page, dg.GetFilter<RegisterMC>(), dg.GetSortParameters<RegisterMC>()));
     }
     

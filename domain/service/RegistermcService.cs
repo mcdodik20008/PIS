@@ -121,10 +121,9 @@ public class RegistermcService
     public void UpLoadFile(RegisterMCLong register, User user)
     {
         var entity = RegisterMcRepository.Entity.Find(register.Id);
-        var date = DateTime.Now.ToString().Replace(new[] { ' ', ':', '.' }, '-');
         var name = user.Municipality is null ? user.Organization.Name : user.Municipality.Name;
         var doc = new FileDocument();
-        doc.FilePath = $"C:\\pisDoc\\{name}\\{date}\\{doc.Name}";
+        doc.FilePath = $"C:\\pisDoc\\{name}\\";
         doc.FileType = "image";
         var image = OpenFile(doc);
         if (image is null)
@@ -143,7 +142,8 @@ public class RegistermcService
             return null;
         try
         {
-            doc.Name = sfd.FileName.Split('\\').Last();
+            var date = DateTime.Now.ToString().Replace(new[] { ' ', ':', '.' }, '-');
+            doc.Name = $"{date}-" + sfd.FileName.Split('\\').Last();
             return Image.FromFile(sfd.FileName);
         }
         catch (Exception ex)

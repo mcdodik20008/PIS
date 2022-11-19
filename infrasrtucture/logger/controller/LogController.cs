@@ -23,12 +23,12 @@ public class LogController
         return LogService.Read(page);
     }
     
-    public Log AddRecord<T>(string methodName, T jsonEntity)
+    public Log AddRecord<T>(string methodName, T entity)
     {
         var log = new Log()
         {
             MethodName = methodName, 
-            JsonEntity = JsonSerializer.Serialize(jsonEntity), 
+            JsonEntity = JsonSerializer.Serialize(entity), 
             Author = AuthController.AutorizedUser,
             LogDate = DateTime.Now
         };
