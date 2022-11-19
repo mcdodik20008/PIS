@@ -13,9 +13,7 @@ public class RegistermcController
     private RegistermcService _registermcService;
 
     private AuthController _authController;
-
-
-
+    
     public RegistermcController(RegistermcService registermcService, AuthController authController)
     {
         _authController = authController;
