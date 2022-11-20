@@ -1,5 +1,4 @@
-﻿using PISWF.infrasrtucture.muni_org.model.entity;
-using PISWF.infrasrtucture.muni_org.model.view;
+﻿using PISWF.infrasrtucture.muni_org.model.view;
 
 namespace PISWF.domain.registermc.model.view;
 

@@ -1,7 +1,6 @@
 ﻿using PISWF.infrasrtucture.auth.model.entity;
 using PISWF.infrasrtucture.auth.model.view;
 using PISWF.infrasrtucture.auth.service;
-using PISWF.infrasrtucture.page;
 
 namespace PISWF.infrasrtucture.auth.controller;
 
@@ -19,7 +18,7 @@ public class AuthController
 
     public User Authorization(UserAuth userAuth)
     {
-        if (userAuth.Login == "guest")
+        if (userAuth.Login.Equals("guest"))
             throw new Exception("Придумать название");
         AutorizedUser = UserService.Authorization(userAuth);
         return AutorizedUser;

@@ -16,8 +16,9 @@ public class RegistermcController
     private AuthController _authController;
 
     private LogController _logController;
-    
-    public RegistermcController(RegistermcService registermcService, AuthController authController, LogController logController)
+
+    public RegistermcController(RegistermcService registermcService, AuthController authController,
+        LogController logController)
     {
         _authController = authController;
         _registermcService = registermcService;
@@ -25,7 +26,7 @@ public class RegistermcController
     }
 
     public List<RegisterMCShort> Read(
-        Page page, 
+        Page page,
         Expression<Func<RegisterMC, bool>> filter,
         SortParameters sortParameters)
     {
@@ -71,7 +72,7 @@ public class RegistermcController
     {
         var entity = _registermcService.Read(id);
         _registermcService.Delete(id);
-        _logController.AddRecord("DeleteRegisterMC",entity); 
+        _logController.AddRecord("DeleteRegisterMC", entity);
     }
 
     public void ExportToExcel()
@@ -88,6 +89,7 @@ public class RegistermcController
                 "Организации" => predicate.And(x => x.Organization.Id.Equals(user.Organization.Id))
             };
         }
+
         _registermcService.ExportToExcel(predicate.Compile());
     }
 
@@ -96,10 +98,10 @@ public class RegistermcController
         var user = _authController.AutorizedUser;
         _registermcService.UpLoadFile(registerMc, user);
     }
-    
+
     public void DeleteFile(long recordId, long fileId)
     {
-        var entity = _registermcService.Read(recordId).Documents.Find(x=>x.Id==fileId);
+        var entity = _registermcService.Read(recordId).Documents.Find(x => x.Id == fileId);
         _registermcService.DeleteFile(recordId, fileId);
         _logController.AddRecord("DeleteFile", entity);
     }

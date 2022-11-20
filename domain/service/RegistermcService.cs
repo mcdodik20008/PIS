@@ -1,6 +1,5 @@
 ﻿using System.Drawing.Imaging;
 using Microsoft.EntityFrameworkCore;
-using OfficeOpenXml.FormulaParsing.Excel.Functions.Information;
 using PISWF.domain.model.validator;
 using PISWF.domain.registermc.context.repository;
 using PISWF.domain.registermc.model.entity;
@@ -9,7 +8,6 @@ using PISWF.domain.registermc.model.view;
 using PISWF.infrasrtucture;
 using PISWF.infrasrtucture.auth.model.entity;
 using PISWF.infrasrtucture.extentions;
-using PISWF.infrasrtucture.muni_org.controller;
 using PISWF.infrasrtucture.muni_org.service;
 using PISWF.infrasrtucture.page;
 
@@ -18,7 +16,7 @@ namespace PISWF.domain.registermc.service;
 public class RegistermcService
 {
     private ExcelExporter ExcelExporter { get; }
-    
+
     private FileDocumentRepository FileDocumentRepository { get; }
 
     private RegisterMcMapper RegisterMcMapper { get; }
@@ -26,9 +24,9 @@ public class RegistermcService
     private RegisterMcRepository RegisterMcRepository { get; }
 
     private RegistermcValidator Validator { get; set; }
-    
+
     private OrganizationService OrganizationService { get; set; }
-    
+
     private MunicipalityService MunicipalityService { get; set; }
 
     public RegistermcService(
@@ -39,7 +37,7 @@ public class RegistermcService
         RegistermcValidator validator,
         OrganizationService organizationService,
         MunicipalityService municipalityService
-        )
+    )
     {
         FileDocumentRepository = fileDocumentRepository;
         RegisterMcMapper = registerMcMapper;
@@ -175,7 +173,7 @@ public class RegistermcService
     public void DeleteFile(long recordId, long id)
     {
         var entity = FileDocumentRepository.Entity.Find(id);
-        FileDocumentRepository.Entity.Remove(entity);//TODO нужен фикс
+        FileDocumentRepository.Entity.Remove(entity); //TODO нужен фикс
         FileDocumentRepository.SaveChanges();
     }
 }

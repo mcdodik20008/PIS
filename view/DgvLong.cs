@@ -4,7 +4,6 @@ using PISWF.infrasrtucture.auth.controller;
 using PISWF.infrasrtucture.auth.model.entity;
 using PISWF.infrasrtucture.logger.controller;
 using PISWF.infrasrtucture.muni_org.controller;
-using PISWF.infrasrtucture.muni_org.model.entity;
 using PISWF.infrasrtucture.muni_org.model.view;
 
 namespace PISWF.view;

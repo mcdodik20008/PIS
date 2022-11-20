@@ -24,16 +24,23 @@ public class Auth: Form
     
     private void Authorization(object e, object sender)
     {
-        if (loginBox.Text.Length > 0 && passwordBox.Text.Length > 0)
+        try
         {
-            var userAuth = new UserAuth(loginBox.Text, passwordBox.Text);
-            _authController.Authorization(userAuth);
-        }
+            if (loginBox.Text.Length > 0 && passwordBox.Text.Length > 0)
+            {
+                var userAuth = new UserAuth(loginBox.Text, passwordBox.Text);
+                _authController.Authorization(userAuth);
+            }
 
-        if (!_authController.AutorizedUser.Login.Equals("guest"))
+            if (!_authController.AutorizedUser.Login.Equals("guest"))
+            {
+                _dgVs.FFF();
+                _dgVs.ShowDialog();
+            }
+        }
+        catch(Exception ex)
         {
-            _dgVs.FFF();
-            _dgVs.ShowDialog();
+            MessageBox.Show(ex.Message);
         }
     }
     

@@ -5,7 +5,6 @@ using PISWF.infrasrtucture.filter;
 using PISWF.domain.registermc.controller;
 using PISWF.domain.registermc.model.entity;
 using PISWF.domain.registermc.model.view;
-using PISWF.infrasrtucture.auth.model.entity;
 using PISWF.infrasrtucture.page;
 
 
@@ -21,7 +20,8 @@ public class DGVs : Form
     
     private Page _page = new(0, 25);
     
-    public DGVs(AuthController authController, 
+    public DGVs(
+        AuthController authController, 
         IFilterFactory factory, 
         FilterSorterMapper filterSorterMapper, 
         RegistermcController registermcController, 
@@ -49,7 +49,8 @@ public class DGVs : Form
         dg.FillDataGrid(_registermcController.Read(
             _page, 
             dg.GetFilter<RegisterMC>(), 
-            dg.GetSortParameters<RegisterMC>()));
+            dg.GetSortParameters<RegisterMC>())
+        );
     }
     
     private void CreateNew(object e, object sender)
@@ -63,7 +64,11 @@ public class DGVs : Form
         var selectedItem = dg.GetSelectedItem(dg.CurrentRow.Index);
         _registermcController.Delete(selectedItem.Id);
         //TODO: удалять файлы вместе с записью
-        dg.FillDataGrid(_registermcController.Read(_page, dg.GetFilter<RegisterMC>(), dg.GetSortParameters<RegisterMC>()));
+        dg.FillDataGrid(_registermcController.Read(
+                _page, 
+                dg.GetFilter<RegisterMC>(), 
+                dg.GetSortParameters<RegisterMC>())
+            );
     }
     
     private void ExportToExcel(object e, object sender)
@@ -80,12 +85,18 @@ public class DGVs : Form
     private void UpdatePageNumberDown(object e, object sender)
     {
         if (_page.Number == 0)
+        {
             MessageBox.Show("Номер страницы не может быть меньше 1");
+        }
         else
         {
             _page = new Page(_page.Number-1, (int)sizePageNumericUpDown.Value);
             numberPageBox.Text = (_page.Number + 1).ToString();
-            dg.FillDataGrid(_registermcController.Read(_page, dg.GetFilter<RegisterMC>(), dg.GetSortParameters<RegisterMC>()));
+            dg.FillDataGrid(_registermcController.Read(
+                _page, 
+                dg.GetFilter<RegisterMC>(), 
+                dg.GetSortParameters<RegisterMC>())
+            );
         }
     }
     
@@ -171,7 +182,6 @@ public class DGVs : Form
        sizePageNumericUpDown.Value = 25;
        sizePageNumericUpDown.ValueChanged += UpdatePageSize;
        sizePageNumericUpDown.TextChanged += UpdatePageSize;
-       
     }
 
     public void FFF() //TODO 
