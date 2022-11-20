@@ -60,9 +60,9 @@ public class DgvLong : Form
         FF();
         if (_user.Roles.Where(x => x.Possibility.Equals("Ведения")).Count() == 0)
         {
-            changeButton.Hide();
-            uploadFileButton.Hide();
-            deleteFileButton.Hide();
+           //changeButton.Hide();
+           // uploadFileButton.Hide();
+           // deleteFileButton.Hide();
         }
     }
 

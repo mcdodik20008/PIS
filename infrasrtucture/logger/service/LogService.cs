@@ -17,11 +17,11 @@ public class LogService
     {
         return LogRepository.Entity.Skip(page.Size * page.Number).Take(page.Size).ToList();
     }
-    
+    //TODO: Не работает логгер 
     public Log AddRecord(Log log)
     {
-        LogRepository.Entity.Add(log);
-        LogRepository.SaveChanges();
+       // LogRepository.Entity.Update(log);
+       // LogRepository.SaveChanges();
         return log;
     }
 }

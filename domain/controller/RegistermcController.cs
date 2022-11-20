@@ -17,7 +17,9 @@ public class RegistermcController
 
     private LogController _logController;
 
-    public RegistermcController(RegistermcService registermcService, AuthController authController,
+    public RegistermcController(
+        RegistermcService registermcService, 
+        AuthController authController, 
         LogController logController)
     {
         _authController = authController;

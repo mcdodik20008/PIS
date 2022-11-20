@@ -184,12 +184,12 @@ public class DGVs : Form
        sizePageNumericUpDown.TextChanged += UpdatePageSize;
     }
 
-    public void FFF() //TODO 
+    public void FFF() //TODO: не работает же?
     {
         if (auth.AutorizedUser.Roles.Where(x => x.Possibility.Equals("Ведения")).Count() == 0)
         {
-            deleteButton.Hide();
-            addButton.Hide();
+           // deleteButton.Hide();
+           // addButton.Hide();
         }
     }
 

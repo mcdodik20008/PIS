@@ -8,7 +8,6 @@ using PISWF.infrasrtucture.filter;
 
 namespace pis.infrasrtucture.dgvf;
 
-// TODO: refactor
 public class DataGridViewWithFilter<TValue,TFilter> : DataGridView where TFilter : FilterModel
 {
     private int order = 0;

@@ -172,8 +172,10 @@ public class RegistermcService
 
     public void DeleteFile(long recordId, long id)
     {
+        var contract = RegisterMcRepository.Entity.Find(recordId);
         var entity = FileDocumentRepository.Entity.Find(id);
-        FileDocumentRepository.Entity.Remove(entity); //TODO нужен фикс
+        contract.Documents.Remove(entity);
+        RegisterMcRepository.Entity.Update(contract);
         FileDocumentRepository.SaveChanges();
     }
 }

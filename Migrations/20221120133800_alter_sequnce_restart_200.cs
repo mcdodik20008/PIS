@@ -8,7 +8,8 @@ namespace PISWF.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.Sql(@"ALTER SEQUENCE ""file_document_id_seq"" RESTART WITH 200;
+            migrationBuilder.Sql(@"
+            ALTER SEQUENCE ""file_document_id_seq"" RESTART WITH 200;
             ALTER SEQUENCE ""log_id_seq"" RESTART WITH 200;
             ALTER SEQUENCE ""municipality_id_seq"" RESTART WITH 200;
             ALTER SEQUENCE ""organization_id_seq"" RESTART WITH 200;
