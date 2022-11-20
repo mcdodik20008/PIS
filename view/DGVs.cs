@@ -111,9 +111,9 @@ public class DGVs : Form
     {
         Size = new Size(800, 600);
         Text = "Реестр";
-        
         dg.FillDataGrid(_registermcController.Read(_page));
-        dg.FillDataGrid(_registermcController.Read(_page, dg.GetFilter<RegisterMC>(), dg.GetSortParameters<RegisterMC>()));
+        var data = _registermcController.Read(_page, dg.GetFilter<RegisterMC>(), dg.GetSortParameters<RegisterMC>());
+        dg.FillDataGrid(data);
         dg.Location = new Point(0, 0);
         dg.Size = new Size(655, 510);
         dg.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom;

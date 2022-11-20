@@ -9,5 +9,5 @@ public interface FilterModel
 
 public interface FilterModel<T> : FilterModel
 {
-    Expression<Func<T, bool>> FilterExpression();
+    Expression<Func<T, bool>> GetExpression();
 }

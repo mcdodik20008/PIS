@@ -7,19 +7,19 @@ namespace pis.infrasrtucture.filter.impl;
 
 public class RegisterFilter : FilterModel<RegisterMC>
 {
-    [FieldFilterName("Number")] 
+    [SourseName("Number")] 
     public FilterField<string> NumberField { get; set; } = new("", Comparators.None);
 
-    [FieldFilterName("ValidDate")]
+    [SourseName("ValidDate")]
     public FilterField<DateTime> ValidDateField { get; set; } = new(DateTime.Now, Comparators.None);
 
-    [FieldFilterName("Year")] 
+    [SourseName("Year")] 
     public FilterField<int> YearField { get; set; } = new(0, Comparators.None);
 
-    [FieldFilterName("Price")] 
+    [SourseName("Price")] 
     public FilterField<double> PriceField { get; set; } = new(0, Comparators.None);
 
-    public Expression<Func<RegisterMC, bool>> FilterExpression()
+    public Expression<Func<RegisterMC, bool>> GetExpression()
     {
         var predicate = PredicateBuilder.True<RegisterMC>()
             .And(NumberField.GetPredicate<RegisterMC>("Number"))

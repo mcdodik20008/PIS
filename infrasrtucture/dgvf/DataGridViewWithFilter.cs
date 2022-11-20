@@ -224,7 +224,7 @@ public class DataGridViewWithFilter<TValue,TFilter> : DataGridView where TFilter
     {
         var filter = _filter as FilterModel<TObject>;
         filter = FillFilter(filter, _filterColumns);
-        return filter.FilterExpression();
+        return filter.GetExpression();
     }
     
     public TValue GetSelectedItem(int rowIndex)
@@ -239,7 +239,7 @@ public class DataGridViewWithFilter<TValue,TFilter> : DataGridView where TFilter
         {
             var value = property.GetValue(filter);
             MethodInfo updateFilterFieldMethod = value.GetType().GetMethod("UpdateFilter");
-            var popName = property.GetCustomAttribute<FieldFilterNameAttribute>()?.Name;
+            var popName = property.GetCustomAttribute<SourseNameAttribute>()?.Name;
             var filterColumn = filterColumns.FirstOrDefault(x => x.Name.Equals(popName));
             var parameters = Equals(filterColumn, null) || Equals(filterColumn.Value, "")
                 ? new object[] { _filterSorterMapper, "", "" }

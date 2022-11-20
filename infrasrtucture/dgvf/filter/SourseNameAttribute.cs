@@ -1,10 +1,10 @@
 ﻿namespace PISWF.infrasrtucture.filter;
 
-public class FieldFilterNameAttribute : Attribute
+public class SourseNameAttribute : Attribute
 {
     public string Name { get; }
 
-    public FieldFilterNameAttribute(string name)
+    public SourseNameAttribute(string name)
     {
         Name = name;
     }

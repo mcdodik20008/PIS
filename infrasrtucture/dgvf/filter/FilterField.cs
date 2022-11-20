@@ -29,9 +29,6 @@ public class FilterField<T> where T : IComparable
         var type = typeof(TEnt).GetProperty(propName);
         if (Comparators.None != Action)
         {
-            var xx = "123";
-            var x = "1";
-            var f = Value.ToString();
             predicate = Action switch
             {
                 Comparators.Equals => predicate.And(l => type.GetValue(l).Equals(Value)),
