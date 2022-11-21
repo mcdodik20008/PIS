@@ -45,9 +45,9 @@ public class DGVs : Form
     {
         if (_user.Roles.Where(x => x.Possibility.Equals("Ведения")).Count() == 0)
         {
-            addButton.Hide();
+            /*addButton.Hide();
             deleteButton.Hide();
-            addButton.Hide();
+            addButton.Hide();*/
         }
     }
     
