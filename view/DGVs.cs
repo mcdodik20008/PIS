@@ -44,11 +44,10 @@ public class DGVs : Form
     private void CheckForm(object e, object sender)
     {
         _user = _authController.AutorizedUser;
-        if (_user.Roles.Where(x => x.Possibility.Equals("Ведения")).Count() == 0)
+        if (!(_user.Roles.Where(x => x.Possibility.Rate.Equals("Ведения")).Count() == 0))
         {
-            addButton.Hide();
-            deleteButton.Hide();
-            addButton.Hide();
+            addButton.Show();
+            deleteButton.Show();
         }
         _page = new(0, 25);
         numberPageBox.Text = "1";
@@ -160,12 +159,14 @@ public class DGVs : Form
         addButton.Text = "Добавить";
         addButton.Click -= CreateNew;
         addButton.Click += CreateNew;
+        addButton.Hide();
         
         deleteButton.Location = new Point(658, 404);
         deleteButton.Size = new Size(120, 28);
         deleteButton.Text = "Удалить";
         deleteButton.Click -= Delete;
         deleteButton.Click += Delete;
+        deleteButton.Hide();
         
         exportButton.Location = new Point(658, 267);
         exportButton.Size = new Size(120, 50);

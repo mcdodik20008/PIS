@@ -189,7 +189,7 @@ public class DgvLong : Form
             uploadFileButton.Show();
             deleteFileButton.Show();
         }
-        if (_user.Roles.Where(x => x.Possibility.Equals("Ведения")).Count() == 0)
+        if (_user.Roles.Where(x => x.Possibility.Rate.Equals("Ведения")).Count() == 0)
         {
             changeButton.Hide();
             uploadFileButton.Hide();
