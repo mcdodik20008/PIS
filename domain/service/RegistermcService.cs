@@ -62,8 +62,7 @@ public class RegistermcService
             .Where(filter)
             .OrderBy(x => x, comparer)
             .Skip(page.Size * page.Number)
-            .Take(page.Size)
-            .ToList();
+            .Take(page.Size);
         return RegisterMcMapper.Map<List<RegisterMCShort>>(entitys);
     }
 

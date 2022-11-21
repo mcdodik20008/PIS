@@ -40,7 +40,7 @@ public class DGVs : Form
         AddControls();
     }
     
-    private void CheckForm(object e, object sender)
+    private async void CheckForm(object e, object sender)
     {
         dg.Reset();
         addButton.Hide();
@@ -55,9 +55,7 @@ public class DGVs : Form
         numberPageBox.Text = "1";
         sizePageNumericUpDown.Value = 25;
         dg.DataSource = null;
-        dg.FillDataGrid(_registermcController.Read(_page));
-        var data = _registermcController.Read(_page, dg.GetFilter<RegisterMC>(), dg.GetSortParameters<RegisterMC>());
-        dg.FillDataGrid(data);
+        dg.FillDataGrid(await Task.Run(() => _registermcController.Read(_page, dg.GetFilter<RegisterMC>(), dg.GetSortParameters<RegisterMC>())));
     }
     
     private void OpenLongDgv(object e, object sender)
@@ -68,14 +66,10 @@ public class DGVs : Form
         FillWithFilter(e, sender);
     }
     
-    private void FillWithFilter(object e, object sender)
+    private async void FillWithFilter(object e, object sender)
     {
         dg.DataSource = null;
-        dg.FillDataGrid(_registermcController.Read(
-            _page, 
-            dg.GetFilter<RegisterMC>(), 
-            dg.GetSortParameters<RegisterMC>())
-        );
+        dg.FillDataGrid(await Task.Run(() => _registermcController.Read(_page, dg.GetFilter<RegisterMC>(), dg.GetSortParameters<RegisterMC>())));
     }
     
     //TODO Отфильтруй по 'xx' (x - любое число), напирмер, и поменяй на 'xx123' и у тебя в гриде будет 'xx'
@@ -86,16 +80,12 @@ public class DGVs : Form
         FillWithFilter(e, sender);
     }
     
-    private void Delete(object e, object sender)
+    private async void Delete(object e, object sender)
     {
         var selectedItem = dg.GetSelectedItem(dg.CurrentRow.Index);
         _registermcController.Delete(selectedItem.Id);
         //TODO: удалять файлы вместе с записью
-        dg.FillDataGrid(_registermcController.Read(
-                _page, 
-                dg.GetFilter<RegisterMC>(), 
-                dg.GetSortParameters<RegisterMC>())
-            );
+        dg.FillDataGrid(await Task.Run(() => _registermcController.Read(_page, dg.GetFilter<RegisterMC>(), dg.GetSortParameters<RegisterMC>())));
     }
     
     private void ExportToExcel(object e, object sender)
@@ -103,13 +93,13 @@ public class DGVs : Form
         _registermcController.ExportToExcel();
     }
     
-    private void UpdatePageSize(object e, object sender)
+    private async void UpdatePageSize(object e, object sender)
     {
         _page = new Page(int.Parse(numberPageBox.Text)-1, (int)sizePageNumericUpDown.Value);
-        dg.FillDataGrid(_registermcController.Read(_page, dg.GetFilter<RegisterMC>(), dg.GetSortParameters<RegisterMC>()));
+        dg.FillDataGrid(await Task.Run(() => _registermcController.Read(_page, dg.GetFilter<RegisterMC>(), dg.GetSortParameters<RegisterMC>())));
     }
     
-    private void UpdatePageNumberDown(object e, object sender)
+    private async void UpdatePageNumberDown(object e, object sender)
     {
         if (_page.Number == 0)
         {
@@ -119,19 +109,15 @@ public class DGVs : Form
         {
             _page = new Page(_page.Number-1, (int)sizePageNumericUpDown.Value);
             numberPageBox.Text = (_page.Number + 1).ToString();
-            dg.FillDataGrid(_registermcController.Read(
-                _page, 
-                dg.GetFilter<RegisterMC>(), 
-                dg.GetSortParameters<RegisterMC>())
-            );
+            dg.FillDataGrid(await Task.Run(() => _registermcController.Read(_page, dg.GetFilter<RegisterMC>(), dg.GetSortParameters<RegisterMC>())));
         }
     }
     
-    private void UpdatePageNumberUp(object e, object sender)
+    private async void UpdatePageNumberUp(object e, object sender)
     {
         _page = new Page(_page.Number+ 1, (int)sizePageNumericUpDown.Value);
         numberPageBox.Text = (_page.Number+1).ToString();
-        dg.FillDataGrid(_registermcController.Read(_page, dg.GetFilter<RegisterMC>(), dg.GetSortParameters<RegisterMC>()));
+        dg.FillDataGrid(await Task.Run(() => _registermcController.Read(_page, dg.GetFilter<RegisterMC>(), dg.GetSortParameters<RegisterMC>())));
     }
     
     private void InitializeItems()

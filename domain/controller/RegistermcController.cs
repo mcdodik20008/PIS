@@ -27,7 +27,7 @@ public class RegistermcController
         _logController = logController;
     }
 
-    public List<RegisterMCShort> Read(
+    async public Task<List<RegisterMCShort>> Read(
         Page page,
         Expression<Func<RegisterMC, bool>> filter,
         SortParameters sortParameters)
