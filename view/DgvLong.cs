@@ -58,7 +58,7 @@ public class DgvLong : Form
         municipalityComboBox.DataSource = municipalityList;
 
         FF();
-        Shown += CheckForm;
+        Load += CheckForm;
     }
 
     private void FF()

@@ -38,7 +38,7 @@ public class DGVs : Form
         dg = new(factory, filterSorterMapper);
         InitializeItems();
         AddControls();
-        Shown += CheckForm;
+        Load += CheckForm;
     }
     
     private void CheckForm(object e, object sender)
