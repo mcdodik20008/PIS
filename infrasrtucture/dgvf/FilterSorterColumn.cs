@@ -24,4 +24,12 @@ public class FilterSorterColumn
         Name = name;
         ValueType = valueType;
     }
+
+    public void Reset()
+    {
+        Value = "";
+        ValueFilter = "";
+        ValueSorter = "";
+        Order = 0;
+    }
 }

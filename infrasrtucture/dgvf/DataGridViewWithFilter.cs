@@ -2,6 +2,7 @@
 using System.Linq.Expressions;
 using System.Reflection;
 using DGVWF;
+using LinqKit;
 using pis.infrasrtucture.sort;
 using PISWF.domain.registermc.service;
 using PISWF.infrasrtucture.filter;
@@ -36,6 +37,12 @@ public class DataGridViewWithFilter<TValue,TFilter> : DataGridView where TFilter
         _filterSorterMapper = filterSorterMapper;
     }
 
+    public void Reset()
+    {
+        _filter.Reset();
+        _filterColumns.ForEach(x => x.Reset());
+    }
+    
     private void Header_FilterButtonClicked(object sender, ColumnFilterClickedEventArg e)
     {
         _columnIndex = e.ColumnIndex;
