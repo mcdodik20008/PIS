@@ -41,6 +41,7 @@ public class DGVs : Form
         var selectedItem = dg.GetSelectedItem(dg.CurrentRow.Index);
         _dgvLong.SetShortRegisterMC(selectedItem);
         _dgvLong.ShowDialog();
+        FillWithFilter(e, sender);
     }
     
     private void FillWithFilter(object e, object sender)
@@ -53,12 +54,12 @@ public class DGVs : Form
         );
     }
     
-    // TODO: при создании и(или) изменении не обновляется датагрид 
-    // Отфильтруй по 'xx' (x - любое число), напирмер, и поменяй на 'xx123' и у тебя в гриде будет 'xx'
+    //TODO Отфильтруй по 'xx' (x - любое число), напирмер, и поменяй на 'xx123' и у тебя в гриде будет 'xx'
     private void CreateNew(object e, object sender)
     {
         _dgvLong.ClearRegisterMC(new RegisterMCLong());
         _dgvLong.ShowDialog();
+        FillWithFilter(e, sender);
     }
     
     private void Delete(object e, object sender)

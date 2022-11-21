@@ -90,7 +90,7 @@ public class RegistermcService
         var docIds = view.Documents.Select(x => x.Id);
         using var context = new AppDbContext();
         var register = context.Register.Find(id);
-        register = RegisterMcMapper.Map(view, register);
+        register = RegisterMcMapper.Map(view, register); //TODO нет в сущности документов
         Validator.Validate(register);
         context.Register.Update(register);
         context.SaveChanges();
