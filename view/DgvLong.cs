@@ -178,6 +178,7 @@ public class DgvLong : Form
 
     private void CheckForm(object e, object sender)
     {
+        changeButton.Show();
         _user = _authController.AutorizedUser;
         if (_registerMcLong.Id==0)
         {
