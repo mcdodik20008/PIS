@@ -38,7 +38,7 @@ public class DGVs : Form
         dg = new(factory, filterSorterMapper);
         InitializeItems();
         AddControls();
-        Load += CheckForm;
+
     }
     
     private void CheckForm(object e, object sender)
@@ -49,12 +49,13 @@ public class DGVs : Form
             deleteButton.Hide();
             addButton.Hide();*/
         }
-
+        _page = new(0, 25);
+        numberPageBox.Text = "1";
+        sizePageNumericUpDown.Value = 25;
         dg.DataSource = null;
         dg.FillDataGrid(_registermcController.Read(_page));
         var data = _registermcController.Read(_page, dg.GetFilter<RegisterMC>(), dg.GetSortParameters<RegisterMC>());
         dg.FillDataGrid(data);
-        _page = new(0, 25);
     }
     
     private void OpenLongDgv(object e, object sender)
@@ -203,6 +204,8 @@ public class DGVs : Form
        sizePageNumericUpDown.Value = 25;
        sizePageNumericUpDown.ValueChanged += UpdatePageSize;
        sizePageNumericUpDown.TextChanged += UpdatePageSize;
+       
+       Shown += CheckForm;
     }
 
     private void AddControls()

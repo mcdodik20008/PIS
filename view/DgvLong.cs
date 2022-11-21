@@ -58,7 +58,7 @@ public class DgvLong : Form
         municipalityComboBox.DataSource = municipalityList;
 
         FF();
-        Load += CheckForm;
+        Shown += CheckForm;
     }
 
     private void FF()
@@ -188,9 +188,9 @@ public class DgvLong : Form
         }
         if (_user.Roles.Where(x => x.Possibility.Equals("Ведения")).Count() == 0)
         {
-            /*changeButton.Hide();
+            changeButton.Hide();
             uploadFileButton.Hide();
-            deleteFileButton.Hide();*/
+            deleteFileButton.Hide();
         }
     }
     
