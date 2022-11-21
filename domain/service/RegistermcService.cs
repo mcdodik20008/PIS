@@ -91,7 +91,7 @@ public class RegistermcService
         var docIds = view.Documents.Select(x => x.Id);
         var docs = context.Documents.Where(x => docIds.Contains(x.Id)).ToList();
         var register = context.Register.Find(id);
-        register = RegisterMcMapper.Map(view, register); //TODO нет в сущности документов
+        register = RegisterMcMapper.Map(view, register);
         register.Documents = docs;
         Validator.Validate(register);
         context.Register.Update(register);

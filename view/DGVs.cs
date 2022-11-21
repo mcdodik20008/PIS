@@ -5,6 +5,7 @@ using PISWF.infrasrtucture.filter;
 using PISWF.domain.registermc.controller;
 using PISWF.domain.registermc.model.entity;
 using PISWF.domain.registermc.model.view;
+using PISWF.infrasrtucture.auth.model.entity;
 using PISWF.infrasrtucture.page;
 
 
@@ -13,6 +14,8 @@ namespace PISWF.view;
 public class DGVs : Form
 {
     private AuthController auth;
+
+    private User _user;
     
     private RegistermcController _registermcController;
     
@@ -31,9 +34,21 @@ public class DGVs : Form
         _dgvLong = dgvLong;
         _registermcController = registermcController;
         auth = authController;
+        _user = authController.AutorizedUser;
         dg = new(factory, filterSorterMapper);
         InitializeItems();
         AddControls();
+        Shown += CheckForm;
+    }
+    
+    public void CheckForm(object e, object sender)
+    {
+        if (_user.Roles.Where(x => x.Possibility.Equals("Ведения")).Count() == 0)
+        {
+            addButton.Hide();
+            deleteButton.Hide();
+            addButton.Hide();
+        }
     }
     
     private void OpenLongDgv(object e, object sender)
@@ -185,15 +200,6 @@ public class DGVs : Form
        sizePageNumericUpDown.Value = 25;
        sizePageNumericUpDown.ValueChanged += UpdatePageSize;
        sizePageNumericUpDown.TextChanged += UpdatePageSize;
-    }
-
-    public void FFF() //TODO: не работает же?
-    {
-        if (auth.AutorizedUser.Roles.Where(x => x.Possibility.Equals("Ведения")).Count() == 0)
-        {
-           // deleteButton.Hide();
-           // addButton.Hide();
-        }
     }
 
     private void AddControls()

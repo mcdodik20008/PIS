@@ -58,12 +58,7 @@ public class DgvLong : Form
         municipalityComboBox.DataSource = municipalityList;
 
         FF();
-        if (_user.Roles.Where(x => x.Possibility.Equals("Ведения")).Count() == 0)
-        {
-           //changeButton.Hide();
-           // uploadFileButton.Hide();
-           // deleteFileButton.Hide();
-        }
+        Shown += CheckForm;
     }
 
     private void FF()
@@ -179,6 +174,21 @@ public class DgvLong : Form
         fielsDataGridView.ColumnHeadersVisible = false;
     }
 
+    public void CheckForm(object e, object sender)
+    {
+        if (_registerMcLong.Id==0)
+        {
+            uploadFileButton.Hide();
+            deleteFileButton.Hide();
+        }
+        if (_user.Roles.Where(x => x.Possibility.Equals("Ведения")).Count() == 0)
+        {
+            changeButton.Hide();
+            uploadFileButton.Hide();
+            deleteFileButton.Hide();
+        }
+    }
+    
     public void ClearRegisterMC(RegisterMCLong registerMcLong)
     {
         _registerMcLong = registerMcLong;
