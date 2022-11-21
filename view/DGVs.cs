@@ -49,6 +49,11 @@ public class DGVs : Form
             deleteButton.Hide();
             addButton.Hide();*/
         }
+
+        dg.DataSource = null;
+        dg.FillDataGrid(_registermcController.Read(_page));
+        var data = _registermcController.Read(_page, dg.GetFilter<RegisterMC>(), dg.GetSortParameters<RegisterMC>());
+        dg.FillDataGrid(data);
     }
     
     private void OpenLongDgv(object e, object sender)
@@ -129,10 +134,6 @@ public class DGVs : Form
     {
         Size = new Size(800, 600);
         Text = "Реестр";
-        dg.FillDataGrid(_registermcController.Read(_page));
-        // TODO: заполнять не в конструкторе, а при открытии
-        var data = _registermcController.Read(_page, dg.GetFilter<RegisterMC>(), dg.GetSortParameters<RegisterMC>());
-        dg.FillDataGrid(data);
         dg.Location = new Point(0, 0);
         dg.Size = new Size(655, 510);
         dg.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom;
