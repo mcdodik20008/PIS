@@ -87,11 +87,13 @@ public class RegistermcService
     public RegisterMCLong Update(long id, RegisterMCLong view)
     {
         view.Id = id;
+        var docIds = view.Documents.Select(x => x.Id);
         using var context = new AppDbContext();
         var register = context.Register.Find(id);
         register = RegisterMcMapper.Map(view, register);
         Validator.Validate(register);
         context.Register.Update(register);
+        context.SaveChanges();
         return view;
     }
 
@@ -124,6 +126,8 @@ public class RegistermcService
         if (image is null)
             return;
         SaveFile(image, doc);
+        // TODO: нифига как можно
+        entity.Documents ??= new();
         entity.Documents.Add(doc);
         context.Register.Update(entity);
         context.SaveChanges();

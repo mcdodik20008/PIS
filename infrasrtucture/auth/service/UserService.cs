@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using PISWF.infrasrtucture.auth.context.repository;
 using PISWF.infrasrtucture.auth.model.entity;
 using PISWF.infrasrtucture.auth.model.mapper;
 using PISWF.infrasrtucture.auth.model.view;
@@ -9,16 +8,10 @@ namespace PISWF.infrasrtucture.auth.service;
 
 public class UserService
 {
-    private UserRepository UserRepository { get; }
-
-    private RoleRepository RoleRepository { get; }
-
     private UserMapper UserMapper { get; }
 
-    public UserService(UserRepository userRepository, RoleRepository roleRepository, UserMapper userMapper)
+    public UserService(UserMapper userMapper)
     {
-        UserRepository = userRepository;
-        RoleRepository = roleRepository;
         UserMapper = userMapper;
     }
 
@@ -30,9 +23,10 @@ public class UserService
 
     public User Authorization(UserAuth userAuth)
     {
+        using var context = new AppDbContext();
         var hash = userAuth.Password;
         var predicate = new Func<User, bool>(x => x.Login!.Equals(userAuth.Login) && x.Password.Equals(hash));
-        var user = UserRepository.Entity
+        var user = context.Users
             .Include(x => x.Roles)
             .ThenInclude(y => y.Visibility)
             .Include(x => x.Roles)
@@ -45,30 +39,34 @@ public class UserService
 
     public List<UserAuth> Read(Page page)
     {
-        var entity = UserRepository.Entity.Skip(page.Number * page.Size).Take(page.Size);
+        using var context = new AppDbContext();
+        var entity = context.Users.Skip(page.Number * page.Size).Take(page.Size);
         return UserMapper.Map<List<UserAuth>>(entity);
     }
 
     public User Add(UserBasic userBasic)
     {
+        using var context = new AppDbContext();
         var user = UserMapper.Map<User>(userBasic);
-        UserRepository.Entity.Add(user);
-        UserRepository.Save();
+        context.Users.Add(user);
+        context.SaveChanges();
         return user;
     }
 
     public User Update(User user)
     {
-        UserRepository.Entity.Update(user);
-        UserRepository.SaveChanges();
+        using var context = new AppDbContext();
+        context.Users.Update(user);
+        context.SaveChanges();
         return user;
     }
 
     public User Delete(UserBasic userBasic)
     {
+        using var context = new AppDbContext();
         var user = UserMapper.Map<User>(userBasic);
-        UserRepository.Entity.Remove(user);
-        UserRepository.SaveChanges();
+        context.Users.Remove(user);
+        context.SaveChanges();
         return user;
     }
 }

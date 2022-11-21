@@ -5,15 +5,12 @@ using PISWF.domain.registermc.controller;
 using PISWF.domain.registermc.model.mapper;
 using PISWF.domain.registermc.service;
 using PISWF.infrasrtucture;
-using PISWF.infrasrtucture.auth.context.repository;
 using PISWF.infrasrtucture.auth.controller;
 using PISWF.infrasrtucture.auth.model.mapper;
 using PISWF.infrasrtucture.auth.service;
 using PISWF.infrasrtucture.filter;
-using PISWF.infrasrtucture.logger.context;
 using PISWF.infrasrtucture.logger.controller;
 using PISWF.infrasrtucture.logger.service;
-using PISWF.infrasrtucture.muni_org.context.repository;
 using PISWF.infrasrtucture.muni_org.controller;
 using PISWF.infrasrtucture.muni_org.model.mapper;
 using PISWF.infrasrtucture.muni_org.service;
@@ -44,14 +41,12 @@ public class AppContainer : ServiceContainer
         #region organization
         this.RegisterSingleton<OrganizationController>();
         this.RegisterSingleton<OrganizationService>();
-        this.RegisterSingleton<OrganizationRepository>();
         this.RegisterSingleton<OrganizationMapper>();
         #endregion
         
         #region municipality
         this.RegisterSingleton<MunicipalityController>();
         this.RegisterSingleton<MunicipalityService>();
-        this.RegisterSingleton<MunicipalityRepository>();
         this.RegisterSingleton<MunicipalityMapper>();
         #endregion
         
@@ -60,13 +55,10 @@ public class AppContainer : ServiceContainer
         this.RegisterSingleton<UserMapper>();
         this.RegisterSingleton<AuthController>();
         this.RegisterSingleton<UserService>();
-        this.RegisterSingleton<UserRepository>();
-        this.RegisterSingleton<RoleRepository>();
         #endregion
         
         #region log
         this.RegisterSingleton<LogService>();
-        this.RegisterSingleton<LogRepository>();
         this.RegisterSingleton<LogController>();
         #endregion
 
