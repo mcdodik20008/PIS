@@ -130,6 +130,7 @@ public class DGVs : Form
         Size = new Size(800, 600);
         Text = "Реестр";
         dg.FillDataGrid(_registermcController.Read(_page));
+        // TODO: заполнять не в конструкторе, а при открытии
         var data = _registermcController.Read(_page, dg.GetFilter<RegisterMC>(), dg.GetSortParameters<RegisterMC>());
         dg.FillDataGrid(data);
         dg.Location = new Point(0, 0);

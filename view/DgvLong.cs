@@ -270,7 +270,6 @@ public class DgvLong : Form
         {
             _registerMcLong = FillRegisterMc(_registerMcLong);
             _registermcController.Update(_registerMcLong.Id, _registerMcLong);
-            
         }
     }
     
