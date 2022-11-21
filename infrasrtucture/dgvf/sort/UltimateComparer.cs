@@ -7,7 +7,6 @@ public class UltimateComparer<T> : IComparer<T>
 {
     private SortParameters _sortParameters;
 
-    
     public UltimateComparer(SortParameters sortParameters)
     {
         _sortParameters = sortParameters;

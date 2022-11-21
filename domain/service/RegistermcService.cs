@@ -53,11 +53,11 @@ public class RegistermcService
 
     public List<RegisterMCShort> Read(Page page, Func<RegisterMC, bool> filter, SortParameters sortParameters)
     {
-        var comperer = new UltimateComparer<RegisterMC>(sortParameters);
+        var comparer = new UltimateComparer<RegisterMC>(sortParameters);
         using var context = new AppDbContext();
         return RegisterMcMapper.Map<List<RegisterMCShort>>(context.Register
             .Where(filter)
-            .OrderBy(x => x, comperer)
+            .OrderBy(x => x, comparer)
             .Skip(page.Size * page.Number)
             .Take(page.Size)
         );
@@ -172,7 +172,7 @@ public class RegistermcService
             .ToList();
     }
 
-    public void DeleteFile(long recordId, long id)
+    public void DeleteFile(long id)
     {
         using var context = new AppDbContext();
         var entity = context.Documents.Find(id);

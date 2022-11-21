@@ -20,24 +20,4 @@ public class MunicipalityController
     {
         return MunicipalityService.GetAll();
     }
-    
-    public MunicipalityShort Read(long id)
-    {
-        return null; //MunicipalityService.GetById(id);
-    }
-    
-    public MunicipalityShort Add(MunicipalityShort municipalityShort)
-    {
-        return MunicipalityService.Add(municipalityShort);
-    }
-    
-    public MunicipalityShort Update(MunicipalityShort municipalityShort)
-    {
-        return MunicipalityService.Update(municipalityShort);
-    }
-    
-    public MunicipalityShort Delete(MunicipalityShort municipalityShort)
-    {
-        return MunicipalityService.Delete(municipalityShort);
-    }
 }

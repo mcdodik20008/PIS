@@ -104,7 +104,7 @@ public class RegistermcController
     public void DeleteFile(long recordId, long fileId)
     {
         var entity = _registermcService.Read(recordId).Documents.Find(x => x.Id == fileId);
-        _registermcService.DeleteFile(recordId, fileId);
+        _registermcService.DeleteFile(fileId);
         _logController.AddRecord("DeleteFile", entity);
     }
 }

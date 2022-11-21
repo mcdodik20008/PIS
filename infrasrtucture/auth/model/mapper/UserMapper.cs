@@ -11,8 +11,6 @@ public class UserMapper : Mapper
         {
             cfg.CreateMap<User, UserBasic>();
             cfg.CreateMap<UserBasic, User>();
-            cfg.CreateMap<User, UserRich>();
-            cfg.CreateMap<UserRich, User>();
             cfg.CreateMap<User, UserAuth>();
             cfg.CreateMap<UserAuth, User>();
         })

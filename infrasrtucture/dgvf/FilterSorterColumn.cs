@@ -24,5 +24,4 @@ public class FilterSorterColumn
         Name = name;
         ValueType = valueType;
     }
-    public FilterSorterColumn() { }
 }

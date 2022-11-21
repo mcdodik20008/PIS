@@ -36,37 +36,4 @@ public class UserService
             .FirstOrDefault(predicate);
         return user ?? throw new UnauthorizedAccessException("Ошибка в логине или пароле");
     }
-
-    public List<UserAuth> Read(Page page)
-    {
-        using var context = new AppDbContext();
-        var entity = context.Users.Skip(page.Number * page.Size).Take(page.Size);
-        return UserMapper.Map<List<UserAuth>>(entity);
-    }
-
-    public User Add(UserBasic userBasic)
-    {
-        using var context = new AppDbContext();
-        var user = UserMapper.Map<User>(userBasic);
-        context.Users.Add(user);
-        context.SaveChanges();
-        return user;
-    }
-
-    public User Update(User user)
-    {
-        using var context = new AppDbContext();
-        context.Users.Update(user);
-        context.SaveChanges();
-        return user;
-    }
-
-    public User Delete(UserBasic userBasic)
-    {
-        using var context = new AppDbContext();
-        var user = UserMapper.Map<User>(userBasic);
-        context.Users.Remove(user);
-        context.SaveChanges();
-        return user;
-    }
 }
