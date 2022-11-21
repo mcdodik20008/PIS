@@ -13,7 +13,7 @@ namespace PISWF.view;
 
 public class DGVs : Form
 {
-    private AuthController auth;
+    private AuthController _authController;
 
     private User _user;
     
@@ -33,7 +33,7 @@ public class DGVs : Form
         StartPosition = FormStartPosition.CenterScreen;
         _dgvLong = dgvLong;
         _registermcController = registermcController;
-        auth = authController;
+        _authController = authController;
         _user = authController.AutorizedUser;
         dg = new(factory, filterSorterMapper);
         InitializeItems();
@@ -43,11 +43,12 @@ public class DGVs : Form
     
     private void CheckForm(object e, object sender)
     {
+        _user = _authController.AutorizedUser;
         if (_user.Roles.Where(x => x.Possibility.Equals("Ведения")).Count() == 0)
         {
-            /*addButton.Hide();
+            addButton.Hide();
             deleteButton.Hide();
-            addButton.Hide();*/
+            addButton.Hide();
         }
         _page = new(0, 25);
         numberPageBox.Text = "1";

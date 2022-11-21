@@ -20,6 +20,8 @@ public class DgvLong : Form
     
     private MunicipalityController _municipalityController;
     
+    private AuthController _authController;
+    
     private LogController _logController;
     
     private List<OrganizationShort> _organizationList;
@@ -36,7 +38,7 @@ public class DgvLong : Form
         _registermcController = registermcController;
         _organizationController = organizationController;
         _municipalityController = municipalityController;
-        _user = authController.AutorizedUser;
+        _authController = authController;
         _organizationList = _organizationController.Read();
         _municipalityList =  _municipalityController.Read();
         InitializeItems();
@@ -176,6 +178,7 @@ public class DgvLong : Form
 
     private void CheckForm(object e, object sender)
     {
+        _user = _authController.AutorizedUser;
         if (_registerMcLong.Id==0)
         {
             uploadFileButton.Hide();
