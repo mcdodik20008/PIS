@@ -1,7 +1,6 @@
 ﻿using System.Drawing.Imaging;
 using Microsoft.EntityFrameworkCore;
 using PISWF.domain.model.validator;
-using PISWF.domain.registermc.context.repository;
 using PISWF.domain.registermc.model.entity;
 using PISWF.domain.registermc.model.mapper;
 using PISWF.domain.registermc.model.view;
@@ -17,11 +16,8 @@ public class RegistermcService
 {
     private ExcelExporter ExcelExporter { get; }
 
-    private FileDocumentRepository FileDocumentRepository { get; }
-
     private RegisterMcMapper RegisterMcMapper { get; }
 
-    private RegisterMcRepository RegisterMcRepository { get; }
 
     private RegistermcValidator Validator { get; set; }
 
@@ -30,18 +26,14 @@ public class RegistermcService
     private MunicipalityService MunicipalityService { get; set; }
 
     public RegistermcService(
-        FileDocumentRepository fileDocumentRepository,
         RegisterMcMapper registerMcMapper,
-        RegisterMcRepository registerMcRepository,
         ExcelExporter excelExporter,
         RegistermcValidator validator,
         OrganizationService organizationService,
         MunicipalityService municipalityService
     )
     {
-        FileDocumentRepository = fileDocumentRepository;
         RegisterMcMapper = registerMcMapper;
-        RegisterMcRepository = registerMcRepository;
         ExcelExporter = excelExporter;
         Validator = validator;
         OrganizationService = organizationService;
@@ -50,7 +42,8 @@ public class RegistermcService
 
     public List<RegisterMCShort> Read(Page page)
     {
-        return RegisterMcMapper.Map<List<RegisterMCShort>>(RegisterMcRepository.Entity
+        using var context = new AppDbContext();
+        return RegisterMcMapper.Map<List<RegisterMCShort>>(context.Register
             .Include(x => x.Organization)
             .Include(x => x.Municipality)
             .Skip(page.Size * page.Number)
@@ -61,7 +54,8 @@ public class RegistermcService
     public List<RegisterMCShort> Read(Page page, Func<RegisterMC, bool> filter, SortParameters sortParameters)
     {
         var comperer = new UltimateComparer<RegisterMC>(sortParameters);
-        return RegisterMcMapper.Map<List<RegisterMCShort>>(RegisterMcRepository.Entity
+        using var context = new AppDbContext();
+        return RegisterMcMapper.Map<List<RegisterMCShort>>(context.Register
             .Where(filter)
             .OrderBy(x => x, comperer)
             .Skip(page.Size * page.Number)
@@ -71,7 +65,8 @@ public class RegistermcService
 
     public RegisterMCLong Read(long id)
     {
-        var entity = RegisterMcRepository.Entity
+        using var context = new AppDbContext();
+        var entity = context.Register
             .Include(x => x.Organization)
             .Include(x => x.Municipality)
             .Include(x => x.Documents)
@@ -83,28 +78,29 @@ public class RegistermcService
     {
         var entity = RegisterMcMapper.Map<RegisterMC>(view);
         Validator.Validate(entity);
-        entity.Organization = OrganizationService.GetById(entity.Organization.Id);
-        entity.Municipality = MunicipalityService.GetById(entity.Municipality.Id);
-        var xx = RegisterMcRepository.Entity.Update(entity).Entity;
-        RegisterMcRepository.Save();
+        using var context = new AppDbContext();
+        var xx = context.Register.Update(entity).Entity;
+        context.SaveChanges();
         return RegisterMcMapper.Map<RegisterMCLong>(xx);
     }
 
     public RegisterMCLong Update(long id, RegisterMCLong view)
     {
         view.Id = id;
-        var register = RegisterMcRepository.Entity.Find(id);
+        using var context = new AppDbContext();
+        var register = context.Register.Find(id);
         register = RegisterMcMapper.Map(view, register);
         Validator.Validate(register);
-        RegisterMcRepository.Entity.Update(register);
+        context.Register.Update(register);
         return view;
     }
 
     public void Delete(long id)
     {
-        var entity = RegisterMcRepository.Entity.Find(id);
-        RegisterMcRepository.Entity.Remove(entity);
-        RegisterMcRepository.SaveChanges();
+        using var context = new AppDbContext();
+        var entity = context.Register.Find(id);
+        context.Register.Remove(entity);
+        context.SaveChanges();
     }
 
     public void ExportToExcel(Func<RegisterMC, bool> filter, string path = "C:\\pisDoc\\reports\\")
@@ -118,7 +114,8 @@ public class RegistermcService
 
     public void UpLoadFile(RegisterMCLong register, User user)
     {
-        var entity = RegisterMcRepository.Entity.Find(register.Id);
+        using var context = new AppDbContext();
+        var entity = context.Register.Find(register.Id);
         var name = user.Municipality is null ? user.Organization.Name : user.Municipality.Name;
         var doc = new FileDocument();
         doc.FilePath = $"C:\\pisDoc\\{name}\\";
@@ -128,8 +125,8 @@ public class RegistermcService
             return;
         SaveFile(image, doc);
         entity.Documents.Add(doc);
-        RegisterMcRepository.Entity.Update(entity);
-        RegisterMcRepository.SaveChanges();
+        context.Register.Update(entity);
+        context.SaveChanges();
     }
 
     private Image OpenFile(FileDocument doc)
@@ -162,7 +159,8 @@ public class RegistermcService
 
     private List<RegisterMC> Read(Func<RegisterMC, bool> filter)
     {
-        return RegisterMcRepository.Entity
+        using var context = new AppDbContext();
+        return context.Register
             .Include(x => x.Organization)
             .Include(x => x.Municipality)
             .Include(x => x.Documents)
@@ -172,10 +170,9 @@ public class RegistermcService
 
     public void DeleteFile(long recordId, long id)
     {
-        var contract = RegisterMcRepository.Entity.Find(recordId);
-        var entity = FileDocumentRepository.Entity.Find(id);
-        contract.Documents.Remove(entity);
-        RegisterMcRepository.Entity.Update(contract);
-        FileDocumentRepository.SaveChanges();
+        using var context = new AppDbContext();
+        var entity = context.Documents.Find(id);
+        context.Documents.Remove(entity);
+        context.SaveChanges();
     }
 }
