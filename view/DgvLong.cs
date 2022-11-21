@@ -174,7 +174,7 @@ public class DgvLong : Form
         fielsDataGridView.ColumnHeadersVisible = false;
     }
 
-    public void CheckForm(object e, object sender)
+    private void CheckForm(object e, object sender)
     {
         if (_registerMcLong.Id==0)
         {

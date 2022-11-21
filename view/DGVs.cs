@@ -41,7 +41,7 @@ public class DGVs : Form
         Shown += CheckForm;
     }
     
-    public void CheckForm(object e, object sender)
+    private void CheckForm(object e, object sender)
     {
         if (_user.Roles.Where(x => x.Possibility.Equals("Ведения")).Count() == 0)
         {
