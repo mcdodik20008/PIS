@@ -22,8 +22,12 @@ public class DGVs : Form
     private DgvLong _dgvLong;
     
     private Page _page = new(0, 25);
-    
-    public DGVs(
+
+    private IFilterFactory _filterFactory;
+
+    private FilterSorterMapper _filterSorterMapper;
+
+         public DGVs(
         AuthController authController, 
         IFilterFactory factory, 
         FilterSorterMapper filterSorterMapper, 
@@ -34,15 +38,17 @@ public class DGVs : Form
         _dgvLong = dgvLong;
         _registermcController = registermcController;
         _authController = authController;
+        _filterFactory = factory;
+        _filterSorterMapper = filterSorterMapper;
         _user = authController.AutorizedUser;
-        dg = new(factory, filterSorterMapper);
+        dg = new(_filterFactory, _filterSorterMapper);
         InitializeItems();
         AddControls();
-
     }
     
     private void CheckForm(object e, object sender)
     {
+        dg = new(_filterFactory, _filterSorterMapper);
         addButton.Hide();
         deleteButton.Hide();
         _user = _authController.AutorizedUser;
