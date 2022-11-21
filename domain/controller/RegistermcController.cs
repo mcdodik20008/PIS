@@ -41,8 +41,12 @@ public class RegistermcController
             {
                 "Реестра" => predicate,
                 "Муниципальный" => predicate.And(x => x.Municipality.Id.Equals(user.Municipality.Id)),
-                "Организации" => predicate.And(x => x.Organization.Id.Equals(user.Organization.Id))
+                "Организации" => predicate.And(x => x.Organization.Id.Equals(user.Organization.Id)),
             };
+        }
+        else
+        {
+            predicate = predicate.And(x => false);
         }
 
         return _registermcService.Read(page, predicate.Compile(), sortParameters);
