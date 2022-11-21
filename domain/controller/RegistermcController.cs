@@ -44,7 +44,7 @@ public class RegistermcController
                 "Организации" => predicate.And(x => x.Organization.Id.Equals(user.Organization.Id)),
             };
         }
-        else
+        else 
         {
             predicate = predicate.And(x => false);
         }

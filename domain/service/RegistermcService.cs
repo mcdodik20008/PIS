@@ -1,4 +1,5 @@
 ﻿using System.Drawing.Imaging;
+using LinqKit;
 using Microsoft.EntityFrameworkCore;
 using PISWF.domain.model.validator;
 using PISWF.domain.registermc.model.entity;
@@ -55,12 +56,15 @@ public class RegistermcService
     {
         var comparer = new UltimateComparer<RegisterMC>(sortParameters);
         using var context = new AppDbContext();
-        return RegisterMcMapper.Map<List<RegisterMCShort>>(context.Register
+        var entitys = context.Register
+            .Include(x => x.Organization)
+            .Include(x => x.Municipality)
             .Where(filter)
             .OrderBy(x => x, comparer)
             .Skip(page.Size * page.Number)
             .Take(page.Size)
-        );
+            .ToList();
+        return RegisterMcMapper.Map<List<RegisterMCShort>>(entitys);
     }
 
     public RegisterMCLong Read(long id)
