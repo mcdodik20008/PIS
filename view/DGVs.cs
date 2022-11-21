@@ -54,6 +54,7 @@ public class DGVs : Form
         dg.FillDataGrid(_registermcController.Read(_page));
         var data = _registermcController.Read(_page, dg.GetFilter<RegisterMC>(), dg.GetSortParameters<RegisterMC>());
         dg.FillDataGrid(data);
+        _page = new(0, 25);
     }
     
     private void OpenLongDgv(object e, object sender)
