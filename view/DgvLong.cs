@@ -52,7 +52,7 @@ public class DgvLong : Form
     
     private void InitializeItems()
     {
-        Size = new Size(830, 550);
+        Size = new Size(830, 570);
         Text = "Контракт";
         var organizationsList = _organizationController.Read();
         var municipalityList = _municipalityController.Read();
@@ -73,45 +73,68 @@ public class DgvLong : Form
         validDateLabel.Size = new Size(144, 20);
         validDateLabel.Text = "Дата заключения МК";
 
-        locationLabel.Location = new Point(107, 70);
+        locationLabel.Location = new Point(107, 72);
         locationLabel.Size = new Size(170, 20);
         locationLabel.Text = "Место оказания услуги";
 
-        actionTimeLabel.Location = new Point(165, 95);
+        actionTimeLabel.Location = new Point(167, 102);
         actionTimeLabel.Size = new Size(125, 20);
         actionTimeLabel.Text = "Дата действия МК";
 
-        organizationLabel.Location = new Point(174, 118);
+        organizationLabel.Location = new Point(174, 133);
         organizationLabel.Size = new Size(116, 20);
         organizationLabel.Text = "Исполнитель МК";
 
-        municipalityLabel.Location = new Point(150, 140);
-        municipalityLabel.Size = new Size(130, 45);
-        municipalityLabel.Text = "Муниципальное \r\nобразование";
+        municipalityLabel.Location = new Point(55, 162);
+        municipalityLabel.Size = new Size(250, 20);
+        municipalityLabel.Text = "Муниципальное образование";
+        
+        municipalityComboBox.Location = new Point(321, 160);
+        municipalityComboBox.Size = new Size(200, 20);
 
-        omsuLabel.Location = new Point(223, 181);
+        omsuLabel.Location = new Point(223, 192);
         omsuLabel.Size = new Size(55, 20);
         omsuLabel.Text = "ОМСУ";
 
-        yearLabel.Location = new Point(138, 204);
+        yearLabel.Location = new Point(138, 224);
         yearLabel.Size = new Size(145, 45);
         yearLabel.Text = "Год, на который \r\nвыдана субвенция";
+        
+        yearNumericUpDown.Location = new Point(321, 225);
+        yearNumericUpDown.Size = new Size(200, 20);
+        yearNumericUpDown.Maximum = 9999999;
 
-        priceLabel.Location = new Point(160, 247);
+        priceLabel.Location = new Point(158, 270);
         priceLabel.Size = new Size(120, 20);
         priceLabel.Text = "Цена контракта";
+        
+        priceNumericUpDown.Location = new Point(321, 268);
+        priceNumericUpDown.Size = new Size(200, 20);
+        priceNumericUpDown.Maximum = 9999999;
 
-        subventionShareLabel.Location = new Point(153, 278);
+        subventionShareLabel.Location = new Point(150, 298);
         subventionShareLabel.Size = new Size(140, 45);
         subventionShareLabel.Text = "Доля субвенции \r\nв цене контракта";
+        
+        subventionShareNumericUpDown.Location = new Point(321, 302);
+        subventionShareNumericUpDown.Size = new Size(200, 20);
+        subventionShareNumericUpDown.Maximum = 9999999;
 
-        amountMoneyLabel.Location = new Point(80, 325);
+        amountMoneyLabel.Location = new Point(74, 345);
         amountMoneyLabel.Size = new Size(220, 65);
         amountMoneyLabel.Text = "Объём денежных средств, \r\nвыплаченных Исполнителю \r\nпо контракту";
+        
+        amountMoneyNumericUpDown.Location = new Point(321, 348);
+        amountMoneyNumericUpDown.Size = new Size(200, 20);
+        amountMoneyNumericUpDown.Maximum = 9999999;
 
-        partMoneyLabel.Location = new Point(80, 392);
+        partMoneyLabel.Location = new Point(74, 410);
         partMoneyLabel.Size = new Size(220, 65);
         partMoneyLabel.Text = "Доля денежных средств \r\nиз субвенции, выплаченной \r\nпо контракту в %\r\n\r\n";
+        
+        shareFundsSubventionNumericUpDown.Location = new Point(321, 410);
+        shareFundsSubventionNumericUpDown.Size = new Size(200, 20);
+        shareFundsSubventionNumericUpDown.Maximum = 9999999;
 
         numberBox.Location = new Point(321, 10);
         numberBox.Size = new Size(200, 20);
@@ -128,43 +151,20 @@ public class DgvLong : Form
         organizationComboBox.Location = new Point(321, 130);
         organizationComboBox.Size = new Size(200, 20);
 
-        municipalityComboBox.Location = new Point(321, 160);
-        municipalityComboBox.Size = new Size(200, 20);
-
         omsuBox.Location = new Point(321, 190);
         omsuBox.Size = new Size(200, 20);
 
-        yearNumericUpDown.Location = new Point(321, 220);
-        yearNumericUpDown.Size = new Size(200, 20);
-        yearNumericUpDown.Maximum = 9999999;
-
-        priceNumericUpDown.Location = new Point(321, 250);
-        priceNumericUpDown.Size = new Size(200, 20);
-        priceNumericUpDown.Maximum = 9999999;
-
-        subventionShareNumericUpDown.Location = new Point(321, 280);
-        subventionShareNumericUpDown.Size = new Size(200, 20);
-        subventionShareNumericUpDown.Maximum = 9999999;
-
-        amountMoneyNumericUpDown.Location = new Point(321, 325);
-        amountMoneyNumericUpDown.Size = new Size(200, 20);
-        amountMoneyNumericUpDown.Maximum = 9999999;
-
-        shareFundsSubventionNumericUpDown.Location = new Point(321, 386);
-        shareFundsSubventionNumericUpDown.Size = new Size(200, 20);
-        shareFundsSubventionNumericUpDown.Maximum = 9999999;
-
-        changeButton.Location = new Point(24, 460);
+        changeButton.Location = new Point(44, 480);
         changeButton.Size = new Size(125, 28);
         changeButton.Text = "Сохранить";
         changeButton.Click += Add;
 
-        uploadFileButton.Location = new Point(149, 460);
+        uploadFileButton.Location = new Point(169, 480);
         uploadFileButton.Size = new Size(150, 28);
         uploadFileButton.Text = "Загрузить файл";
         uploadFileButton.Click += UploadFile;
 
-        deleteFileButton.Location = new Point(298, 460);
+        deleteFileButton.Location = new Point(318, 480);
         deleteFileButton.Size = new Size(150, 28);
         deleteFileButton.Text = "Удалить файл";
         deleteFileButton.Click += DeleteFile;
