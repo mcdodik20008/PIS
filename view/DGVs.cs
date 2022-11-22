@@ -132,30 +132,35 @@ public class DGVs : Form
 
         filterButton.Location = new Point(658, 317);
         filterButton.Size = new Size(120, 28);
+        filterButton.Anchor = AnchorStyles.Right | AnchorStyles.Top;
         filterButton.Text = "Фильтровать";
         filterButton.Click -= FillWithFilter;
         filterButton.Click += FillWithFilter;
         
         openButton.Location = new Point(658, 346);
         openButton.Size = new Size(120, 28);
+        openButton.Anchor = AnchorStyles.Right | AnchorStyles.Top;
         openButton.Text = "Открыть";
         openButton.Click -= OpenLongDgv;
         openButton.Click += OpenLongDgv;
         
         addButton.Location = new Point(658, 375);
         addButton.Size = new Size(120, 28);
+        addButton.Anchor = AnchorStyles.Right | AnchorStyles.Top;
         addButton.Text = "Добавить";
         addButton.Click -= CreateNew;
         addButton.Click += CreateNew;
 
         deleteButton.Location = new Point(658, 404);
         deleteButton.Size = new Size(120, 28);
+        deleteButton.Anchor = AnchorStyles.Right | AnchorStyles.Top;
         deleteButton.Text = "Удалить";
         deleteButton.Click -= Delete;
         deleteButton.Click += Delete;
 
         exportButton.Location = new Point(658, 267);
         exportButton.Size = new Size(120, 50);
+        exportButton.Anchor = AnchorStyles.Right | AnchorStyles.Top;
         exportButton.Text = "Экспорт в Excel";
         exportButton.Click -= ExportToExcel;
         exportButton.Click += ExportToExcel;
@@ -166,29 +171,35 @@ public class DGVs : Form
 
        numberPageLabel.Location = new Point(12,520);
        numberPageLabel.Size = new Size(132, 18);
+       numberPageLabel.Anchor = AnchorStyles.Left | AnchorStyles.Bottom;
        numberPageLabel.Text = "Номер страницы";
 
        downPageButton.Location = new Point(145,520);
        downPageButton.Size = new Size(44, 27);
+       downPageButton.Anchor = AnchorStyles.Left | AnchorStyles.Bottom;
        downPageButton.Text = "<";
        downPageButton.Click += UpdatePageNumberDown;
        
        numberPageBox.Location = new Point(190,520);
        numberPageBox.Size = new Size(46, 18);
+       numberPageBox.Anchor = AnchorStyles.Left | AnchorStyles.Bottom;
        numberPageBox.Text = "1";
        numberPageBox.TextChanged += UpdatePageSize;
 
        upPageButton.Location = new Point(237,520);
        upPageButton.Size = new Size(44, 27);
+       upPageButton.Anchor = AnchorStyles.Left | AnchorStyles.Bottom;
        upPageButton.Text = ">";
        upPageButton.Click += UpdatePageNumberUp;
        
        sizePageLabel.Location = new Point(292,520);
        sizePageLabel.Size = new Size(132, 18);
+       sizePageLabel.Anchor = AnchorStyles.Left | AnchorStyles.Bottom;
        sizePageLabel.Text = "Размер страницы";
 
        sizePageNumericUpDown.Location = new Point(425,520);
        sizePageNumericUpDown.Size = new Size(44, 23);
+       sizePageNumericUpDown.Anchor = AnchorStyles.Left | AnchorStyles.Bottom;
        sizePageNumericUpDown.Value = 25;
        sizePageNumericUpDown.ValueChanged += UpdatePageSize;
        sizePageNumericUpDown.TextChanged += UpdatePageSize;

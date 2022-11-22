@@ -9,7 +9,7 @@ namespace PISWF.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            var valuesCount = 100000;
+            var valuesCount = 1000;
             var rnd = new Random();
             var registermcs = new string[valuesCount, 10];
             var id = Enumerable.Range(1, valuesCount).Select(x => x.ToString()).ToArray();

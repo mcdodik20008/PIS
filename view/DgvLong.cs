@@ -69,15 +69,15 @@ public class DgvLong : Form
         numberLabel.Size = new Size(72, 20);
         numberLabel.Text = "Номер МК";
 
-        validDateLabel.Location = new Point(146, 39);
+        validDateLabel.Location = new Point(146, 42);
         validDateLabel.Size = new Size(144, 20);
         validDateLabel.Text = "Дата заключения МК";
 
-        locationLabel.Location = new Point(105, 65);
+        locationLabel.Location = new Point(107, 70);
         locationLabel.Size = new Size(170, 20);
         locationLabel.Text = "Место оказания услуги";
 
-        actionTimeLabel.Location = new Point(165, 92);
+        actionTimeLabel.Location = new Point(165, 95);
         actionTimeLabel.Size = new Size(125, 20);
         actionTimeLabel.Text = "Дата действия МК";
 
