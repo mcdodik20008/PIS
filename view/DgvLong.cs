@@ -272,6 +272,8 @@ public class DgvLong : Form
         {
             var entity = FillRegisterMc(new RegisterMCLong());
             _registerMcLong = _registermcController.Create(entity);
+            uploadFileButton.Show();
+            deleteFileButton.Show();
         }
         else
         {
