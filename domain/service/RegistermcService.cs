@@ -1,5 +1,4 @@
 ﻿using System.Drawing.Imaging;
-using LinqKit;
 using Microsoft.EntityFrameworkCore;
 using PISWF.domain.model.validator;
 using PISWF.domain.registermc.model.entity;
@@ -10,6 +9,7 @@ using PISWF.infrasrtucture.auth.model.entity;
 using PISWF.infrasrtucture.extentions;
 using PISWF.infrasrtucture.muni_org.service;
 using PISWF.infrasrtucture.page;
+using WinFormsLibrary1.dgvf.sort;
 
 namespace PISWF.domain.registermc.service;
 
