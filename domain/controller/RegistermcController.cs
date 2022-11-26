@@ -27,6 +27,11 @@ public class RegistermcController
         _logController = logController;
     }
 
+    public long Count()
+    {
+        return _registermcService.Count(_authController.AutorizedUser);
+    }
+
     async public Task<List<RegisterMCShort>> Read(
         Page page,
         Expression<Func<RegisterMC, bool>> filter,
@@ -110,5 +115,10 @@ public class RegistermcController
         var entity = _registermcService.Read(recordId).Documents.Find(x => x.Id == fileId);
         _registermcService.DeleteFile(fileId);
         _logController.AddRecord("DeleteFile", entity);
+    }
+
+    public Image GetImage(long id)
+    {
+        return _registermcService.GetImage(id);
     }
 }

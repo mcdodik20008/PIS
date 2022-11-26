@@ -62,7 +62,8 @@ public class RegistermcService
             .Where(filter)
             .OrderBy(x => x, comparer)
             .Skip(page.Size * page.Number)
-            .Take(page.Size);
+            .Take(page.Size)
+            .ToList();
         return RegisterMcMapper.Map<List<RegisterMCShort>>(entitys);
     }
 
@@ -183,5 +184,33 @@ public class RegistermcService
         var entity = context.Documents.Find(id);
         context.Documents.Remove(entity);
         context.SaveChanges();
+    }
+
+    public long Count(User user)
+    {
+        var userFirstRole = user.Roles.FirstOrDefault();
+        var predicate = PredicateBuilder.True<RegisterMC>();
+        if (userFirstRole is not null)
+        {
+            predicate = userFirstRole.Visibility.Rate switch
+            {
+                "Реестра" => predicate,
+                "Муниципальный" => predicate.And(x => x.Municipality.Id.Equals(user.Municipality.Id)),
+                "Организации" => predicate.And(x => x.Organization.Id.Equals(user.Organization.Id)),
+            };
+        }
+        else 
+        {
+            predicate = predicate.And(x => false);
+        }
+        
+        return new AppDbContext().Register.Where(predicate).Count();
+    }
+
+    public Image GetImage(long id)
+    {
+        var context = new AppDbContext();
+        var doc = context.Documents.Find(id);
+        return Image.FromFile(doc.FilePath+doc.Name);
     }
 }

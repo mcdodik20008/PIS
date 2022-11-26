@@ -17,6 +17,7 @@ public class RegisterMC
     
     [ToExcel]
     [Required]
+    [MinLength(1)]
     [Column("number")]
     public string Number { get; set; }
     
@@ -27,6 +28,7 @@ public class RegisterMC
     
     [ToExcel]
     [Required]
+    [MinLength(1)]
     [Column("location")]
     public string Location { get; set; }
     
@@ -47,6 +49,7 @@ public class RegisterMC
     
     [ToExcel]
     [Required]
+    [MinLength(1)]
     [Column("omsu")]
     public string Omsu { get; set; }
     

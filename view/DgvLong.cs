@@ -11,25 +11,25 @@ namespace PISWF.view;
 public class DgvLong : Form
 {
     private User _user;
-    
+
     private RegisterMCLong _registerMcLong;
-    
+
     private RegistermcController _registermcController;
-    
+
     private OrganizationController _organizationController;
-    
+
     private MunicipalityController _municipalityController;
-    
+
     private AuthController _authController;
-    
+
     private LogController _logController;
-    
+
     private List<OrganizationShort> _organizationList;
-    
+
     private List<MunicipalityShort> _municipalityList;
-    
+
     public DgvLong(
-        RegistermcController registermcController, 
+        RegistermcController registermcController,
         OrganizationController organizationController,
         MunicipalityController municipalityController,
         AuthController authController)
@@ -40,19 +40,20 @@ public class DgvLong : Form
         _municipalityController = municipalityController;
         _authController = authController;
         _organizationList = _organizationController.Read();
-        _municipalityList =  _municipalityController.Read();
+        _municipalityList = _municipalityController.Read();
         InitializeItems();
         AddControls();
     }
-    
+
     public void SetShortRegisterMC(RegisterMCShort registerMcShort)
     {
         SetLongRegisterMc(registerMcShort.Id);
     }
-    
+
     private void InitializeItems()
     {
         Size = new Size(830, 570);
+        MinimumSize = new Size(830, 570);
         Text = "Контракт";
         var organizationsList = _organizationController.Read();
         var municipalityList = _municipalityController.Read();
@@ -68,7 +69,6 @@ public class DgvLong : Form
         numberLabel.Location = new Point(218, 10);
         numberLabel.Size = new Size(72, 20);
         numberLabel.Text = "Номер МК";
-
         validDateLabel.Location = new Point(146, 42);
         validDateLabel.Size = new Size(144, 20);
         validDateLabel.Text = "Дата заключения МК";
@@ -88,7 +88,7 @@ public class DgvLong : Form
         municipalityLabel.Location = new Point(55, 162);
         municipalityLabel.Size = new Size(250, 20);
         municipalityLabel.Text = "Муниципальное образование";
-        
+
         municipalityComboBox.Location = new Point(321, 160);
         municipalityComboBox.Size = new Size(200, 20);
 
@@ -99,7 +99,7 @@ public class DgvLong : Form
         yearLabel.Location = new Point(138, 224);
         yearLabel.Size = new Size(145, 45);
         yearLabel.Text = "Год, на который \r\nвыдана субвенция";
-        
+
         yearNumericUpDown.Location = new Point(321, 225);
         yearNumericUpDown.Size = new Size(200, 20);
         yearNumericUpDown.Maximum = 9999999;
@@ -107,7 +107,7 @@ public class DgvLong : Form
         priceLabel.Location = new Point(158, 270);
         priceLabel.Size = new Size(120, 20);
         priceLabel.Text = "Цена контракта";
-        
+
         priceNumericUpDown.Location = new Point(321, 268);
         priceNumericUpDown.Size = new Size(200, 20);
         priceNumericUpDown.Maximum = 9999999;
@@ -115,7 +115,7 @@ public class DgvLong : Form
         subventionShareLabel.Location = new Point(150, 298);
         subventionShareLabel.Size = new Size(140, 45);
         subventionShareLabel.Text = "Доля субвенции \r\nв цене контракта";
-        
+
         subventionShareNumericUpDown.Location = new Point(321, 302);
         subventionShareNumericUpDown.Size = new Size(200, 20);
         subventionShareNumericUpDown.Maximum = 9999999;
@@ -123,7 +123,7 @@ public class DgvLong : Form
         amountMoneyLabel.Location = new Point(74, 345);
         amountMoneyLabel.Size = new Size(220, 65);
         amountMoneyLabel.Text = "Объём денежных средств, \r\nвыплаченных Исполнителю \r\nпо контракту";
-        
+
         amountMoneyNumericUpDown.Location = new Point(321, 348);
         amountMoneyNumericUpDown.Size = new Size(200, 20);
         amountMoneyNumericUpDown.Maximum = 9999999;
@@ -131,7 +131,7 @@ public class DgvLong : Form
         partMoneyLabel.Location = new Point(74, 410);
         partMoneyLabel.Size = new Size(220, 65);
         partMoneyLabel.Text = "Доля денежных средств \r\nиз субвенции, выплаченной \r\nпо контракту в %\r\n\r\n";
-        
+
         shareFundsSubventionNumericUpDown.Location = new Point(321, 410);
         shareFundsSubventionNumericUpDown.Size = new Size(200, 20);
         shareFundsSubventionNumericUpDown.Maximum = 9999999;
@@ -169,18 +169,32 @@ public class DgvLong : Form
         deleteFileButton.Text = "Удалить файл";
         deleteFileButton.Click += DeleteFile;
 
-        fielsDataGridView.Location = new Point(550,22);
-        fielsDataGridView.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom;
+        fielsDataGridView.Location = new Point(550, 22);
+        fielsDataGridView.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
         fielsDataGridView.AllowUserToAddRows = false;
         fielsDataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
         fielsDataGridView.ColumnHeadersVisible = false;
+        fielsDataGridView.CellContentClick +=(e, x) => OpenImage(e, x);
+        fielsDataGridView.ReadOnly = true;
+        
+        pictureBox.Location = new Point(550, 200);
+        pictureBox.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom;
+        pictureBox.Size = new Size(250, 200);
+        pictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
+
+    }
+
+    private void OpenImage(object? sender, DataGridViewCellEventArgs dataGridViewCellEventArgs)
+    {
+        var zz = _registerMcLong.Documents[fielsDataGridView.CurrentRow.Index];
+        pictureBox.Image = _registermcController.GetImage(zz.Id);
     }
 
     private void CheckForm(object e, object sender)
     {
         changeButton.Show();
         _user = _authController.AutorizedUser;
-        if (_registerMcLong.Id==0)
+        if (_registerMcLong.Id == 0)
         {
             uploadFileButton.Hide();
             deleteFileButton.Hide();
@@ -190,6 +204,7 @@ public class DgvLong : Form
             uploadFileButton.Show();
             deleteFileButton.Show();
         }
+
         if (_user.Roles.Where(x => x.Possibility.Rate.Equals("Ведения")).Count() == 0)
         {
             changeButton.Hide();
@@ -197,7 +212,7 @@ public class DgvLong : Form
             deleteFileButton.Hide();
         }
     }
-    
+
     public void ClearRegisterMC(RegisterMCLong registerMcLong)
     {
         _registerMcLong = registerMcLong;
@@ -207,51 +222,51 @@ public class DgvLong : Form
         municipalityComboBox.Text = "";
         FillControls(_registerMcLong);
     }
-    
+
     private void FillControls(RegisterMCLong registerMcLong)
     {
         numberBox.Text = registerMcLong.Number;
         locationBox.Text = registerMcLong.Location;
         omsuBox.Text = registerMcLong.Omsu;
-        yearNumericUpDown.Text = registerMcLong.Year.ToString(); 
-        priceNumericUpDown.Text = registerMcLong.Price.ToString(); 
-        subventionShareNumericUpDown.Text = registerMcLong.SubventionShare.ToString(); 
+        yearNumericUpDown.Text = registerMcLong.Year.ToString();
+        priceNumericUpDown.Text = registerMcLong.Price.ToString();
+        subventionShareNumericUpDown.Text = registerMcLong.SubventionShare.ToString();
         amountMoneyNumericUpDown.Text = registerMcLong.AmountMoney.ToString();
         shareFundsSubventionNumericUpDown.Text = registerMcLong.ShareFundsSubvention.ToString();
         fielsDataGridView.DataSource = _registerMcLong.Documents;
     }
-    
+
     private void UploadFile(object e, object sender)
     {
         _registermcController.UpLoadFile(_registerMcLong);
         _registerMcLong = _registermcController.Read(_registerMcLong.Id);
         fielsDataGridView.DataSource = _registerMcLong.Documents;
     }
-    
+
     private void DeleteFile(object e, object sender)
     {
         if (fielsDataGridView.Rows.Count > 0)
         {
             var xxx = fielsDataGridView.CurrentRow.Cells[0].Value.ToString();
-            _registermcController.DeleteFile(_registerMcLong.Id,long.Parse(xxx));
+            _registermcController.DeleteFile(_registerMcLong.Id, long.Parse(xxx));
             _registerMcLong = _registermcController.Read(_registerMcLong.Id);
             fielsDataGridView.DataSource = _registerMcLong.Documents;
         }
     }
-    
+
     private void SetLongRegisterMc(long id)
     {
         _registerMcLong = _registermcController.Read(id);
         validDatePicker.Value = _registerMcLong.ValidDate;
         actionTimePicker.Value = _registerMcLong.ActionDate;
-        organizationComboBox.Text = _registerMcLong.Organization.Name; 
+        organizationComboBox.Text = _registerMcLong.Organization.Name;
         municipalityComboBox.Text = _registerMcLong.Municipality.Name;
         FillControls(_registerMcLong);
     }
 
     private RegisterMCLong FillRegisterMc(RegisterMCLong registerMcLong)
     {
-        registerMcLong.Number = numberBox.Text; 
+        registerMcLong.Number = numberBox.Text;
         registerMcLong.ValidDate = validDatePicker.Value;
         registerMcLong.Location = locationBox.Text;
         registerMcLong.ActionDate = actionTimePicker.Value;
@@ -265,9 +280,22 @@ public class DgvLong : Form
         registerMcLong.ShareFundsSubvention = Double.Parse(shareFundsSubventionNumericUpDown.Text);
         return registerMcLong;
     }
-    
+
     private void Add(object e, object sender)
     {
+        string error = "";
+        if (numberBox.Text.Length < 1)
+            error += "Длина номера должна быть больше 1 \n";
+        if (locationBox.Text.Length < 1)
+            error += "Заплоните поле \"Место оказания услуги\" \n";
+        if (omsuBox.Text.Length < 1)
+            error += "Заплоните поле \"ОМСУ\" \n";
+        
+        if (error.Length != 0)
+        {
+            MessageBox.Show(error, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            return;
+        }
         if (_registerMcLong.Id == 0)
         {
             var entity = FillRegisterMc(new RegisterMCLong());
@@ -281,7 +309,7 @@ public class DgvLong : Form
             _registermcController.Update(_registerMcLong.Id, _registerMcLong);
         }
     }
-    
+
     private void AddControls()
     {
         Controls.Add(numberLabel);
@@ -312,38 +340,40 @@ public class DgvLong : Form
         Controls.Add(uploadFileButton);
         Controls.Add(deleteFileButton);
         Controls.Add(fielsDataGridView);
+        Controls.Add(pictureBox);
     }
-    
-    #region компоненты для формы
-    
-    private Label numberLabel = new ();
-    private Label validDateLabel = new ();
-    private Label locationLabel = new ();
-    private Label actionTimeLabel = new ();
-    private Label organizationLabel = new ();
-    private Label municipalityLabel = new ();
-    private Label omsuLabel = new ();
-    private Label yearLabel = new ();
-    private Label priceLabel = new ();
-    private Label subventionShareLabel = new ();
-    private Label amountMoneyLabel = new ();
-    private Label partMoneyLabel = new ();
-    private TextBox numberBox = new ();
-    private DateTimePicker validDatePicker = new ();
-    private TextBox locationBox = new ();
-    private DateTimePicker actionTimePicker = new();
-    private ComboBox organizationComboBox = new ();
-    private ComboBox municipalityComboBox = new ();
-    private TextBox omsuBox = new ();
-    private NumericUpDown yearNumericUpDown = new ();
-    private NumericUpDown priceNumericUpDown = new ();
-    private NumericUpDown subventionShareNumericUpDown = new ();
-    private NumericUpDown amountMoneyNumericUpDown = new ();
-    private NumericUpDown shareFundsSubventionNumericUpDown = new ();
-    private Button changeButton = new ();
-    private Button uploadFileButton = new ();
-    private Button deleteFileButton = new ();
-    private DataGridView fielsDataGridView = new();
 
+    #region компоненты для формы
+
+    private Label numberLabel = new();
+    private Label validDateLabel = new();
+    private Label locationLabel = new();
+    private Label actionTimeLabel = new();
+    private Label organizationLabel = new();
+    private Label municipalityLabel = new();
+    private Label omsuLabel = new();
+    private Label yearLabel = new();
+    private Label priceLabel = new();
+    private Label subventionShareLabel = new();
+    private Label amountMoneyLabel = new();
+    private Label partMoneyLabel = new();
+    private TextBox numberBox = new();
+    private DateTimePicker validDatePicker = new();
+    private TextBox locationBox = new();
+    private DateTimePicker actionTimePicker = new();
+    private ComboBox organizationComboBox = new();
+    private ComboBox municipalityComboBox = new();
+    private TextBox omsuBox = new();
+    private NumericUpDown yearNumericUpDown = new();
+    private NumericUpDown priceNumericUpDown = new();
+    private NumericUpDown subventionShareNumericUpDown = new();
+    private NumericUpDown amountMoneyNumericUpDown = new();
+    private NumericUpDown shareFundsSubventionNumericUpDown = new();
+    private Button changeButton = new();
+    private Button uploadFileButton = new();
+    private Button deleteFileButton = new();
+    private DataGridView fielsDataGridView = new();
+    private PictureBox pictureBox = new();
+    
     #endregion
 }

@@ -60,6 +60,7 @@ public class DGVs : Form
     
     private void OpenLongDgv(object e, object sender)
     {
+        if (dg.CurrentRow is null) return;
         var selectedItem = dg.GetSelectedItem(dg.CurrentRow.Index);
         _dgvLong.SetShortRegisterMC(selectedItem);
         _dgvLong.ShowDialog();
@@ -115,7 +116,9 @@ public class DGVs : Form
     
     private async void UpdatePageNumberUp(object e, object sender)
     {
-        _page = new Page(_page.Number+ 1, (int)sizePageNumericUpDown.Value);
+        if((_page.Number + 1) * _page.Size > _registermcController.Count())
+            return;
+        _page = new Page(_page.Number + 1, (int)sizePageNumericUpDown.Value);
         numberPageBox.Text = (_page.Number+1).ToString();
         dg.FillDataGrid(await Task.Run(() => _registermcController.Read(_page, dg.GetFilter<RegisterMC>(), dg.GetSortParameters<RegisterMC>())));
     }
