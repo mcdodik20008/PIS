@@ -27,7 +27,7 @@
 
     <ItemGroup>
       <Reference Include="DGWF">
-        <HintPath>DGWF\obj\Release\net7.0-windows\DGWF.dll</HintPath>
+        <HintPath>..\WinFormsLibrary1\DGWF\bin\Release\net7.0-windows\DGWF.dll</HintPath>
       </Reference>
     </ItemGroup>
 
