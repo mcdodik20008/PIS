@@ -1,3 +1,4 @@
+using PISWF.infrasrtucture.muni_org.model.entity;
 using PISWF.infrasrtucture.muni_org.model.mapper;
 using PISWF.infrasrtucture.muni_org.model.view;
 

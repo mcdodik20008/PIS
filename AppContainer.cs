@@ -15,7 +15,6 @@ using PISWF.infrasrtucture.muni_org.controller;
 using PISWF.infrasrtucture.muni_org.model.mapper;
 using PISWF.infrasrtucture.muni_org.service;
 using PISWF.view;
-using WinFormsLibrary1.dgvf.filter;
 
 namespace PISWF;
 

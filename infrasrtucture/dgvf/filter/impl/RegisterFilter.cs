@@ -1,7 +1,7 @@
 ﻿using System.Linq.Expressions;
 using LinqKit;
 using PISWF.domain.registermc.model.entity;
-using WinFormsLibrary1.dgvf.filter;
+using PISWF.infrasrtucture.filter;
 
 namespace pis.infrasrtucture.filter.impl;
 
