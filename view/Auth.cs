@@ -24,9 +24,7 @@ public class Auth: Form
     
     private void Authorization(object e, object sender)
     {
-        try
-        {
-            if (loginBox.Text.Length > 0 && passwordBox.Text.Length > 0)
+        if (loginBox.Text.Length > 0 && passwordBox.Text.Length > 0)
             {
                 var userAuth = new UserAuth(loginBox.Text, passwordBox.Text);
                 _authController.Authorization(userAuth);
@@ -36,11 +34,6 @@ public class Auth: Form
             {
                 _dgVs.ShowDialog();
             }
-        }
-        catch(Exception ex)
-        {
-            MessageBox.Show(ex.Message);
-        }
     }
     
     private void InitializeItems()

@@ -1,5 +1,5 @@
-﻿using LightInject;
-using pis.infrasrtucture.filter.impl;
+﻿using DGWF.dgvf.filter;
+using LightInject;
 using PISWF.domain.model.validator;
 using PISWF.domain.registermc.controller;
 using PISWF.domain.registermc.model.mapper;
@@ -8,7 +8,6 @@ using PISWF.infrasrtucture;
 using PISWF.infrasrtucture.auth.controller;
 using PISWF.infrasrtucture.auth.model.mapper;
 using PISWF.infrasrtucture.auth.service;
-using PISWF.infrasrtucture.filter;
 using PISWF.infrasrtucture.logger.controller;
 using PISWF.infrasrtucture.logger.service;
 using PISWF.infrasrtucture.muni_org.controller;
@@ -24,7 +23,7 @@ public class AppContainer : ServiceContainer
     {
         this.Register<AppDbContext>();
         this.RegisterSingleton<AppContainer>();
-
+        this.RegisterSingleton<Mapper>();
         #region form
         this.RegisterSingleton<Auth>();
         this.RegisterSingleton<DGVs>();
@@ -60,13 +59,6 @@ public class AppContainer : ServiceContainer
         #region log
         this.RegisterSingleton<LogService>();
         this.RegisterSingleton<LogController>();
-        #endregion
-
-        #region filters
-        this.RegisterSingleton<IFilterFactory, FilterFactory>();
-        this.RegisterSingleton<FilterFactory>();
-        this.RegisterSingleton<RegisterFilter>();
-        this.RegisterSingleton<FilterSorterMapper>();
         #endregion
 
         #region excel exporter

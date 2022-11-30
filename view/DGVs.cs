@@ -1,7 +1,7 @@
-﻿using PISWF.infrasrtucture.auth.controller;
-using pis.infrasrtucture.dgvf;
-using pis.infrasrtucture.filter.impl;
-using PISWF.infrasrtucture.filter;
+﻿using DGWF.dgvf;
+using DGWF.dgvf.filter;
+using DGWF.impl;
+using PISWF.infrasrtucture.auth.controller;
 using PISWF.domain.registermc.controller;
 using PISWF.domain.registermc.model.entity;
 using PISWF.domain.registermc.model.view;
@@ -16,18 +16,17 @@ public class DGVs : Form
     private AuthController _authController;
 
     private User _user;
-    
+
     private RegistermcController _registermcController;
-    
+
     private DgvLong _dgvLong;
-    
+
     private Page _page = new(0, 25);
 
     public DGVs(
-        AuthController authController, 
-        IFilterFactory factory, 
-        FilterSorterMapper filterSorterMapper, 
-        RegistermcController registermcController, 
+        AuthController authController,
+        Mapper mapper,
+        RegistermcController registermcController,
         DgvLong dgvLong)
     {
         StartPosition = FormStartPosition.CenterScreen;
@@ -35,11 +34,12 @@ public class DGVs : Form
         _registermcController = registermcController;
         _authController = authController;
         _user = authController.AutorizedUser;
-        dg = new(factory, filterSorterMapper);
+        mapper.SetBasicMaps();
+        dg = new(new RegisterFilter(), mapper);
         InitializeItems();
         AddControls();
     }
-    
+
     private async void CheckForm(object e, object sender)
     {
         dg.Reset();
@@ -51,28 +51,31 @@ public class DGVs : Form
             addButton.Show();
             deleteButton.Show();
         }
+
         _page = new(0, 25);
         numberPageBox.Text = "1";
         sizePageNumericUpDown.Value = 25;
         dg.DataSource = null;
-        dg.FillDataGrid(await Task.Run(() => _registermcController.Read(_page, dg.GetFilter<RegisterMC>(), dg.GetSortParameters<RegisterMC>())));
+        dg.FillDataGrid(await Task.Run(() =>
+            _registermcController.Read(_page, dg.GetFilter<RegisterMC>(), dg.GetSortParameters<RegisterMC>())) , new List<string>() {"Id"});
     }
-    
+
     private void OpenLongDgv(object e, object sender)
     {
         if (dg.CurrentRow is null) return;
-        var selectedItem = dg.GetSelectedItem(dg.CurrentRow.Index);
+        var selectedItem = dg.GetSelectedValue();
         _dgvLong.SetShortRegisterMC(selectedItem);
         _dgvLong.ShowDialog();
         FillWithFilter(e, sender);
     }
-    
+
     private async void FillWithFilter(object e, object sender)
     {
         dg.DataSource = null;
-        dg.FillDataGrid(await Task.Run(() => _registermcController.Read(_page, dg.GetFilter<RegisterMC>(), dg.GetSortParameters<RegisterMC>())));
+        dg.FillDataGrid(
+            await Task.Run(() => _registermcController.Read(_page, dg.GetFilter<RegisterMC>(), dg.GetSortParameters<RegisterMC>())), new List<string>() {"Id"});
     }
-    
+
     //TODO Отфильтруй по 'xx' (x - любое число), напирмер, и поменяй на 'xx123' и у тебя в гриде будет 'xx'
     private void CreateNew(object e, object sender)
     {
@@ -80,26 +83,28 @@ public class DGVs : Form
         _dgvLong.ShowDialog();
         FillWithFilter(e, sender);
     }
-    
+
     private async void Delete(object e, object sender)
     {
-        var selectedItem = dg.GetSelectedItem(dg.CurrentRow.Index);
+        var selectedItem = dg.GetSelectedValue();
         _registermcController.Delete(selectedItem.Id);
         //TODO: удалять файлы вместе с записью
-        dg.FillDataGrid(await Task.Run(() => _registermcController.Read(_page, dg.GetFilter<RegisterMC>(), dg.GetSortParameters<RegisterMC>())));
+        dg.FillDataGrid(await Task.Run(() =>
+            _registermcController.Read(_page, dg.GetFilter<RegisterMC>(), dg.GetSortParameters<RegisterMC>())));
     }
-    
+
     private void ExportToExcel(object e, object sender)
     {
         _registermcController.ExportToExcel();
     }
-    
+
     private async void UpdatePageSize(object e, object sender)
     {
-        _page = new Page(int.Parse(numberPageBox.Text)-1, (int)sizePageNumericUpDown.Value);
-        dg.FillDataGrid(await Task.Run(() => _registermcController.Read(_page, dg.GetFilter<RegisterMC>(), dg.GetSortParameters<RegisterMC>())));
+        _page = new Page(int.Parse(numberPageBox.Text) - 1, (int)sizePageNumericUpDown.Value);
+        dg.FillDataGrid(await Task.Run(() =>
+            _registermcController.Read(_page, dg.GetFilter<RegisterMC>(), dg.GetSortParameters<RegisterMC>())));
     }
-    
+
     private async void UpdatePageNumberDown(object e, object sender)
     {
         if (_page.Number == 0)
@@ -108,21 +113,23 @@ public class DGVs : Form
         }
         else
         {
-            _page = new Page(_page.Number-1, (int)sizePageNumericUpDown.Value);
+            _page = new Page(_page.Number - 1, (int)sizePageNumericUpDown.Value);
             numberPageBox.Text = (_page.Number + 1).ToString();
-            dg.FillDataGrid(await Task.Run(() => _registermcController.Read(_page, dg.GetFilter<RegisterMC>(), dg.GetSortParameters<RegisterMC>())));
+            dg.FillDataGrid(await Task.Run(() =>
+                _registermcController.Read(_page, dg.GetFilter<RegisterMC>(), dg.GetSortParameters<RegisterMC>())));
         }
     }
-    
+
     private async void UpdatePageNumberUp(object e, object sender)
     {
-        if((_page.Number + 1) * _page.Size > _registermcController.Count())
+        if ((_page.Number + 1) * _page.Size > _registermcController.Count())
             return;
         _page = new Page(_page.Number + 1, (int)sizePageNumericUpDown.Value);
-        numberPageBox.Text = (_page.Number+1).ToString();
-        dg.FillDataGrid(await Task.Run(() => _registermcController.Read(_page, dg.GetFilter<RegisterMC>(), dg.GetSortParameters<RegisterMC>())));
+        numberPageBox.Text = (_page.Number + 1).ToString();
+        dg.FillDataGrid(await Task.Run(() =>
+            _registermcController.Read(_page, dg.GetFilter<RegisterMC>(), dg.GetSortParameters<RegisterMC>())));
     }
-    
+
     private void InitializeItems()
     {
         Size = new Size(800, 600);
@@ -139,14 +146,14 @@ public class DGVs : Form
         filterButton.Text = "Фильтровать";
         filterButton.Click -= FillWithFilter;
         filterButton.Click += FillWithFilter;
-        
+
         openButton.Location = new Point(658, 346);
         openButton.Size = new Size(120, 28);
         openButton.Anchor = AnchorStyles.Right | AnchorStyles.Top;
         openButton.Text = "Открыть";
         openButton.Click -= OpenLongDgv;
         openButton.Click += OpenLongDgv;
-        
+
         addButton.Location = new Point(658, 375);
         addButton.Size = new Size(120, 28);
         addButton.Anchor = AnchorStyles.Right | AnchorStyles.Top;
@@ -167,47 +174,47 @@ public class DGVs : Form
         exportButton.Text = "Экспорт в Excel";
         exportButton.Click -= ExportToExcel;
         exportButton.Click += ExportToExcel;
-       
-       userLabel.Location = new Point(675, 28);
-       userLabel.Size = new Size(120, 28);
-       //userLabel.Text = _user.Login;
 
-       numberPageLabel.Location = new Point(12,520);
-       numberPageLabel.Size = new Size(132, 18);
-       numberPageLabel.Anchor = AnchorStyles.Left | AnchorStyles.Bottom;
-       numberPageLabel.Text = "Номер страницы";
+        userLabel.Location = new Point(675, 28);
+        userLabel.Size = new Size(120, 28);
+        //userLabel.Text = _user.Login;
 
-       downPageButton.Location = new Point(145,520);
-       downPageButton.Size = new Size(44, 27);
-       downPageButton.Anchor = AnchorStyles.Left | AnchorStyles.Bottom;
-       downPageButton.Text = "<";
-       downPageButton.Click += UpdatePageNumberDown;
-       
-       numberPageBox.Location = new Point(190,520);
-       numberPageBox.Size = new Size(46, 18);
-       numberPageBox.Anchor = AnchorStyles.Left | AnchorStyles.Bottom;
-       numberPageBox.Text = "1";
-       numberPageBox.TextChanged += UpdatePageSize;
+        numberPageLabel.Location = new Point(12, 520);
+        numberPageLabel.Size = new Size(132, 18);
+        numberPageLabel.Anchor = AnchorStyles.Left | AnchorStyles.Bottom;
+        numberPageLabel.Text = "Номер страницы";
 
-       upPageButton.Location = new Point(237,520);
-       upPageButton.Size = new Size(44, 27);
-       upPageButton.Anchor = AnchorStyles.Left | AnchorStyles.Bottom;
-       upPageButton.Text = ">";
-       upPageButton.Click += UpdatePageNumberUp;
-       
-       sizePageLabel.Location = new Point(292,520);
-       sizePageLabel.Size = new Size(132, 18);
-       sizePageLabel.Anchor = AnchorStyles.Left | AnchorStyles.Bottom;
-       sizePageLabel.Text = "Размер страницы";
+        downPageButton.Location = new Point(145, 520);
+        downPageButton.Size = new Size(44, 27);
+        downPageButton.Anchor = AnchorStyles.Left | AnchorStyles.Bottom;
+        downPageButton.Text = "<";
+        downPageButton.Click += UpdatePageNumberDown;
 
-       sizePageNumericUpDown.Location = new Point(425,520);
-       sizePageNumericUpDown.Size = new Size(44, 23);
-       sizePageNumericUpDown.Anchor = AnchorStyles.Left | AnchorStyles.Bottom;
-       sizePageNumericUpDown.Value = 25;
-       sizePageNumericUpDown.ValueChanged += UpdatePageSize;
-       sizePageNumericUpDown.TextChanged += UpdatePageSize;
-       
-       Shown += CheckForm;
+        numberPageBox.Location = new Point(190, 520);
+        numberPageBox.Size = new Size(46, 18);
+        numberPageBox.Anchor = AnchorStyles.Left | AnchorStyles.Bottom;
+        numberPageBox.Text = "1";
+        numberPageBox.TextChanged += UpdatePageSize;
+
+        upPageButton.Location = new Point(237, 520);
+        upPageButton.Size = new Size(44, 27);
+        upPageButton.Anchor = AnchorStyles.Left | AnchorStyles.Bottom;
+        upPageButton.Text = ">";
+        upPageButton.Click += UpdatePageNumberUp;
+
+        sizePageLabel.Location = new Point(292, 520);
+        sizePageLabel.Size = new Size(132, 18);
+        sizePageLabel.Anchor = AnchorStyles.Left | AnchorStyles.Bottom;
+        sizePageLabel.Text = "Размер страницы";
+
+        sizePageNumericUpDown.Location = new Point(425, 520);
+        sizePageNumericUpDown.Size = new Size(44, 23);
+        sizePageNumericUpDown.Anchor = AnchorStyles.Left | AnchorStyles.Bottom;
+        sizePageNumericUpDown.Value = 25;
+        sizePageNumericUpDown.ValueChanged += UpdatePageSize;
+        sizePageNumericUpDown.TextChanged += UpdatePageSize;
+
+        Shown += CheckForm;
     }
 
     private void AddControls()
@@ -226,22 +233,22 @@ public class DGVs : Form
         Controls.Add(sizePageLabel);
         Controls.Add(sizePageNumericUpDown);
     }
-    
+
     #region компоненты для формы
-    
+
     private DataGridViewWithFilter<RegisterMCShort, RegisterFilter> dg;
     private Button openButton = new();
     private Button addButton = new();
     private Button deleteButton = new();
     private Button exportButton = new();
-    private Button filterButton = new ();
-    private Label userLabel = new ();
+    private Button filterButton = new();
+    private Label userLabel = new();
     private Label numberPageLabel = new();
     private Button downPageButton = new();
     private TextBox numberPageBox = new();
     private Button upPageButton = new();
-    private Label sizePageLabel = new ();
-    private NumericUpDown sizePageNumericUpDown = new ();
-    
+    private Label sizePageLabel = new();
+    private NumericUpDown sizePageNumericUpDown = new();
+
     #endregion
 }

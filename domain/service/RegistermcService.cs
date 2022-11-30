@@ -1,4 +1,5 @@
 ﻿using System.Drawing.Imaging;
+using DGWF.dgvf.sort;
 using LinqKit;
 using Microsoft.EntityFrameworkCore;
 using PISWF.domain.model.validator;
@@ -52,7 +53,7 @@ public class RegistermcService
         );
     }
 
-    public List<RegisterMCShort> Read(Page page, Func<RegisterMC, bool> filter, SortParameters sortParameters)
+    public List<RegisterMCShort> Read(Page page, Func<RegisterMC, bool> filter, List<SortParameter> sortParameters)
     {
         var comparer = new UltimateComparer<RegisterMC>(sortParameters);
         using var context = new AppDbContext();

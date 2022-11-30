@@ -1,4 +1,5 @@
 ﻿using System.Linq.Expressions;
+using DGWF.dgvf.sort;
 using LinqKit;
 using PISWF.domain.registermc.model.entity;
 using PISWF.domain.registermc.model.view;
@@ -35,7 +36,7 @@ public class RegistermcController
     async public Task<List<RegisterMCShort>> Read(
         Page page,
         Expression<Func<RegisterMC, bool>> filter,
-        SortParameters sortParameters)
+        List<SortParameter> sortParameters)
     {
         var user = _authController.AutorizedUser;
         var userFirstRole = user.Roles.FirstOrDefault();

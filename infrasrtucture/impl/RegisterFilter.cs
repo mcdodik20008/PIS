@@ -1,9 +1,9 @@
 ﻿using System.Linq.Expressions;
+using DGWF.dgvf.filter;
 using LinqKit;
 using PISWF.domain.registermc.model.entity;
-using PISWF.infrasrtucture.filter;
 
-namespace pis.infrasrtucture.filter.impl;
+namespace DGWF.impl;
 
 public class RegisterFilter : FilterModel<RegisterMC>
 {
